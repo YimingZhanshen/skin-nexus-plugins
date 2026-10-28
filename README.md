@@ -58,6 +58,9 @@ scripts/sign-market.sh   # local/CI signing entry point
 Read [`CONTRIBUTING.md`](CONTRIBUTING.md) and [`REVIEW.md`](REVIEW.md) before
 submitting. Versions are immutable: bump `version` instead of replacing a zip.
 
+Community: [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) ·
+[`SECURITY.md`](SECURITY.md) · [`ACCESSIBILITY.md`](ACCESSIBILITY.md).
+
 ## Local signing (maintainer)
 
 ```bash

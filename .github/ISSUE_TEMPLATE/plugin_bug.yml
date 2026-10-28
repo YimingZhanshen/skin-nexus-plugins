@@ -1,0 +1,67 @@
+name: Plugin bug report
+description: A published or proposed plugin misbehaves, or the market rejects it
+title: "[bug] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Security issues (signature/registry integrity, secret exposure, sandbox
+        escape) must use the [private channel](https://github.com/YimingZhanshen/skin-nexus-plugins/security/advisories/new),
+        not this form.
+  - type: input
+    id: plugin
+    attributes:
+      label: Plugin and version
+      placeholder: "launcher-api 1.0.0"
+    validations:
+      required: true
+  - type: dropdown
+    id: source
+    attributes:
+      label: How it was installed
+      options:
+        - Market (signed bundle)
+        - Local upload
+        - Manual copy into the data volume
+        - Not installed yet / lint or CI only
+    validations:
+      required: true
+  - type: input
+    id: host
+    attributes:
+      label: Host version
+      placeholder: "0.4.0 (image tag or commit)"
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: Actual behavior, affected page/route/slot, and any host log lines.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction steps
+      placeholder: |
+        1. ...
+        2. ...
+        3. ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: Confirmations
+      options:
+        - label: I removed tokens, keys and personal data from logs
+          required: true
+        - label: This is not a security vulnerability
+          required: true

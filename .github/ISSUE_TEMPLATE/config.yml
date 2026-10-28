@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security report (private)
+    url: https://github.com/YimingZhanshen/skin-nexus-plugins/security/advisories/new
+    about: Signature, registry, artifact or secret exposure issues — never post details publicly.
+  - name: Host project issues
+    url: https://github.com/YimingZhanshen/skin-nexus/issues
+    about: Bugs in the server, admin panel or plugin host itself.
+  - name: Host plugin specification
+    url: https://github.com/YimingZhanshen/skin-nexus/blob/main/docs/plugin-spec.md
+    about: Normative runtime and manifest semantics for plugins.

@@ -1,0 +1,45 @@
+name: New plugin proposal
+description: Propose a new official plugin or a significant change to one
+title: "[plugin] "
+body:
+  - type: input
+    id: name
+    attributes:
+      label: Plugin name
+      description: Must match `^[a-z0-9][a-z0-9_-]{1,63}$` and be unique in `v1/registry.json`.
+      placeholder: "my-plugin"
+    validations:
+      required: true
+  - type: textarea
+    id: purpose
+    attributes:
+      label: What it does
+      description: The user-facing behavior and why it belongs in the official market.
+    validations:
+      required: true
+  - type: textarea
+    id: permissions
+    attributes:
+      label: Permissions and data
+      description: List each host permission, why it is needed, and what the plugin stores.
+      placeholder: |
+        http:routes — public webhook endpoint
+        store:kv — stores ...
+    validations:
+      required: true
+  - type: textarea
+    id: external
+    attributes:
+      label: External hosts / network
+      description: Hosts referenced by `media.avatarHosts`; plugin code itself cannot make network calls.
+    validations:
+      required: false
+  - type: checkboxes
+    id: rules
+    attributes:
+      label: Rules acknowledged
+      options:
+        - label: I read SPEC.md and the host plugin spec
+          required: true
+        - label: The plugin runs in the goja sandbox and needs no native code or remote JS
+          required: true
