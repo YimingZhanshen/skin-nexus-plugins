@@ -98,4 +98,5 @@ to use its own market; setting the URL to an empty string disables the market.
 
 ## License
 
-See [`LICENSE.md`](LICENSE.md).
+AGPL-3.0 — see [`LICENSE.md`](LICENSE.md). A plugin directory may ship its own
+compatible `LICENSE`, which then applies to that plugin.
