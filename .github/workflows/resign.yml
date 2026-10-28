@@ -57,6 +57,7 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version: '1.26'
+          cache-dependency-path: .server/server/go.sum
 
       - name: Build skin-plugin
         run: |
@@ -79,7 +80,7 @@ jobs:
           KEY_FILE="$RUNNER_TEMP/market.pem"
           printf '%s' "$SKIN_PLUGIN_KEY" > "$KEY_FILE"
           trap 'rm -f "$KEY_FILE"' EXIT
-          SKIN_PLUGIN_KEY_FILE="$KEY_FILE" scripts/sign-market.sh
+          SKIN_PLUGIN_KEY_FILE="$KEY_FILE" bash scripts/sign-market.sh
 
       - name: Commit refreshed registry
         run: |
