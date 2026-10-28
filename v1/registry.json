@@ -1,0 +1,92 @@
+{
+  "schema": 1,
+  "generatedAt": "2026-10-28T07:19:55Z",
+  "expiresAt": "2027-01-26T07:19:55Z",
+  "keyId": "market-2026-10",
+  "packages": [
+    {
+      "name": "config-greeter",
+      "version": "1.0.0",
+      "title": {
+        "en": "Config Greeter",
+        "zh-CN": "配置问候"
+      },
+      "description": {
+        "en": "Demonstrates config schema, admin form and a public route.",
+        "zh-CN": "演示配置 schema、管理表单与公开路由。"
+      },
+      "author": "SkinNexus",
+      "requires": {
+        "server": "\u003e=0.3.0"
+      },
+      "capabilities": [
+        "config",
+        "http:routes"
+      ],
+      "minServer": "\u003e=0.3.0",
+      "changelog": "1.0.0 — first signed market release.",
+      "dist": {
+        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/v1/artifacts/config-greeter-1.0.0.zip",
+        "size": 1636,
+        "sha256": "9c8663f19cd0667fe0510086c957953aeab7cac0efe3487979386342eb855db4"
+      }
+    },
+    {
+      "name": "nav-links",
+      "version": "1.0.0",
+      "title": {
+        "en": "Nav Links",
+        "zh-CN": "导航链接"
+      },
+      "description": {
+        "en": "Demonstrates user navigation, an iframe page and the sandbox bridge.",
+        "zh-CN": "演示用户导航、iframe 页面与 sandbox bridge。"
+      },
+      "author": "SkinNexus",
+      "requires": {
+        "server": "\u003e=0.3.0"
+      },
+      "capabilities": [
+        "ui:page",
+        "ui:assets"
+      ],
+      "minServer": "\u003e=0.3.0",
+      "changelog": "1.0.0 — first signed market release.",
+      "dist": {
+        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/v1/artifacts/nav-links-1.0.0.zip",
+        "size": 2307,
+        "sha256": "95f00bba5b0ecbde8cc83ec6da7be2e57703a45f7a871d7bd167d0eed0f1b423"
+      }
+    },
+    {
+      "name": "player-notes",
+      "version": "1.0.0",
+      "title": {
+        "en": "Player Notes",
+        "zh-CN": "玩家笔记"
+      },
+      "description": {
+        "en": "Demonstrates session routes, namespaced collections and a user page.",
+        "zh-CN": "演示 session 路由、命名空间集合与用户页面。"
+      },
+      "author": "SkinNexus",
+      "requires": {
+        "server": "\u003e=0.3.0"
+      },
+      "capabilities": [
+        "store:docs",
+        "ui:page",
+        "ui:assets",
+        "http:routes:session"
+      ],
+      "minServer": "\u003e=0.3.0",
+      "changelog": "1.0.0 — first signed market release.",
+      "dist": {
+        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/v1/artifacts/player-notes-1.0.0.zip",
+        "size": 3410,
+        "sha256": "558cd97c3b72862e613e0692f141fd89f44cac915646f63d4f4712a85315c0b7"
+      }
+    }
+  ],
+  "signature": "KKGfPV5Ui3wEnZZTZcDIrpqTcch7PbjOWn+uise9B2DHVnQrFQLpS1NGz1eMKC+umtQ5C3SeUnvFLwZm9RkAAg=="
+}
