@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "generatedAt": "2026-10-28T13:14:33Z",
-  "expiresAt": "2027-01-26T13:14:33Z",
+  "generatedAt": "2026-10-28T16:23:43Z",
+  "expiresAt": "2027-01-26T16:23:43Z",
   "keyId": "market-2026-10",
   "packages": [
     {
@@ -301,5 +301,5 @@
       }
     }
   ],
-  "signature": "jbZfYAdFESiUjSYkL/uXRn83PKqUXqhi1jJuec1IViamuSaEXcSnhcbG0WIP/9zI3zfvW1pjQ0gUSbsttOjuDw=="
+  "signature": "B3uBke7jKW6Owq53apq1Sx479MQ5RIxtsQOmrmbLbUp8HatI1FHmODZm7zWbSFeHfqyWeNpzXe17+o3xCbZgDQ=="
 }
