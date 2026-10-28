@@ -1,0 +1,9 @@
+{
+  "schema": 1,
+  "title": { "zh-CN": "生命周期日志", "en": "Lifecycle Log" },
+  "description": { "zh-CN": "把注册/登录/删除与进服阶段写入服务端日志，用于验证 hook 接线。", "en": "Logs register/login/delete and join phases for hook wiring smoke tests." },
+  "author": "SkinNexus",
+  "changelog": "1.0.0 — first release.",
+  "conflicts": [],
+  "capabilities": ["auth:hooks"]
+}

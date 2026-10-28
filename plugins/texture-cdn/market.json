@@ -1,0 +1,9 @@
+{
+  "schema": 1,
+  "title": { "zh-CN": "纹理 CDN 镜像", "en": "Texture CDN" },
+  "description": { "zh-CN": "把皮肤纹理 URL 改写到 CDN 镜像。", "en": "Rewrites skin texture URLs to a CDN mirror." },
+  "author": "SkinNexus",
+  "changelog": "1.0.0 — first release.",
+  "conflicts": [],
+  "capabilities": ["textures:read"]
+}

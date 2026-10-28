@@ -1,0 +1,90 @@
+name: Sign and publish market
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'plugins/**'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: market-signing
+  cancel-in-progress: false
+
+jobs:
+  sign:
+    # Environment-scoped secrets. Only this job can read the private key;
+    # pull_request workflows never receive environment secrets.
+    environment: market-signing
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout plugin repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Checkout server tooling
+        uses: actions/checkout@v4
+        with:
+          repository: YimingZhanshen/skin-nexus
+          ref: ${{ vars.SKIN_SERVER_REF || 'main' }}
+          path: .server
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.26'
+
+      - name: Build skin-plugin
+        run: |
+          cd .server/server
+          go build -o "$RUNNER_TEMP/skin-plugin" ./cmd/skin-plugin
+
+      - name: Sign artifacts and registry
+        env:
+          SKIN_PLUGIN_KEY: ${{ secrets.SKIN_PLUGIN_KEY }}
+          SKIN_PLUGIN_KEY_ID: ${{ secrets.SKIN_PLUGIN_KEY_ID }}
+          SKIN_PLUGIN_TRUST_KEYS: ${{ secrets.SKIN_PLUGIN_TRUST_KEYS }}
+          SKIN_PLUGIN_CLI: ${{ runner.temp }}/skin-plugin
+          MARKET_URL_BASE: https://yimingzhanshen.github.io/skin-nexus-plugins/v1/artifacts
+        run: |
+          set -euo pipefail
+          : "${SKIN_PLUGIN_KEY:?missing environment secret SKIN_PLUGIN_KEY}"
+          : "${SKIN_PLUGIN_KEY_ID:?missing environment secret SKIN_PLUGIN_KEY_ID}"
+          : "${SKIN_PLUGIN_TRUST_KEYS:?missing environment secret SKIN_PLUGIN_TRUST_KEYS}"
+          umask 077
+          KEY_FILE="$RUNNER_TEMP/market.pem"
+          printf '%s' "$SKIN_PLUGIN_KEY" > "$KEY_FILE"
+          trap 'rm -f "$KEY_FILE"' EXIT
+          SKIN_PLUGIN_KEY_FILE="$KEY_FILE" scripts/sign-market.sh
+
+      - name: Commit signed market
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add v1
+          if git diff --cached --quiet; then
+            echo "registry already up to date"
+            exit 0
+          fi
+          git commit -m "chore: publish signed plugin artifacts and registry"
+          git push
+
+      - name: Verify Pages
+        run: |
+          set -euo pipefail
+          url="https://yimingzhanshen.github.io/skin-nexus-plugins/v1/registry.json"
+          for i in $(seq 1 20); do
+            code="$(curl -sS -o /dev/null -w '%{http_code}' "$url" || true)"
+            if [[ "$code" == "200" ]]; then
+              echo "registry served: $url"
+              exit 0
+            fi
+            echo "try=$i status=$code"
+            sleep 10
+          done
+          echo "Pages did not serve the registry in time" >&2
+          exit 1

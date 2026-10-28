@@ -1,0 +1,28 @@
+{
+  "name": "avatar-cdn",
+  "version": "1.0.0",
+  "hookApi": 2,
+  "entrypoint": "index.js",
+  "title": "Avatar CDN",
+  "author": "SkinNexus",
+  "description": "Redirects /avatar/* to an allowlisted external renderer.",
+  "permissions": ["media:avatar", "config"],
+  "media": {
+    "avatarHosts": ["cdn.example.com"]
+  },
+  "config": {
+    "schema": {
+      "type": "object",
+      "properties": {
+        "cdnBase": {
+          "type": "string",
+          "title": "CDN base URL",
+          "description": "Must stay on a host declared in media.avatarHosts",
+          "default": "https://cdn.example.com"
+        }
+      }
+    }
+  },
+  "minServer": ">=0.4.0",
+  "requires": { "plugins": {}, "server": ">=0.4.0" }
+}

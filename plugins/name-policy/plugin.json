@@ -1,0 +1,30 @@
+{
+  "name": "name-policy",
+  "version": "1.0.0",
+  "hookApi": 2,
+  "entrypoint": "index.js",
+  "title": "Name Policy",
+  "author": "SkinNexus",
+  "description": "Blocks reserved nicknames and player names on register, profile update and rename.",
+  "permissions": ["config", "auth:guards"],
+  "config": {
+    "schema": {
+      "type": "object",
+      "properties": {
+        "reserved": {
+          "type": "string",
+          "title": "Reserved names",
+          "description": "Comma-separated, case-insensitive",
+          "default": "admin,root,system,官方"
+        },
+        "message": {
+          "type": "string",
+          "title": "Deny message",
+          "default": "该名称已被保留，请换一个"
+        }
+      }
+    }
+  },
+  "minServer": ">=0.4.0",
+  "requires": { "plugins": {}, "server": ">=0.4.0" }
+}

@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "title": { "zh-CN": "注册来源问卷", "en": "Signup Survey" },
+  "description": { "zh-CN": "注册时收集来源/说明，存入插件命名空间。", "en": "Collects an optional source/note at registration into the plugin namespace." },
+  "author": "SkinNexus",
+  "changelog": "1.0.0 — first release.",
+  "requires": { "plugins": {}, "server": ">=0.4.0" },
+  "conflicts": [],
+  "capabilities": ["ui:forms", "store:docs", "events:subscribe", "auth:guards"],
+  "minServer": ">=0.4.0"
+}

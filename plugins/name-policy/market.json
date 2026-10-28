@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "title": { "zh-CN": "名称策略", "en": "Name Policy" },
+  "description": { "zh-CN": "在注册、资料修改与角色改名三处拦截保留名称。", "en": "Blocks reserved names on registration, profile update and player rename." },
+  "author": "SkinNexus",
+  "changelog": "1.0.0 — first release.",
+  "requires": { "plugins": {}, "server": ">=0.4.0" },
+  "conflicts": [],
+  "capabilities": ["config", "auth:guards"],
+  "minServer": ">=0.4.0"
+}

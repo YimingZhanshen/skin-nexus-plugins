@@ -1,0 +1,389 @@
+openapi: 3.1.0
+info:
+  title: SkinNexus Launcher API
+  version: "1.0.0"
+  description: |
+    Account and character management for desktop launchers. Served by the
+    `launcher-api` plugin. Auth: Authorization: Bearer <OIDC access token or
+    opaque Yggdrasil access token>. No cookies, no CSRF.
+servers:
+  - url: https://{site}/api/plugins/launcher-api
+    variables:
+      site:
+        default: skin.example.com
+security:
+  - bearerAuth: []
+paths:
+  /v1/meta:
+    get:
+      summary: API discovery (public)
+      security: []
+      responses:
+        "200":
+          description: Capabilities and limits
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Meta" }
+        "404": { description: Plugin not installed or disabled }
+  /v1/account:
+    get:
+      summary: Current account
+      responses:
+        "200":
+          description: Account view
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Account" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+  /v1/players:
+    get:
+      summary: List characters
+      responses:
+        "200":
+          description: Characters
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [players]
+                properties:
+                  players:
+                    type: array
+                    items: { $ref: "#/components/schemas/Player" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+    post:
+      summary: Create a character (idempotent by name)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name]
+              properties:
+                name: { type: string, maxLength: 16 }
+      responses:
+        "200": { $ref: "#/components/responses/PlayerOK" }
+        "201": { $ref: "#/components/responses/PlayerOK" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "409": { $ref: "#/components/responses/Conflict" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+  /v1/players/{pid}:
+    parameters:
+      - $ref: "#/components/parameters/Pid"
+    get:
+      summary: Get one character
+      responses:
+        "200":
+          description: Character
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Player" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+    patch:
+      summary: Rename a character (UUID never changes)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name]
+              properties:
+                name: { type: string, maxLength: 16 }
+      responses:
+        "200":
+          description: Updated character plus token invalidation flag
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: "#/components/schemas/Player"
+                  - type: object
+                    properties:
+                      tokensInvalidated: { type: boolean }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "409": { $ref: "#/components/responses/Conflict" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+    delete:
+      summary: Delete a character (retry 404 is acceptable)
+      responses:
+        "200":
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  deleted: { type: boolean }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+  /v1/players/{pid}/skin:
+    parameters:
+      - $ref: "#/components/parameters/Pid"
+    put:
+      summary: Upload a PNG or assign an existing texture
+      parameters:
+        - name: model
+          in: query
+          schema: { type: string, enum: [default, slim] }
+      requestBody:
+        required: true
+        content:
+          image/png:
+            schema: { type: string, format: binary }
+          application/json:
+            schema:
+              type: object
+              required: [textureId]
+              properties:
+                textureId: { type: integer, minimum: 0 }
+      responses:
+        "200": { $ref: "#/components/responses/PlayerOK" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "413": { $ref: "#/components/responses/TooLarge" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+    delete:
+      summary: Clear the skin slot
+      responses:
+        "200": { $ref: "#/components/responses/PlayerOK" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+  /v1/players/{pid}/cape:
+    parameters:
+      - $ref: "#/components/parameters/Pid"
+    put:
+      summary: Upload a PNG or assign an existing cape
+      requestBody:
+        required: true
+        content:
+          image/png:
+            schema: { type: string, format: binary }
+          application/json:
+            schema:
+              type: object
+              required: [textureId]
+              properties:
+                textureId: { type: integer, minimum: 0 }
+      responses:
+        "200": { $ref: "#/components/responses/PlayerOK" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "403": { $ref: "#/components/responses/Forbidden" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "413": { $ref: "#/components/responses/TooLarge" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+    delete:
+      summary: Clear the cape slot
+      responses:
+        "200": { $ref: "#/components/responses/PlayerOK" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+  /v1/textures:
+    get:
+      summary: List the caller's textures
+      responses:
+        "200":
+          description: Textures
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  textures:
+                    type: array
+                    items: { $ref: "#/components/schemas/Texture" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+    post:
+      summary: Upload a texture without assigning it
+      parameters:
+        - name: type
+          in: query
+          schema: { type: string, enum: [skin, cape], default: skin }
+        - name: model
+          in: query
+          schema: { type: string, enum: [default, slim] }
+        - name: description
+          in: query
+          schema: { type: string, maxLength: 50 }
+      requestBody:
+        required: true
+        content:
+          image/png:
+            schema: { type: string, format: binary }
+      responses:
+        "200": { $ref: "#/components/responses/TextureOK" }
+        "201": { $ref: "#/components/responses/TextureOK" }
+        "400": { $ref: "#/components/responses/BadRequest" }
+        "413": { $ref: "#/components/responses/TooLarge" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+  /v1/library:
+    get:
+      summary: Browse public textures
+      parameters:
+        - name: type
+          in: query
+          schema: { type: string, enum: [skin, cape, steve, alex] }
+        - name: q
+          in: query
+          schema: { type: string }
+        - name: sort
+          in: query
+          schema: { type: string, enum: [time, likes], default: time }
+        - name: page
+          in: query
+          schema: { type: integer, minimum: 1, default: 1 }
+        - name: per_page
+          in: query
+          schema: { type: integer, minimum: 1, maximum: 50, default: 20 }
+      responses:
+        "200":
+          description: Library page
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/LibraryPage" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+  /v1/library/{tid}:
+    parameters:
+      - $ref: "#/components/parameters/Tid"
+    get:
+      summary: Library item detail
+      responses:
+        "200":
+          description: Item
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/LibraryItem" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+  /v1/library/{tid}/import:
+    parameters:
+      - $ref: "#/components/parameters/Tid"
+    post:
+      summary: Copy a public texture into the caller's private library
+      responses:
+        "200": { $ref: "#/components/responses/TextureOK" }
+        "201": { $ref: "#/components/responses/TextureOK" }
+        "404": { $ref: "#/components/responses/NotFound" }
+        "401": { $ref: "#/components/responses/Unauthorized" }
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  parameters:
+    Pid:
+      name: pid
+      in: path
+      required: true
+      schema: { type: integer, minimum: 1 }
+    Tid:
+      name: tid
+      in: path
+      required: true
+      schema: { type: integer, minimum: 1 }
+  responses:
+    Unauthorized:
+      description: Missing/invalid/expired token
+      headers:
+        WWW-Authenticate:
+          schema: { type: string }
+    Forbidden:
+      description: Disabled account or texture not owned
+    NotFound:
+      description: Player/library item not found (or not visible)
+    Conflict:
+      description: Name taken or player limit reached
+    BadRequest:
+      description: Invalid name/model/PNG
+    TooLarge:
+      description: Texture exceeds the upload limit
+    PlayerOK:
+      description: Character view
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Player" }
+    TextureOK:
+      description: Texture view
+      content:
+        application/json:
+          schema: { $ref: "#/components/schemas/Texture" }
+  schemas:
+    Meta:
+      type: object
+      required: [apiVersion, features, models, limits]
+      properties:
+        apiVersion: { type: integer, const: 1 }
+        features:
+          type: object
+          additionalProperties: { type: boolean }
+        models:
+          type: array
+          items: { type: string }
+        limits:
+          type: object
+          properties:
+            maxUploadBytes: { type: integer }
+            libraryPerPage: { type: integer }
+    Account:
+      type: object
+      properties:
+        id: { type: integer }
+        nickname: { type: string }
+        permission: { type: integer }
+        playerLimit: { type: integer }
+        playerCount: { type: integer }
+        avatarUrl: { type: string, format: uri }
+        storageBytes: { type: integer }
+    Texture:
+      type: object
+      properties:
+        textureId: { type: integer }
+        type: { type: string, enum: [skin, cape] }
+        hash: { type: string }
+        model: { type: string }
+        description: { type: string }
+        url: { type: string, format: uri }
+        previewUrl: { type: string, format: uri }
+        avatarUrl: { type: string, format: uri }
+        uploadedAt: { type: string, format: date-time }
+        bytes: { type: integer }
+    Player:
+      type: object
+      properties:
+        id: { type: integer }
+        name: { type: string }
+        uuid: { type: string }
+        skin:
+          oneOf:
+            - $ref: "#/components/schemas/Texture"
+            - type: "null"
+        cape:
+          oneOf:
+            - $ref: "#/components/schemas/Texture"
+            - type: "null"
+    LibraryItem:
+      allOf:
+        - $ref: "#/components/schemas/Texture"
+        - type: object
+          properties:
+            tid: { type: integer }
+            name: { type: string }
+            uploader: { type: string }
+            likes: { type: integer }
+            liked: { type: boolean }
+            public: { type: boolean }
+            owned: { type: boolean }
+            textureUrl: { type: string, format: uri }
+    LibraryPage:
+      type: object
+      properties:
+        items:
+          type: array
+          items: { $ref: "#/components/schemas/LibraryItem" }
+        total: { type: integer }
+        page: { type: integer }
+        perPage: { type: integer }

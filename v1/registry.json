@@ -1,12 +1,39 @@
 {
   "schema": 1,
-  "generatedAt": "2026-10-28T07:19:55Z",
-  "expiresAt": "2027-01-26T07:19:55Z",
+  "generatedAt": "2026-10-28T13:14:33Z",
+  "expiresAt": "2027-01-26T13:14:33Z",
   "keyId": "market-2026-10",
   "packages": [
     {
-      "name": "config-greeter",
+      "name": "avatar-cdn",
       "version": "1.0.0",
+      "title": {
+        "en": "Avatar CDN",
+        "zh-CN": "头像 CDN"
+      },
+      "description": {
+        "en": "Redirects /avatar/* to an allowlisted external renderer.",
+        "zh-CN": "把 /avatar/* 重定向到白名单内的外部渲染服务。"
+      },
+      "author": "SkinNexus",
+      "requires": {
+        "server": "\u003e=0.4.0"
+      },
+      "capabilities": [
+        "media:avatar",
+        "config"
+      ],
+      "minServer": "\u003e=0.4.0",
+      "changelog": "1.0.0 — first release.",
+      "dist": {
+        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/v1/artifacts/avatar-cdn-1.0.0.zip",
+        "size": 1709,
+        "sha256": "4b062bcaa8a884d763d4386fa7d4f569420d6583e866927ca264308875cb04a2"
+      }
+    },
+    {
+      "name": "config-greeter",
+      "version": "1.0.1",
       "title": {
         "en": "Config Greeter",
         "zh-CN": "配置问候"
@@ -24,16 +51,97 @@
         "http:routes"
       ],
       "minServer": "\u003e=0.3.0",
-      "changelog": "1.0.0 — first signed market release.",
+      "changelog": "1.0.1 — repository migration; no functional change.",
       "dist": {
-        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/v1/artifacts/config-greeter-1.0.0.zip",
-        "size": 1636,
-        "sha256": "9c8663f19cd0667fe0510086c957953aeab7cac0efe3487979386342eb855db4"
+        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/v1/artifacts/config-greeter-1.0.1.zip",
+        "size": 1633,
+        "sha256": "7dc212b0670a257e2d1fe0d05695408d72469acd8b7402418f3b621780fa7b89"
+      }
+    },
+    {
+      "name": "launcher-api",
+      "version": "1.0.0",
+      "title": {
+        "en": "Launcher API",
+        "zh-CN": "启动器 API"
+      },
+      "description": {
+        "en": "Versioned account/character API v1 for desktop launchers (Bearer/OIDC).",
+        "zh-CN": "桌面启动器账号与角色管理 API v1（Bearer/OIDC）。"
+      },
+      "author": "SkinNexus",
+      "requires": {
+        "server": "\u003e=0.4.0"
+      },
+      "capabilities": [
+        "http:routes",
+        "http:routes:bearer",
+        "account:read",
+        "players:read",
+        "players:write",
+        "textures:read",
+        "textures:write"
+      ],
+      "minServer": "\u003e=0.4.0",
+      "changelog": "1.0.0 — first release (characters, textures, library, avatar).",
+      "dist": {
+        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/v1/artifacts/launcher-api-1.0.0.zip",
+        "size": 9681,
+        "sha256": "cc03e8a6ff23a437032ef0ff8c08c2e4a53a2c364024928f42ca21da66f0892d"
+      }
+    },
+    {
+      "name": "lifecycle-log",
+      "version": "1.0.0",
+      "title": {
+        "en": "Lifecycle Log",
+        "zh-CN": "生命周期日志"
+      },
+      "description": {
+        "en": "Logs register/login/delete and join phases for hook wiring smoke tests.",
+        "zh-CN": "把注册/登录/删除与进服阶段写入服务端日志，用于验证 hook 接线。"
+      },
+      "author": "SkinNexus",
+      "capabilities": [
+        "auth:hooks"
+      ],
+      "changelog": "1.0.0 — first release.",
+      "dist": {
+        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/v1/artifacts/lifecycle-log-1.0.0.zip",
+        "size": 1523,
+        "sha256": "8acc6332ee91a8ed3b260eaf2c5588019e1b1efd839580a6f88b342df9a6b224"
+      }
+    },
+    {
+      "name": "name-policy",
+      "version": "1.0.0",
+      "title": {
+        "en": "Name Policy",
+        "zh-CN": "名称策略"
+      },
+      "description": {
+        "en": "Blocks reserved names on registration, profile update and player rename.",
+        "zh-CN": "在注册、资料修改与角色改名三处拦截保留名称。"
+      },
+      "author": "SkinNexus",
+      "requires": {
+        "server": "\u003e=0.4.0"
+      },
+      "capabilities": [
+        "config",
+        "auth:guards"
+      ],
+      "minServer": "\u003e=0.4.0",
+      "changelog": "1.0.0 — first release.",
+      "dist": {
+        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/v1/artifacts/name-policy-1.0.0.zip",
+        "size": 1991,
+        "sha256": "d0cfc32687fbdbfaf1b04028a54d399b26ac301bf088fec859ba4a1b8c630bab"
       }
     },
     {
       "name": "nav-links",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "title": {
         "en": "Nav Links",
         "zh-CN": "导航链接"
@@ -51,16 +159,16 @@
         "ui:assets"
       ],
       "minServer": "\u003e=0.3.0",
-      "changelog": "1.0.0 — first signed market release.",
+      "changelog": "1.0.1 — repository migration; no functional change.",
       "dist": {
-        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/v1/artifacts/nav-links-1.0.0.zip",
-        "size": 2307,
-        "sha256": "95f00bba5b0ecbde8cc83ec6da7be2e57703a45f7a871d7bd167d0eed0f1b423"
+        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/v1/artifacts/nav-links-1.0.1.zip",
+        "size": 2300,
+        "sha256": "aad9e257fb8e2870a884c0e06abb810fbb590e518cab4326667ef3a4078eb88f"
       }
     },
     {
       "name": "player-notes",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "title": {
         "en": "Player Notes",
         "zh-CN": "玩家笔记"
@@ -80,13 +188,118 @@
         "http:routes:session"
       ],
       "minServer": "\u003e=0.3.0",
-      "changelog": "1.0.0 — first signed market release.",
+      "changelog": "1.0.1 — repository migration; no functional change.",
       "dist": {
-        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/v1/artifacts/player-notes-1.0.0.zip",
-        "size": 3410,
-        "sha256": "558cd97c3b72862e613e0692f141fd89f44cac915646f63d4f4712a85315c0b7"
+        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/v1/artifacts/player-notes-1.0.1.zip",
+        "size": 3395,
+        "sha256": "39035e852cec8c878f885abd276485292c1d184d1b5f98e7b593eaca3a8f388d"
+      }
+    },
+    {
+      "name": "signup-guard",
+      "version": "1.0.0",
+      "title": {
+        "en": "Signup Guard",
+        "zh-CN": "注册守卫"
+      },
+      "description": {
+        "en": "Fail-closed registration guard that denies by email domain.",
+        "zh-CN": "fail-closed 注册 guard：按邮箱域名拒绝注册。"
+      },
+      "author": "SkinNexus",
+      "capabilities": [
+        "config",
+        "auth:guards"
+      ],
+      "changelog": "1.0.0 — first release.",
+      "dist": {
+        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/v1/artifacts/signup-guard-1.0.0.zip",
+        "size": 1708,
+        "sha256": "73bfa6dc7fcc13ad1b3d0855164ffffbeb5fa6ce54bfa79eccd93d2df3503811"
+      }
+    },
+    {
+      "name": "signup-survey",
+      "version": "1.0.0",
+      "title": {
+        "en": "Signup Survey",
+        "zh-CN": "注册来源问卷"
+      },
+      "description": {
+        "en": "Collects an optional source/note at registration into the plugin namespace.",
+        "zh-CN": "注册时收集来源/说明，存入插件命名空间。"
+      },
+      "author": "SkinNexus",
+      "requires": {
+        "server": "\u003e=0.4.0"
+      },
+      "capabilities": [
+        "ui:forms",
+        "store:docs",
+        "events:subscribe",
+        "auth:guards"
+      ],
+      "minServer": "\u003e=0.4.0",
+      "changelog": "1.0.0 — first release.",
+      "dist": {
+        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/v1/artifacts/signup-survey-1.0.0.zip",
+        "size": 2101,
+        "sha256": "a40381d551c57ab918c73e7787071d37ce58321c346833ab906c25ce0d4fef52"
+      }
+    },
+    {
+      "name": "texture-cdn",
+      "version": "1.0.0",
+      "title": {
+        "en": "Texture CDN",
+        "zh-CN": "纹理 CDN 镜像"
+      },
+      "description": {
+        "en": "Rewrites skin texture URLs to a CDN mirror.",
+        "zh-CN": "把皮肤纹理 URL 改写到 CDN 镜像。"
+      },
+      "author": "SkinNexus",
+      "capabilities": [
+        "textures:read"
+      ],
+      "changelog": "1.0.0 — first release.",
+      "dist": {
+        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/v1/artifacts/texture-cdn-1.0.0.zip",
+        "size": 1487,
+        "sha256": "c4de305742dcea31ae8c9f6bbdff616d42bd9591b6b41b94417de0015ebd3989"
+      }
+    },
+    {
+      "name": "texture-provenance",
+      "version": "1.0.0",
+      "title": {
+        "en": "Texture Provenance",
+        "zh-CN": "纹理来源"
+      },
+      "description": {
+        "en": "Adds source/credit fields to uploads and shows them on the texture page.",
+        "zh-CN": "为上传增加来源/署名字段，并在皮肤详情页展示。"
+      },
+      "author": "SkinNexus",
+      "requires": {
+        "server": "\u003e=0.4.0"
+      },
+      "capabilities": [
+        "ui:forms",
+        "store:docs",
+        "ui:slot",
+        "ui:assets",
+        "http:routes",
+        "events:subscribe"
+      ],
+      "minServer": "\u003e=0.4.0",
+      "changelog": "1.0.0 — first release.",
+      "dist": {
+        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/v1/artifacts/texture-provenance-1.0.0.zip",
+        "size": 3486,
+        "sha256": "38a131c94da1f7de01cd3eaaba57ec8634d6586005cb689d3205017c0b0a3aec"
       }
     }
   ],
-  "signature": "KKGfPV5Ui3wEnZZTZcDIrpqTcch7PbjOWn+uise9B2DHVnQrFQLpS1NGz1eMKC+umtQ5C3SeUnvFLwZm9RkAAg=="
+  "signature": "jbZfYAdFESiUjSYkL/uXRn83PKqUXqhi1jJuec1IViamuSaEXcSnhcbG0WIP/9zI3zfvW1pjQ0gUSbsttOjuDw=="
 }

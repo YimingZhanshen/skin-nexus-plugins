@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "title": { "zh-CN": "头像 CDN", "en": "Avatar CDN" },
+  "description": { "zh-CN": "把 /avatar/* 重定向到白名单内的外部渲染服务。", "en": "Redirects /avatar/* to an allowlisted external renderer." },
+  "author": "SkinNexus",
+  "changelog": "1.0.0 — first release.",
+  "requires": { "plugins": {}, "server": ">=0.4.0" },
+  "conflicts": [],
+  "capabilities": ["media:avatar", "config"],
+  "minServer": ">=0.4.0"
+}

@@ -1,0 +1,52 @@
+{
+  "name": "texture-provenance",
+  "version": "1.0.0",
+  "hookApi": 2,
+  "entrypoint": "index.js",
+  "title": "Texture Provenance",
+  "author": "SkinNexus",
+  "description": "Adds source/credit fields to texture uploads and shows them on the texture page.",
+  "permissions": ["ui:forms", "store:docs", "ui:slot", "ui:assets", "http:routes", "events:subscribe"],
+  "store": {
+    "schemaVersion": 1,
+    "collections": {
+      "provenance": { "maxRows": 10000, "maxBytes": 4096 }
+    }
+  },
+  "routes": [
+    { "method": "GET", "path": "/provenance/{hash}", "tier": "public" }
+  ],
+  "ui": {
+    "assets": "ui/",
+    "forms": {
+      "texture.upload": {
+        "schema": {
+          "type": "object",
+          "properties": {
+            "source": {
+              "type": "string",
+              "title": "来源",
+              "enum": ["self", "other", "commission"],
+              "default": "self"
+            },
+            "credit": {
+              "type": "string",
+              "title": "署名/来源说明",
+              "description": "可选，展示在皮肤详情页",
+              "default": ""
+            }
+          }
+        }
+      }
+    },
+    "slots": [
+      { "id": "skinlib.detail.sidebar", "render": { "type": "iframe", "src": "slot.html" }, "height": 140 }
+    ],
+    "i18n": {
+      "zh-CN": { "title": "纹理来源" },
+      "en": { "title": "Texture provenance" }
+    }
+  },
+  "minServer": ">=0.4.0",
+  "requires": { "plugins": {}, "server": ">=0.4.0" }
+}

@@ -1,0 +1,45 @@
+{
+  "name": "signup-survey",
+  "version": "1.0.0",
+  "hookApi": 2,
+  "entrypoint": "index.js",
+  "title": "Signup Survey",
+  "author": "SkinNexus",
+  "description": "Adds an optional source/note field to registration and stores it per user.",
+  "permissions": ["ui:forms", "store:docs", "events:subscribe", "auth:guards"],
+  "store": {
+    "schemaVersion": 1,
+    "collections": {
+      "survey": { "maxRows": 10000, "maxBytes": 2048 }
+    }
+  },
+  "ui": {
+    "forms": {
+      "auth.register": {
+        "schema": {
+          "type": "object",
+          "properties": {
+            "source": {
+              "type": "string",
+              "title": "你怎么找到这里的？",
+              "enum": ["friend", "search", "video", "other"],
+              "default": "friend"
+            },
+            "note": {
+              "type": "string",
+              "title": "补充说明",
+              "description": "可选",
+              "default": ""
+            }
+          }
+        }
+      }
+    },
+    "i18n": {
+      "zh-CN": { "title": "注册来源问卷" },
+      "en": { "title": "Signup survey" }
+    }
+  },
+  "minServer": ">=0.4.0",
+  "requires": { "plugins": {}, "server": ">=0.4.0" }
+}

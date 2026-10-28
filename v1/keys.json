@@ -1,0 +1,12 @@
+{
+  "schema": 1,
+  "note": "Informational transparency list. Hosts trust keys only via SKIN_PLUGIN_TRUST_KEYS.",
+  "keys": [
+    {
+      "id": "market-2026-10",
+      "publicKey": "ID2EWgcfs1E4UbGCCX9WjD0aCgTof3oeuHV03IpdGNY=",
+      "status": "active",
+      "since": "2026-10-28"
+    }
+  ]
+}

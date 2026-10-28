@@ -1,0 +1,95 @@
+name: Re-sign expiring registry
+
+on:
+  schedule:
+    - cron: '17 3 * * 1'   # every Monday 03:17 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: market-signing
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    outputs:
+      days: ${{ steps.expiry.outputs.days }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Days until registry expiry
+        id: expiry
+        run: |
+          python3 - <<'PY'
+          import datetime, json, os
+          with open("v1/registry.json", encoding="utf-8") as f:
+              reg = json.load(f)
+          exp = datetime.datetime.fromisoformat(reg["expiresAt"].replace("Z", "+00:00"))
+          days = (exp - datetime.datetime.now(datetime.timezone.utc)).days
+          print(f"expiresInDays={days}")
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as out:
+              out.write(f"days={days}\n")
+          PY
+
+  resign:
+    needs: check
+    if: needs.check.outputs.days < 30
+    environment: market-signing
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout plugin repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Checkout server tooling
+        uses: actions/checkout@v4
+        with:
+          repository: YimingZhanshen/skin-nexus
+          ref: ${{ vars.SKIN_SERVER_REF || 'main' }}
+          path: .server
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.26'
+
+      - name: Build skin-plugin
+        run: |
+          cd .server/server
+          go build -o "$RUNNER_TEMP/skin-plugin" ./cmd/skin-plugin
+
+      - name: Re-sign registry
+        env:
+          SKIN_PLUGIN_KEY: ${{ secrets.SKIN_PLUGIN_KEY }}
+          SKIN_PLUGIN_KEY_ID: ${{ secrets.SKIN_PLUGIN_KEY_ID }}
+          SKIN_PLUGIN_TRUST_KEYS: ${{ secrets.SKIN_PLUGIN_TRUST_KEYS }}
+          SKIN_PLUGIN_CLI: ${{ runner.temp }}/skin-plugin
+          MARKET_URL_BASE: https://yimingzhanshen.github.io/skin-nexus-plugins/v1/artifacts
+        run: |
+          set -euo pipefail
+          : "${SKIN_PLUGIN_KEY:?missing environment secret SKIN_PLUGIN_KEY}"
+          : "${SKIN_PLUGIN_KEY_ID:?missing environment secret SKIN_PLUGIN_KEY_ID}"
+          : "${SKIN_PLUGIN_TRUST_KEYS:?missing environment secret SKIN_PLUGIN_TRUST_KEYS}"
+          umask 077
+          KEY_FILE="$RUNNER_TEMP/market.pem"
+          printf '%s' "$SKIN_PLUGIN_KEY" > "$KEY_FILE"
+          trap 'rm -f "$KEY_FILE"' EXIT
+          SKIN_PLUGIN_KEY_FILE="$KEY_FILE" scripts/sign-market.sh
+
+      - name: Commit refreshed registry
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add v1
+          if git diff --cached --quiet; then
+            echo "nothing to commit"
+            exit 0
+          fi
+          git commit -m "chore: refresh signed plugin registry"
+          git push

@@ -1,0 +1,9 @@
+{
+  "schema": 1,
+  "title": { "zh-CN": "注册守卫", "en": "Signup Guard" },
+  "description": { "zh-CN": "fail-closed 注册 guard：按邮箱域名拒绝注册。", "en": "Fail-closed registration guard that denies by email domain." },
+  "author": "SkinNexus",
+  "changelog": "1.0.0 — first release.",
+  "conflicts": [],
+  "capabilities": ["config", "auth:guards"]
+}
