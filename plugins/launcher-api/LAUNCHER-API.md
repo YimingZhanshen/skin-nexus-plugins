@@ -74,7 +74,7 @@ The API never accepts email/password, and never returns them.
 | 401 | `auth.required`, `auth.invalid_token` |
 | 403 | `auth.account_disabled`, `texture.not_owned`, `account.forbidden` |
 | 404 | `player.not_found`, `library.not_found` |
-| 409 | `player.limit`, `player.name_taken` |
+| 409 | `player.limit`, `player.name_taken`, `texture.duplicate_public` |
 | 413 | `texture.too_large` |
 | 429 | host rate limit; honor `Retry-After` |
 | 500 | `internal` |
@@ -218,7 +218,11 @@ Content-Type: image/png
 ```
 
 `201` created, `200` the same content already exists in the caller's library
-(idempotent by `uid + type + hash`).
+(idempotent by `uid + type + hash`). If the exact `(type,hash)` is already
+public in the site library (owned by anyone), the host returns
+`409 texture.duplicate_public` with `textureId` and `url`; do not retry it.
+This applies to standalone uploads and upload-then-assign requests on host
+`>=0.5.0`.
 
 ## 8. Skin library
 
@@ -249,7 +253,7 @@ Launchers commonly retry. The API is designed for safe retries:
 | rename | same name → `200`, `tokensInvalidated:false` |
 | delete player | `404` after success is acceptable |
 | set/clear texture | idempotent |
-| upload/import texture | deduplicated by `(uid,type,hash)` |
+| upload/import texture | deduplicated by `(uid,type,hash)`; public duplicate → `409` |
 | library reads | idempotent |
 
 Do not retry `4xx` except `429` (honor `Retry-After`).

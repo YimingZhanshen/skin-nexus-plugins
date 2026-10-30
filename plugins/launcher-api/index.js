@@ -11,13 +11,17 @@ function fail(e) {
   var message = (e && e.message) || "internal error";
   var status = 500;
   if (code === "player.not_found" || code === "library.not_found") status = 404;
-  else if (code === "player.limit" || code === "player.name_taken") status = 409;
+  else if (code === "player.limit" || code === "player.name_taken" || code === "texture.duplicate_public") status = 409;
   else if (code === "player.name_invalid" || code === "texture.invalid" || code === "texture.type_mismatch") status = 400;
   else if (code === "texture.too_large") status = 413;
   else if (code === "texture.not_owned" || code === "account.forbidden") status = 403;
   else if (code === "account.required") status = 401;
   else if (code === "account.unavailable") status = 503;
-  return { status: status, body: { error: code, message: message } };
+  var body = { error: code, message: message };
+  if (e && e.details) {
+    for (var k in e.details) body[k] = e.details[k];
+  }
+  return { status: status, body: body };
 }
 
 function ok(res, status) {
