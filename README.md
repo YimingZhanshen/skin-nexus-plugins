@@ -26,6 +26,7 @@ the maintainer's offline backup. Pull-request workflows never receive it.
 | `avatar-cdn` | `/avatar/*` redirect to an allowlisted renderer |
 | `name-policy` | reserved names on register/profile/rename |
 | `launcher-api` | Launcher API v1: account, characters, textures, library |
+| `skin-importer` | Import Mojang/Blessing skins and capes into a personal library |
 
 ## Repository layout
 

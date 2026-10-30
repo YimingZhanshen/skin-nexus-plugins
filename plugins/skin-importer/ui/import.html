@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>导入皮肤</title>
+  <style>
+    :root { color-scheme: light dark; }
+    body { font-family: system-ui, sans-serif; margin: 0; padding: 16px; color: #222; }
+    h2 { margin: 0 0 6px; font-size: 18px; }
+    .muted { color: #777; font-size: 12px; }
+    .tabs { display: flex; gap: 4px; margin: 14px 0 10px; }
+    .tabs button { border: 1px solid #ccc; background: transparent; padding: 6px 12px; cursor: pointer; }
+    .tabs button.on { border-color: #e05a3a; color: #e05a3a; }
+    label { display: block; margin-top: 10px; font-size: 13px; }
+    input, select { width: 100%; box-sizing: border-box; padding: 8px; margin-top: 4px; }
+    .row { display: flex; gap: 8px; }
+    .row > * { flex: 1; }
+    .primary { margin-top: 14px; background: #e05a3a; color: white; border: 0; padding: 9px 16px; cursor: pointer; }
+    .primary:disabled { opacity: .5; cursor: default; }
+    .error { color: #b00020; white-space: pre-wrap; margin-top: 10px; }
+    .ok { color: #167a3a; white-space: pre-wrap; margin-top: 10px; }
+    .result { margin-top: 12px; font-size: 13px; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <h2>导入皮肤 / 披风</h2>
+  <p class="muted">导入到你的个人纹理库；选择角色可同时应用。Mojang 会导入该账号公开的皮肤与披风。</p>
+
+  <div class="tabs">
+    <button id="tab-mojang" class="on">Mojang 正版用户名</button>
+    <button id="tab-blessing">Blessing 皮肤链接</button>
+  </div>
+
+  <div id="pane-mojang">
+    <label>正版用户名<input id="username" placeholder="例如 Notch" autocomplete="off" /></label>
+  </div>
+  <div id="pane-blessing" class="hidden">
+    <label>皮肤详情页链接<input id="url" placeholder="https://站点/skinlib/show/123" autocomplete="off" /></label>
+  </div>
+
+  <div class="row">
+    <label>应用到角色（可选）<select id="player"><option value="">只导入纹理库</option></select></label>
+  </div>
+
+  <button id="submit" class="primary">开始导入</button>
+  <div id="msg" class="error" hidden></div>
+  <div id="done" class="ok" hidden></div>
+  <div id="result" class="result" hidden></div>
+
+  <script>
+    let hostOrigin = '*'
+    let nonce = ''
+    let seq = 0
+    let mode = 'mojang'
+    const pending = new Map()
+    const $ = (id) => document.getElementById(id)
+
+    function post(type, payload, id) {
+      parent.postMessage({ v: 1, nonce, type, payload, id }, hostOrigin)
+    }
+    function request(method, path, body) {
+      const id = String(++seq)
+      return new Promise((resolve) => {
+        pending.set(id, resolve)
+        post('request', { method, path, body }, id)
+      })
+    }
+    function show(el, text) {
+      el.textContent = text
+      el.hidden = !text
+    }
+    function setMode(next) {
+      mode = next
+      $('tab-mojang').classList.toggle('on', next === 'mojang')
+      $('tab-blessing').classList.toggle('on', next === 'blessing')
+      $('pane-mojang').classList.toggle('hidden', next !== 'mojang')
+      $('pane-blessing').classList.toggle('hidden', next !== 'blessing')
+      show($('msg'), '')
+      show($('done'), '')
+      $('result').hidden = true
+    }
+
+    async function loadPlayers() {
+      const r = await request('GET', '/players')
+      if (!r || r.status !== 200) return
+      const sel = $('player')
+      for (const p of (r.body.players || [])) {
+        const opt = document.createElement('option')
+        opt.value = String(p.id)
+        opt.textContent = p.name + (p.uuid ? ' · ' + p.uuid.slice(0, 8) : '')
+        sel.appendChild(opt)
+      }
+    }
+
+    async function submit() {
+      const playerId = Number($('player').value) || 0
+      const path = mode === 'mojang' ? '/import/mojang' : '/import/blessing'
+      const body = mode === 'mojang'
+        ? { username: $('username').value.trim(), playerId }
+        : { url: $('url').value.trim(), playerId }
+      show($('msg'), '')
+      show($('done'), '')
+      $('result').hidden = true
+      $('submit').disabled = true
+      try {
+        const r = await request('POST', path, body)
+        if (!r) { show($('msg'), '请求失败'); return }
+        if (r.status !== 200) {
+          const b = r.body || {}
+          show($('msg'), (b.message || b.error || ('HTTP ' + r.status)))
+          return
+        }
+        const imported = (r.body && r.body.imported) || []
+        const applied = (r.body && r.body.applied) || {}
+        show($('done'), '导入完成')
+        const lines = imported.map((t) => (t.type === 'cape' ? '披风' : '皮肤') + ' #' + t.textureId + (applied[t.type] ? '（已应用）' : ''))
+        const pre = document.createElement('div')
+        pre.textContent = lines.join('\n')
+        const box = $('result')
+        box.replaceChildren(pre)
+        box.hidden = false
+      } finally {
+        $('submit').disabled = false
+      }
+    }
+
+    $('tab-mojang').onclick = () => setMode('mojang')
+    $('tab-blessing').onclick = () => setMode('blessing')
+    $('submit').onclick = submit
+    $('username').onkeydown = (e) => { if (e.key === 'Enter') submit() }
+    $('url').onkeydown = (e) => { if (e.key === 'Enter') submit() }
+
+    window.addEventListener('message', (e) => {
+      const m = e.data
+      if (!m || m.v !== 1) return
+      if (m.type === 'init') {
+        hostOrigin = (m.payload && m.payload.origin) || '*'
+        nonce = m.nonce || ''
+        loadPlayers()
+      } else if (m.type === 'response') {
+        const done = pending.get(m.id)
+        if (done) { pending.delete(m.id); done(m.payload) }
+      }
+    })
+    window.parent.postMessage({ v: 1, type: 'ready' }, '*')
+  </script>
+</body>
+</html>

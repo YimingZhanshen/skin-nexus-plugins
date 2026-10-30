@@ -1,0 +1,22 @@
+{
+  "schema": 1,
+  "title": { "zh-CN": "皮肤导入", "en": "Skin Importer" },
+  "description": {
+    "zh-CN": "按 Mojang 正版用户名或 Blessing 皮肤详情链接导入皮肤/披风到个人纹理库，可选应用到角色。",
+    "en": "Import skins and capes from a Mojang username or a Blessing skin detail URL into your own texture library, optionally applying them to a character."
+  },
+  "author": "SkinNexus",
+  "changelog": "1.0.0 — Mojang and Blessing single-skin import.",
+  "requires": { "plugins": {}, "server": ">=0.5.0" },
+  "conflicts": [],
+  "capabilities": [
+    "http:routes:session",
+    "net:http",
+    "textures:write",
+    "players:read",
+    "players:write",
+    "ui:page",
+    "ui:assets"
+  ],
+  "minServer": ">=0.5.0"
+}
