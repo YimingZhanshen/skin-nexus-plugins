@@ -47,7 +47,7 @@ scripts/sign-market.sh   # local/CI signing entry point
    ```bash
    git clone https://github.com/YimingZhanshen/skin-nexus .server
    (cd .server/server && go build -o /tmp/skin-plugin ./cmd/skin-plugin)
-   /tmp/skin-plugin lint --dir plugins/<name> --registry v1/registry.json --host-version 0.4.0 --json
+   /tmp/skin-plugin lint --dir plugins/<name> --registry v1/registry.json --host-version 0.5.0 --json
    ```
 
    `skin-importer` uses the host `net:http` / `schedule:jobs` capabilities and
@@ -90,7 +90,7 @@ secrets (environment-scoped secrets are not exposed to `pull_request` runs):
 | `SKIN_PLUGIN_TRUST_KEYS` | `id:base64-public-key` list used to self-verify; must include every key that signed an artifact still present in `v1/artifacts/` |
 
 Optional repository variables: `SKIN_SERVER_REF` (default `main`) and
-`SKIN_HOST_VERSION` (default `0.4.0`). Allow `github-actions[bot]` to push to
+`SKIN_HOST_VERSION` (default `0.5.0`). Allow `github-actions[bot]` to push to
 `main`, or change `sign.yml` to open a PR with the signed `v1/` changes.
 See [`KEY-ROTATION.md`](KEY-ROTATION.md) for rotation and expiry.
 

@@ -30,7 +30,7 @@ body:
     id: host
     attributes:
       label: Host version
-      placeholder: "0.4.0 (image tag or commit)"
+      placeholder: "0.5.0 (image tag or commit)"
     validations:
       required: true
   - type: textarea

@@ -18,7 +18,7 @@
    ```bash
    git clone https://github.com/YimingZhanshen/skin-nexus .server
    (cd .server/server && go build -o /tmp/skin-plugin ./cmd/skin-plugin)
-   /tmp/skin-plugin lint --dir plugins/<name> --registry v1/registry.json --host-version 0.4.0 --json
+   /tmp/skin-plugin lint --dir plugins/<name> --registry v1/registry.json --host-version 0.5.0 --json
    ```
 
 5. Open a PR and describe:

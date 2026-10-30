@@ -35,7 +35,7 @@ jobs:
       - name: Lint changed plugins
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
-          HOST_VERSION: ${{ vars.SKIN_HOST_VERSION || '0.4.0' }}
+          HOST_VERSION: ${{ vars.SKIN_HOST_VERSION || '0.5.0' }}
         run: |
           set -euo pipefail
           names="$(git diff --name-only "$BASE_SHA" HEAD -- plugins | awk -F/ 'NF>1 {print $2}' | sort -u)"
