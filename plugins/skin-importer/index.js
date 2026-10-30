@@ -55,8 +55,8 @@ function truncateDesc(s) {
   return s.length > MAX_DESC ? s.slice(0, MAX_DESC) : s;
 }
 
-function importPNG(typ, model, desc, b64) {
-  var res = skin.textures.importBase64(typ, model, desc, b64);
+function importPNG(typ, model, desc, b64, meta) {
+  var res = skin.textures.importBase64(typ, model, desc, b64, meta || {});
   if (!res || res.ok !== true) {
     var e = (res && res.error) || {};
     return { error: e };
@@ -135,7 +135,11 @@ skin.route("POST", "/import/mojang", function (r) {
     var raw = skin.net.get(url);
     if (!raw || raw.ok !== true) return { err: "纹理下载失败" };
     var desc = truncateDesc("Mojang 正版 " + username);
-    var got = importPNG(typ, model, desc, raw.data.bodyBase64);
+    var got = importPNG(typ, model, desc, raw.data.bodyBase64, {
+      detail: "来自 Mojang 正版账号 " + username,
+      source: "repost",
+      sourceUrl: "https://namemc.com/profile/" + uuid
+    });
     if (got.error) return { err: got.error.message || "导入失败" };
     imported.push(got.texture);
     if (playerId) {
@@ -189,7 +193,12 @@ skin.route("POST", "/import/blessing", function (r) {
   var maxBase = MAX_DESC - suffix.length;
   var desc = maxBase > 0 ? (baseName.slice(0, maxBase) + suffix) : suffix.slice(0, MAX_DESC);
   desc = truncateDesc(desc);
-  var got = importPNG(typ, model, desc, raw.data.bodyBase64);
+  var showURL = origin + "/skinlib/show/" + tid;
+  var got = importPNG(typ, model, desc, raw.data.bodyBase64, {
+    detail: "来源：[" + host + "#" + tid + "](" + showURL + ")",
+    source: "repost",
+    sourceUrl: showURL
+  });
   if (got.error) return fail(400, "import.failed", got.error.message || "导入失败");
   var applied = {};
   if (playerId) {
@@ -356,7 +365,12 @@ skin.jobs.register("blessing-import", function (job) {
         } else if (raw.data.status !== 200) {
           counts.skipped++; skin.store.kv.set(itemKey, "s");
         } else {
-          var up = skin.textures.uploadBase64(typ, model, batchDesc(d.name, host, tid), raw.data.bodyBase64);
+          var showURL = origin + "/skinlib/show/" + tid;
+          var up = skin.textures.uploadBase64(typ, model, batchDesc(d.name, host, tid), raw.data.bodyBase64, {
+            detail: "来源：[" + host + "#" + tid + "](" + showURL + ")",
+            source: "repost",
+            sourceUrl: showURL
+          });
           if (!up || up.ok !== true) {
             var code = (up && up.error && up.error.code) || "internal";
             if (code === "texture.duplicate_public") {
