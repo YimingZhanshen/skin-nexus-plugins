@@ -1,11 +1,28 @@
 {
   "schema": 1,
-  "title": { "zh-CN": "启动器 API", "en": "Launcher API" },
-  "description": { "zh-CN": "桌面启动器账号与角色管理 API v1（Bearer/OIDC）。", "en": "Versioned account/character API v1 for desktop launchers (Bearer/OIDC)." },
+  "title": {
+    "zh-CN": "启动器 API",
+    "en": "Launcher API"
+  },
+  "description": {
+    "zh-CN": "桌面启动器账号与角色管理 API v1（Bearer/OIDC）。",
+    "en": "Versioned account/character API v1 for desktop launchers (Bearer/OIDC)."
+  },
   "author": "SkinNexus",
-  "changelog": "1.0.0 — first release (characters, textures, library, avatar).",
-  "requires": { "plugins": {}, "server": ">=0.4.0" },
+  "changelog": "1.0.1 — map texture.duplicate_public to 409 with texture link.",
+  "requires": {
+    "plugins": {},
+    "server": ">=0.4.0"
+  },
   "conflicts": [],
-  "capabilities": ["http:routes", "http:routes:bearer", "account:read", "players:read", "players:write", "textures:read", "textures:write"],
+  "capabilities": [
+    "http:routes",
+    "http:routes:bearer",
+    "account:read",
+    "players:read",
+    "players:write",
+    "textures:read",
+    "textures:write"
+  ],
   "minServer": ">=0.4.0"
 }

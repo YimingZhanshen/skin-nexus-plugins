@@ -50,6 +50,9 @@ scripts/sign-market.sh   # local/CI signing entry point
    /tmp/skin-plugin lint --dir plugins/<name> --registry v1/registry.json --host-version 0.4.0 --json
    ```
 
+   `skin-importer` uses the host `net:http` / `schedule:jobs` capabilities and
+   must be linted with `--host-version 0.5.0` (host `>=0.5.0`).
+
 3. Open a PR. CI validates the manifest, market metadata, archive safety,
    permissions and version monotonicity without any signing key.
 4. After review and merge, the signing workflow (environment `market-signing`)
