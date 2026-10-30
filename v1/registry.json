@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "generatedAt": "2026-10-30T19:30:11Z",
-  "expiresAt": "2027-01-28T19:30:11Z",
+  "generatedAt": "2026-10-30T19:44:03Z",
+  "expiresAt": "2027-01-28T19:44:03Z",
   "keyId": "market-2026-10",
   "packages": [
     {
@@ -60,7 +60,7 @@
     },
     {
       "name": "launcher-api",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "title": {
         "en": "Launcher API",
         "zh-CN": "启动器 API"
@@ -83,11 +83,11 @@
         "textures:write"
       ],
       "minServer": "\u003e=0.4.0",
-      "changelog": "1.0.0 — first release (characters, textures, library, avatar).",
+      "changelog": "1.0.1 — map texture.duplicate_public to 409 with texture link.",
       "dist": {
-        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/v1/artifacts/launcher-api-1.0.0.zip",
-        "size": 9681,
-        "sha256": "cc03e8a6ff23a437032ef0ff8c08c2e4a53a2c364024928f42ca21da66f0892d"
+        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/v1/artifacts/launcher-api-1.0.1.zip",
+        "size": 9885,
+        "sha256": "fa3c9cef4a6ccd22841aa65c04e8a24ca24ccaf6a1f3de0f8e14787fea569970"
       }
     },
     {
@@ -336,5 +336,5 @@
       }
     }
   ],
-  "signature": "hE1jhsKn/lPJloCw+CAY7Xmvi31PEx7J3NSPCCoXet6r913HObbDTjMSkWb51Qq7P2+HWeYDITYzukYg1iOaDg=="
+  "signature": "oR3HxCXXNQsdYsexpHqSaSD5xx3Q3t4K+f1IghNnq18m6hAf/23moQRX/rgfmPeloODSaI7jKshy0rNachrLCg=="
 }
