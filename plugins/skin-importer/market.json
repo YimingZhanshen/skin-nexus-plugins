@@ -9,7 +9,7 @@
     "en": "Import skins and capes from a Mojang username or a Blessing skin detail URL into your own texture library, optionally applying them to a character."
   },
   "author": "SkinNexus",
-  "changelog": "1.0.2 — per-skin job steps avoid outbound rate limits; job cancel/resume and progress update per item.",
+  "changelog": "1.0.3 — opt into a 50k-key store namespace so 200-page imports do not hit the default 1k KV quota.",
   "requires": {
     "plugins": {},
     "server": ">=0.5.0"

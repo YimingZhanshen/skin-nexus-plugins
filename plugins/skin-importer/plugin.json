@@ -1,6 +1,6 @@
 {
   "name": "skin-importer",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "hookApi": 2,
   "entrypoint": "index.js",
   "title": "皮肤导入",
@@ -137,5 +137,10 @@
   "requires": {
     "plugins": {},
     "server": ">=0.5.0"
+  },
+  "store": {
+    "kv": {
+      "maxKeys": 50000
+    }
   }
 }
