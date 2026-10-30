@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "generatedAt": "2026-10-28T16:23:43Z",
-  "expiresAt": "2027-01-26T16:23:43Z",
+  "generatedAt": "2026-10-30T19:30:11Z",
+  "expiresAt": "2027-01-28T19:30:11Z",
   "keyId": "market-2026-10",
   "packages": [
     {
@@ -248,6 +248,41 @@
       }
     },
     {
+      "name": "skin-importer",
+      "version": "1.0.0",
+      "title": {
+        "en": "Skin Importer",
+        "zh-CN": "皮肤导入"
+      },
+      "description": {
+        "en": "Import skins and capes from a Mojang username or a Blessing skin detail URL into your own texture library, optionally applying them to a character.",
+        "zh-CN": "按 Mojang 正版用户名或 Blessing 皮肤详情链接导入皮肤/披风到个人纹理库，可选应用到角色。"
+      },
+      "author": "SkinNexus",
+      "requires": {
+        "server": "\u003e=0.5.0"
+      },
+      "capabilities": [
+        "http:routes:session",
+        "http:routes:admin",
+        "net:http",
+        "schedule:jobs",
+        "store:kv",
+        "textures:write",
+        "players:read",
+        "players:write",
+        "ui:page",
+        "ui:assets"
+      ],
+      "minServer": "\u003e=0.5.0",
+      "changelog": "1.0.0 — Mojang/Blessing single import and admin batch crawl.",
+      "dist": {
+        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/v1/artifacts/skin-importer-1.0.0.zip",
+        "size": 13173,
+        "sha256": "14f6c28a837b6e71a2625d816d19b4825f67bcf6fc4932c28a30af31cb2eda86"
+      }
+    },
+    {
       "name": "texture-cdn",
       "version": "1.0.0",
       "title": {
@@ -301,5 +336,5 @@
       }
     }
   ],
-  "signature": "B3uBke7jKW6Owq53apq1Sx479MQ5RIxtsQOmrmbLbUp8HatI1FHmODZm7zWbSFeHfqyWeNpzXe17+o3xCbZgDQ=="
+  "signature": "hE1jhsKn/lPJloCw+CAY7Xmvi31PEx7J3NSPCCoXet6r913HObbDTjMSkWb51Qq7P2+HWeYDITYzukYg1iOaDg=="
 }
