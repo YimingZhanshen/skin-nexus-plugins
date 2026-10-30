@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "generatedAt": "2026-10-30T21:44:16Z",
-  "expiresAt": "2027-01-28T21:44:16Z",
+  "generatedAt": "2026-10-30T22:48:24Z",
+  "expiresAt": "2027-01-28T22:48:24Z",
   "keyId": "market-2026-10",
   "packages": [
     {
@@ -249,7 +249,7 @@
     },
     {
       "name": "skin-importer",
-      "version": "1.0.3",
+      "version": "1.0.4",
       "title": {
         "en": "Skin Importer",
         "zh-CN": "皮肤导入"
@@ -275,11 +275,11 @@
         "ui:assets"
       ],
       "minServer": "\u003e=0.5.0",
-      "changelog": "1.0.3 — opt into a 50k-key store namespace so 200-page imports do not hit the default 1k KV quota.",
+      "changelog": "1.0.4 — record provenance (repost + original publication URL) and Markdown source details on imported textures.",
       "dist": {
-        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/v1/artifacts/skin-importer-1.0.3.zip",
-        "size": 14902,
-        "sha256": "43e8e8db2f5de92d7e0843cd15f6eabdd5f7d40b318fe6255492e54847965782"
+        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/v1/artifacts/skin-importer-1.0.4.zip",
+        "size": 15044,
+        "sha256": "561194d709be497f7dba928380d7d92d52ed6d620c3564163c80d3ea0261395d"
       }
     },
     {
@@ -336,5 +336,5 @@
       }
     }
   ],
-  "signature": "Gb9xx6UH7rbcVCeCcmF7idbHFpGP17mg4oetbyTmdui3OU2A2jwVv10X6a1+tUcAj95Y67HQh86BBrJEYm6tCg=="
+  "signature": "nItSiw8mAfXbHX8/sGCBr2Vjjl9riixGaFLz0M3+TfMiBCLqeQouJqb7GLQRCDRRHPp+oUFKQDR/Jruc3gyGAQ=="
 }
