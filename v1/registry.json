@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "generatedAt": "2026-10-30T20:01:19Z",
-  "expiresAt": "2027-01-28T20:01:19Z",
+  "generatedAt": "2026-10-30T20:31:57Z",
+  "expiresAt": "2027-01-28T20:31:57Z",
   "keyId": "market-2026-10",
   "packages": [
     {
@@ -249,7 +249,7 @@
     },
     {
       "name": "skin-importer",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "title": {
         "en": "Skin Importer",
         "zh-CN": "皮肤导入"
@@ -275,11 +275,11 @@
         "ui:assets"
       ],
       "minServer": "\u003e=0.5.0",
-      "changelog": "1.0.1 — theme-token iframe UI and readable dark-theme contrast.",
+      "changelog": "1.0.2 — per-skin job steps avoid outbound rate limits; job cancel/resume and progress update per item.",
       "dist": {
-        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/v1/artifacts/skin-importer-1.0.1.zip",
-        "size": 14298,
-        "sha256": "ae82e360afab13e0d191e370af88c921646f693c7ac25b31cd0e034860287bf3"
+        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/v1/artifacts/skin-importer-1.0.2.zip",
+        "size": 14885,
+        "sha256": "553cd05d141379061672e5bb4f82655cfbe6d5ddedb364c0b4d13fc0bc1d9d30"
       }
     },
     {
@@ -336,5 +336,5 @@
       }
     }
   ],
-  "signature": "/uCrYnxNU1LWhuzpuUQbvT2WyqMpuDqYCvVJ+my93VyyrfVO2CFU6iG9Nw57UBTPgq2oH9iabh0B4NSYjtvTAw=="
+  "signature": "5Q2i7MYyoRNrLCv+xEbdovn3L01UAS0hBlY73+PLE2lHeFAlrNVZjB0OA3h4ogtULJBKkxjfCAadt6293EAEDQ=="
 }
