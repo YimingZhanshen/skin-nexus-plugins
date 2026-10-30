@@ -228,6 +228,17 @@ function batchDesc(name, host, tid) {
   return truncateDesc(max > 0 ? base.slice(0, max) + suffix : suffix);
 }
 
+function netFailure(what, res) {
+  var e = (res && res.error) || {};
+  return new Error(what + ": " + (e.code || "net.unavailable") + " " + (e.message || ""));
+}
+
+function batchProgress(fromPage, toPage, page, index, total) {
+  var totalPages = toPage - fromPage + 1;
+  var done = (page - fromPage) + (total > 0 ? index / total : 0);
+  return Math.min(99, Math.floor((done / totalPages) * 100));
+}
+
 skin.jobs.register("blessing-import", function (job) {
   var p = job.payload || {};
   var origin = String(p.origin || "").replace(/\/+$/, "");
@@ -243,76 +254,133 @@ skin.jobs.register("blessing-import", function (job) {
   if (page > toPage) {
     return { done: true, progress: 100, result: counts };
   }
-  var filter = type === "cape" ? "cape" : "skin";
-  var list = fetchJSON(origin + "/skinlib/list?filter=" + filter + "&sort=likes&page=" + page);
-  if (list.status !== 200 || !list.data) {
-    throw new Error("source list page " + page + " failed (HTTP " + list.status + ")");
-  }
-  var rows = list.data.data || list.data.items || [];
   var host = sourceHost(origin);
-  for (var i = 0; i < rows.length; i++) {
-    var row = rows[i] || {};
-    if (row.public !== true) { counts.skipped++; continue; }
-    var tid = Number(row.tid);
-    if (!tid) { counts.skipped++; continue; }
-    var itemKey = "b:" + host + ":" + tid;
-    counts.seen++;
-    if (kvGet(itemKey)) { counts.duplicateOwn++; continue; }
-    var info = fetchJSON(origin + "/skinlib/info/" + tid);
-    if (!info || info.status !== 200 || !info.data) {
-      if (info && (info.status === 403 || info.status === 404)) {
-        counts.skipped++; skin.store.kv.set(itemKey, "1"); continue;
-      }
-      throw new Error("source info " + tid + " failed");
+
+  // One step = at most two upstream calls (info + texture). The worker runs
+  // one step per tick, keeping the host's per-origin rate budget; a whole
+  // page in one step used to trip net.rate_limited on the second skin.
+  var tids = cursor.tids;
+  if (!tids) {
+    var filter = type === "cape" ? "cape" : "skin";
+    var list = fetchJSON(origin + "/skinlib/list?filter=" + filter + "&sort=likes&page=" + page);
+    if (list.status === 429) {
+      throw new Error("source list page " + page + " rate limited");
     }
+    if (list.status !== 200 || !list.data) {
+      throw new Error("source list page " + page + " failed (HTTP " + list.status + ")");
+    }
+    var rows = list.data.data || list.data.items || [];
+    tids = [];
+    for (var i = 0; i < rows.length; i++) {
+      var row = rows[i] || {};
+      counts.seen++;
+      if (row.public !== true) { counts.skipped++; continue; }
+      var rid = Number(row.tid);
+      if (!rid) { counts.skipped++; continue; }
+      tids.push(rid);
+    }
+    return {
+      done: false, delayMS: 250,
+      cursor: { page: page, tids: tids, index: 0, counts: counts },
+      progress: batchProgress(fromPage, toPage, page, 0, tids.length),
+      message: "第 " + page + " / " + toPage + " 页 · 0 / " + tids.length
+    };
+  }
+
+  var index = Math.max(0, Number(cursor.index || 0));
+  if (index >= tids.length) {
+    counts.pages++;
+    if (page >= toPage) {
+      return { done: true, progress: 100, result: counts, message: "批处理完成" };
+    }
+    return {
+      done: false, delayMS: 250,
+      cursor: { page: page + 1, tids: null, index: 0, counts: counts },
+      progress: batchProgress(fromPage, toPage, page + 1, 0, 1),
+      message: "已完成第 " + page + " / " + toPage + " 页"
+    };
+  }
+
+  var tid = Number(tids[index]);
+  var itemKey = "b:" + host + ":" + tid;
+  var nextCursor = { page: page, tids: tids, index: index + 1, counts: counts };
+  var prev = kvGet(itemKey);
+  if (prev) {
+    if (prev === "s") counts.skipped++;
+    else if (prev === "p") counts.duplicatePublic++;
+    else counts.duplicateOwn++;
+    return {
+      done: false, delayMS: 100, cursor: nextCursor,
+      progress: batchProgress(fromPage, toPage, page, index + 1, tids.length),
+      message: "第 " + page + " / " + toPage + " 页 · " + (index + 1) + " / " + tids.length
+    };
+  }
+  var info = fetchJSON(origin + "/skinlib/info/" + tid);
+  if (info.status === 429) {
+    throw new Error("source info " + tid + " rate limited");
+  }
+  if (!info || info.status !== 200 || !info.data) {
+    if (info && (info.status === 403 || info.status === 404)) {
+      counts.skipped++; skin.store.kv.set(itemKey, "s");
+    } else {
+      throw new Error("source info " + tid + " failed (HTTP " + (info && info.status) + ")");
+    }
+  } else {
     var d = info.data;
     if (d.public !== true) {
-      counts.skipped++; skin.store.kv.set(itemKey, "1"); continue;
-    }
-    var srcType = String(d.type || "");
-    var typ = "", model = "";
-    if (srcType === "cape") { typ = "cape"; }
-    else if (srcType === "steve") { typ = "skin"; model = "default"; }
-    else if (srcType === "alex") { typ = "skin"; model = "slim"; }
-    else { counts.skipped++; skin.store.kv.set(itemKey, "1"); continue; }
-    var hash = String(d.hash || "");
-    if (!/^[0-9a-fA-F]{64}$/.test(hash)) {
-      counts.skipped++; skin.store.kv.set(itemKey, "1"); continue;
-    }
-    if (kvGet("h:" + typ + ":" + hash)) {
-      counts.duplicatePublic++; skin.store.kv.set(itemKey, "1"); continue;
-    }
-    var raw = skin.net.get(origin + "/textures/" + hash);
-    if (!raw || raw.ok !== true) {
-      if (raw && raw.error && raw.error.code === "net.status") {
-        counts.skipped++; skin.store.kv.set(itemKey, "1"); continue;
+      counts.skipped++; skin.store.kv.set(itemKey, "s");
+    } else {
+      var srcType = String(d.type || "");
+      var typ = "", model = "";
+      if (srcType === "cape") { typ = "cape"; }
+      else if (srcType === "steve") { typ = "skin"; model = "default"; }
+      else if (srcType === "alex") { typ = "skin"; model = "slim"; }
+      else { typ = ""; }
+      var hash = String(d.hash || "");
+      if (!typ) {
+        counts.skipped++; skin.store.kv.set(itemKey, "s");
+      } else if (!/^[0-9a-fA-F]{64}$/.test(hash)) {
+        counts.skipped++; skin.store.kv.set(itemKey, "s");
+      } else if (kvGet("h:" + typ + ":" + hash)) {
+        counts.duplicatePublic++; skin.store.kv.set(itemKey, "p");
+      } else {
+        var raw = skin.net.get(origin + "/textures/" + hash);
+        if (!raw || raw.ok !== true) {
+          if (raw && raw.error && raw.error.code === "net.status") {
+            counts.skipped++; skin.store.kv.set(itemKey, "s");
+          } else {
+            throw netFailure("texture " + hash, raw);
+          }
+        } else if (raw.data.status === 429) {
+          throw new Error("texture " + hash + " rate limited");
+        } else if (raw.data.status !== 200) {
+          counts.skipped++; skin.store.kv.set(itemKey, "s");
+        } else {
+          var up = skin.textures.uploadBase64(typ, model, batchDesc(d.name, host, tid), raw.data.bodyBase64);
+          if (!up || up.ok !== true) {
+            var code = (up && up.error && up.error.code) || "internal";
+            if (code === "texture.duplicate_public") {
+              counts.duplicatePublic++; skin.store.kv.set("h:" + typ + ":" + hash, "1");
+              skin.store.kv.set(itemKey, "p");
+            } else if (code === "texture.invalid" || code === "texture.too_large" || code === "texture.type_mismatch") {
+              counts.skipped++; skin.store.kv.set(itemKey, "s");
+            } else {
+              throw new Error("upload " + tid + ": " + ((up && up.error && up.error.message) || code));
+            }
+          } else {
+            if (up.created === false) counts.duplicateOwn++; else counts.imported++;
+            skin.store.kv.set("h:" + typ + ":" + hash, "1");
+            skin.store.kv.set(itemKey, "i");
+          }
+        }
       }
-      throw new Error("texture " + hash + " failed");
     }
-    var up = skin.textures.uploadBase64(typ, model, batchDesc(d.name, host, tid), raw.data.bodyBase64);
-    if (!up || up.ok !== true) {
-      var code = (up && up.error && up.error.code) || "internal";
-      if (code === "texture.duplicate_public") {
-        counts.duplicatePublic++; skin.store.kv.set("h:" + typ + ":" + hash, "1");
-        skin.store.kv.set(itemKey, "1"); continue;
-      }
-      if (code === "texture.invalid" || code === "texture.too_large" || code === "texture.type_mismatch") {
-        counts.skipped++; skin.store.kv.set(itemKey, "1"); continue;
-      }
-      throw new Error("upload " + tid + ": " + ((up && up.error && up.error.message) || code));
-    }
-    if (up.created === false) counts.duplicateOwn++; else counts.imported++;
-    skin.store.kv.set("h:" + typ + ":" + hash, "1");
-    skin.store.kv.set(itemKey, "1");
   }
-  counts.pages++;
-  var totalPages = toPage - fromPage + 1;
-  var progress = Math.min(99, Math.floor((counts.pages / totalPages) * 100));
-  var next = { page: page + 1, counts: counts };
-  if (page >= toPage) {
-    return { done: true, progress: 100, result: counts, message: "批处理完成" };
-  }
-  return { done: false, cursor: next, progress: progress, message: "已处理第 " + page + " / " + toPage + " 页" };
+  return {
+    done: false, delayMS: 250, cursor: nextCursor,
+    progress: batchProgress(fromPage, toPage, page, index + 1, tids.length),
+    message: "第 " + page + " / " + toPage + " 页 · " + (index + 1) + " / " + tids.length
+  };
 });
 
 skin.route("POST", "/admin/batch", function (r) {
