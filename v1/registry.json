@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "generatedAt": "2026-10-30T19:44:03Z",
-  "expiresAt": "2027-01-28T19:44:03Z",
+  "generatedAt": "2026-10-30T20:01:19Z",
+  "expiresAt": "2027-01-28T20:01:19Z",
   "keyId": "market-2026-10",
   "packages": [
     {
@@ -249,7 +249,7 @@
     },
     {
       "name": "skin-importer",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "title": {
         "en": "Skin Importer",
         "zh-CN": "皮肤导入"
@@ -275,11 +275,11 @@
         "ui:assets"
       ],
       "minServer": "\u003e=0.5.0",
-      "changelog": "1.0.0 — Mojang/Blessing single import and admin batch crawl.",
+      "changelog": "1.0.1 — theme-token iframe UI and readable dark-theme contrast.",
       "dist": {
-        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/v1/artifacts/skin-importer-1.0.0.zip",
-        "size": 13173,
-        "sha256": "14f6c28a837b6e71a2625d816d19b4825f67bcf6fc4932c28a30af31cb2eda86"
+        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/v1/artifacts/skin-importer-1.0.1.zip",
+        "size": 14298,
+        "sha256": "ae82e360afab13e0d191e370af88c921646f693c7ac25b31cd0e034860287bf3"
       }
     },
     {
@@ -336,5 +336,5 @@
       }
     }
   ],
-  "signature": "oR3HxCXXNQsdYsexpHqSaSD5xx3Q3t4K+f1IghNnq18m6hAf/23moQRX/rgfmPeloODSaI7jKshy0rNachrLCg=="
+  "signature": "/uCrYnxNU1LWhuzpuUQbvT2WyqMpuDqYCvVJ+my93VyyrfVO2CFU6iG9Nw57UBTPgq2oH9iabh0B4NSYjtvTAw=="
 }
