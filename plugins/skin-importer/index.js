@@ -199,3 +199,148 @@ skin.route("POST", "/import/blessing", function (r) {
   }
   return { status: 200, body: { imported: [got.texture], applied: applied } };
 });
+
+// ---- admin batch import ----
+
+function batchCounts(cursor) {
+  var c = (cursor && cursor.counts) || {};
+  return {
+    pages: Number(c.pages || 0), seen: Number(c.seen || 0),
+    imported: Number(c.imported || 0), duplicateOwn: Number(c.duplicateOwn || 0),
+    duplicatePublic: Number(c.duplicatePublic || 0), skipped: Number(c.skipped || 0),
+    failed: Number(c.failed || 0)
+  };
+}
+
+function kvGet(key) {
+  var v = skin.store.kv.get(key);
+  return v ? String(v) : "";
+}
+
+function sourceHost(origin) {
+  return origin.replace(/^https:\/\//, "");
+}
+
+function batchDesc(name, host, tid) {
+  var suffix = " · 来源 " + host + "#" + tid;
+  var base = String(name || ("皮肤 #" + tid));
+  var max = MAX_DESC - suffix.length;
+  return truncateDesc(max > 0 ? base.slice(0, max) + suffix : suffix);
+}
+
+skin.jobs.register("blessing-import", function (job) {
+  var p = job.payload || {};
+  var origin = String(p.origin || "").replace(/\/+$/, "");
+  var type = String(p.type || "skin");
+  var fromPage = Math.max(1, Number(p.fromPage || 1));
+  var toPage = Math.max(fromPage, Number(p.toPage || fromPage));
+  var cursor = job.cursor || {};
+  var page = Math.max(fromPage, Number(cursor.page || fromPage));
+  var counts = batchCounts(cursor);
+  if (!origin || origin.indexOf("https://") !== 0) {
+    throw new Error("invalid origin");
+  }
+  if (page > toPage) {
+    return { done: true, progress: 100, result: counts };
+  }
+  var filter = type === "cape" ? "cape" : "skin";
+  var list = fetchJSON(origin + "/skinlib/list?filter=" + filter + "&sort=likes&page=" + page);
+  if (list.status !== 200 || !list.data) {
+    throw new Error("source list page " + page + " failed (HTTP " + list.status + ")");
+  }
+  var rows = list.data.data || list.data.items || [];
+  var host = sourceHost(origin);
+  for (var i = 0; i < rows.length; i++) {
+    var row = rows[i] || {};
+    if (row.public !== true) { counts.skipped++; continue; }
+    var tid = Number(row.tid);
+    if (!tid) { counts.skipped++; continue; }
+    var itemKey = "b:" + host + ":" + tid;
+    counts.seen++;
+    if (kvGet(itemKey)) { counts.duplicateOwn++; continue; }
+    var info = fetchJSON(origin + "/skinlib/info/" + tid);
+    if (!info || info.status !== 200 || !info.data) {
+      if (info && (info.status === 403 || info.status === 404)) {
+        counts.skipped++; skin.store.kv.set(itemKey, "1"); continue;
+      }
+      throw new Error("source info " + tid + " failed");
+    }
+    var d = info.data;
+    if (d.public !== true) {
+      counts.skipped++; skin.store.kv.set(itemKey, "1"); continue;
+    }
+    var srcType = String(d.type || "");
+    var typ = "", model = "";
+    if (srcType === "cape") { typ = "cape"; }
+    else if (srcType === "steve") { typ = "skin"; model = "default"; }
+    else if (srcType === "alex") { typ = "skin"; model = "slim"; }
+    else { counts.skipped++; skin.store.kv.set(itemKey, "1"); continue; }
+    var hash = String(d.hash || "");
+    if (!/^[0-9a-fA-F]{64}$/.test(hash)) {
+      counts.skipped++; skin.store.kv.set(itemKey, "1"); continue;
+    }
+    if (kvGet("h:" + typ + ":" + hash)) {
+      counts.duplicatePublic++; skin.store.kv.set(itemKey, "1"); continue;
+    }
+    var raw = skin.net.get(origin + "/textures/" + hash);
+    if (!raw || raw.ok !== true) {
+      if (raw && raw.error && raw.error.code === "net.status") {
+        counts.skipped++; skin.store.kv.set(itemKey, "1"); continue;
+      }
+      throw new Error("texture " + hash + " failed");
+    }
+    var up = skin.textures.uploadBase64(typ, model, batchDesc(d.name, host, tid), raw.data.bodyBase64);
+    if (!up || up.ok !== true) {
+      var code = (up && up.error && up.error.code) || "internal";
+      if (code === "texture.duplicate_public") {
+        counts.duplicatePublic++; skin.store.kv.set("h:" + typ + ":" + hash, "1");
+        skin.store.kv.set(itemKey, "1"); continue;
+      }
+      if (code === "texture.invalid" || code === "texture.too_large" || code === "texture.type_mismatch") {
+        counts.skipped++; skin.store.kv.set(itemKey, "1"); continue;
+      }
+      throw new Error("upload " + tid + ": " + ((up && up.error && up.error.message) || code));
+    }
+    if (up.created === false) counts.duplicateOwn++; else counts.imported++;
+    skin.store.kv.set("h:" + typ + ":" + hash, "1");
+    skin.store.kv.set(itemKey, "1");
+  }
+  counts.pages++;
+  var totalPages = toPage - fromPage + 1;
+  var progress = Math.min(99, Math.floor((counts.pages / totalPages) * 100));
+  var next = { page: page + 1, counts: counts };
+  if (page >= toPage) {
+    return { done: true, progress: 100, result: counts, message: "批处理完成" };
+  }
+  return { done: false, cursor: next, progress: progress, message: "已处理第 " + page + " / " + toPage + " 页" };
+});
+
+skin.route("POST", "/admin/batch", function (r) {
+  var body = r.body || {};
+  var origin = String(body.origin || "").trim().replace(/\/+$/, "");
+  var type = String(body.type || "skin");
+  var fromPage = Number(body.fromPage || 0);
+  var toPage = Number(body.toPage || 0);
+  if (origin.indexOf("https://") !== 0) return fail(400, "batch.invalid_origin", "必须使用 https 站点地址");
+  if (type !== "skin" && type !== "cape") return fail(400, "batch.invalid_type", "类型必须是 skin 或 cape");
+  if (!fromPage || fromPage < 1 || toPage < fromPage || toPage - fromPage + 1 > 200) {
+    return fail(400, "batch.invalid_range", "页数范围需为 1..200 页");
+  }
+  if (body.confirm !== true) return fail(400, "batch.confirm_required", "请确认版权与抓取频率");
+  var id = skin.jobs.submit("blessing-import", { origin: origin, type: type, fromPage: fromPage, toPage: toPage });
+  return { status: 200, body: { jobId: id } };
+});
+
+skin.route("GET", "/admin/jobs", function () {
+  return { status: 200, body: skin.jobs.list(1) };
+});
+
+skin.route("POST", "/admin/jobs/{id}/cancel", function (r) {
+  skin.jobs.cancel(r.params.id);
+  return { status: 200, body: { ok: true } };
+});
+
+skin.route("POST", "/admin/jobs/{id}/resume", function (r) {
+  skin.jobs.resume(r.params.id);
+  return { status: 200, body: { ok: true } };
+});

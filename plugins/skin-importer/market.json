@@ -6,12 +6,15 @@
     "en": "Import skins and capes from a Mojang username or a Blessing skin detail URL into your own texture library, optionally applying them to a character."
   },
   "author": "SkinNexus",
-  "changelog": "1.0.0 — Mojang and Blessing single-skin import.",
+  "changelog": "1.0.0 — Mojang/Blessing single import and admin batch crawl.",
   "requires": { "plugins": {}, "server": ">=0.5.0" },
   "conflicts": [],
   "capabilities": [
     "http:routes:session",
+    "http:routes:admin",
     "net:http",
+    "schedule:jobs",
+    "store:kv",
     "textures:write",
     "players:read",
     "players:write",

@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>皮肤导入</title>
+  <style>
+    :root { color-scheme: light dark; }
+    body { font-family: system-ui, sans-serif; margin: 0; padding: 16px; color: #222; }
+    h2 { margin: 0 0 6px; font-size: 18px; }
+    h3 { margin: 20px 0 8px; font-size: 15px; }
+    .muted { color: #777; font-size: 12px; }
+    label { display: block; margin-top: 10px; font-size: 13px; }
+    input, select { width: 100%; box-sizing: border-box; padding: 8px; margin-top: 4px; }
+    .row { display: flex; gap: 8px; }
+    .row > * { flex: 1; }
+    .primary { margin-top: 12px; background: #e05a3a; color: white; border: 0; padding: 9px 16px; cursor: pointer; }
+    .primary:disabled { opacity: .5; }
+    .error { color: #b00020; white-space: pre-wrap; margin-top: 10px; }
+    .ok { color: #167a3a; white-space: pre-wrap; margin-top: 10px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px; }
+    th, td { text-align: left; padding: 6px; border-bottom: 1px solid #ddd; vertical-align: top; }
+    .bar { height: 6px; background: #eee; margin-top: 4px; }
+    .bar > i { display: block; height: 6px; background: #e05a3a; }
+    button.small { padding: 3px 8px; margin: 2px; }
+    .check { display: flex; gap: 6px; align-items: flex-start; margin-top: 12px; font-size: 13px; }
+    .check input { width: auto; margin-top: 2px; }
+  </style>
+</head>
+<body>
+  <h2>Blessing 批量收录</h2>
+  <p class="muted">按点赞从高到低抓取公开皮肤；上传者为当前管理员，名称会带来源。任务在后台运行，关闭页面不影响。</p>
+
+  <label>Blessing 站点<input id="origin" placeholder="https://skin.example.com" autocomplete="off" /></label>
+  <div class="row">
+    <label>类型<select id="type"><option value="skin">皮肤</option><option value="cape">披风</option></select></label>
+    <label>起始页<input id="fromPage" type="number" min="1" value="1" /></label>
+    <label>结束页<input id="toPage" type="number" min="1" value="1" /></label>
+  </div>
+  <label class="check"><input id="confirm" type="checkbox" /> 我确认拥有该站点的抓取授权，并接受版权与来源标注责任</label>
+  <button id="start" class="primary">开始批量导入</button>
+  <div id="msg" class="error" hidden></div>
+  <div id="done" class="ok" hidden></div>
+
+  <h3>任务</h3>
+  <div class="row" style="align-items:center;">
+    <button id="refresh" class="secondary" style="flex:0 0 auto;">刷新</button>
+    <span id="counts" class="muted"></span>
+  </div>
+  <table>
+    <thead><tr><th>任务</th><th>状态</th><th>进度</th><th>统计</th><th>操作</th></tr></thead>
+    <tbody id="jobs"></tbody>
+  </table>
+
+  <script>
+    let hostOrigin = '*'
+    let nonce = ''
+    let seq = 0
+    const pending = new Map()
+    const $ = (id) => document.getElementById(id)
+    const active = new Set(['queued', 'running', 'cancelling', 'paused'])
+
+    function post(type, payload, id) {
+      parent.postMessage({ v: 1, nonce, type, payload, id }, hostOrigin)
+    }
+    function request(method, path, body) {
+      const id = String(++seq)
+      return new Promise((resolve) => {
+        pending.set(id, resolve)
+        post('request', { method, path, body }, id)
+      })
+    }
+    function show(el, text) { el.textContent = text; el.hidden = !text }
+    function jobLabel(j) {
+      const p = j.payload || {}
+      return j.handler + ' · ' + (p.type || 'skin') + ' ' + (p.fromPage || '?') + '–' + (p.toPage || '?')
+    }
+    function draw(jobs) {
+      const body = $('jobs')
+      body.replaceChildren()
+      for (const j of jobs) {
+        const tr = document.createElement('tr')
+        const state = j.state || ''
+        const c = (j.result && typeof j.result === 'object') ? j.result : (j.cursor && j.cursor.counts) || {}
+        const counts = '导入 ' + (c.imported || 0) + ' / 重复 ' + ((c.duplicatePublic || 0) + (c.duplicateOwn || 0)) + ' / 跳过 ' + (c.skipped || 0) + (c.failed ? ' / 失败 ' + c.failed : '')
+        const pct = Number(j.progress || 0)
+        tr.innerHTML =
+          '<td><div>' + jobLabel(j) + '</div><div class="muted">' + (j.id || '') + '</div></td>' +
+          '<td>' + state + (j.lastError ? '<div class="error">' + j.lastError + '</div>' : '') + '</td>' +
+          '<td>' + pct + '%<div class="bar"><i style="width:' + pct + '%"></i></div><div class="muted">' + (j.message || '') + '</div></td>' +
+          '<td>' + counts + '</td>' +
+          '<td></td>'
+        const actions = tr.lastElementChild
+        if (state === 'queued' || state === 'running' || state === 'cancelling' || state === 'paused') {
+          const b = document.createElement('button'); b.className = 'small secondary'; b.textContent = '取消'
+          b.onclick = () => act(j.id, 'cancel'); actions.appendChild(b)
+        }
+        if (state === 'cancelled' || state === 'failed' || state === 'paused') {
+          const b = document.createElement('button'); b.className = 'small secondary'; b.textContent = '恢复'
+          b.onclick = () => act(j.id, 'resume'); actions.appendChild(b)
+        }
+        body.appendChild(tr)
+      }
+    }
+    async function load() {
+      const r = await request('GET', '/admin/jobs')
+      if (!r || r.status !== 200) { show($('msg'), '任务列表加载失败'); return }
+      const jobs = (r.body && r.body.jobs) || []
+      $('counts').textContent = '共 ' + ((r.body && r.body.total) || jobs.length) + ' 个任务'
+      draw(jobs)
+      if (jobs.some((j) => active.has(j.state))) setTimeout(load, 2000)
+    }
+    async function act(id, action) {
+      const r = await request('POST', '/admin/jobs/' + encodeURIComponent(id) + '/' + action)
+      if (!r || r.status !== 200) { show($('msg'), '操作失败'); return }
+      show($('msg'), ''); load()
+    }
+    async function start() {
+      show($('msg'), ''); show($('done'), '')
+      const body = {
+        origin: $('origin').value.trim(),
+        type: $('type').value,
+        fromPage: Number($('fromPage').value),
+        toPage: Number($('toPage').value),
+        confirm: $('confirm').checked
+      }
+      $('start').disabled = true
+      try {
+        const r = await request('POST', '/admin/batch', body)
+        if (!r || r.status !== 200) {
+          const b = (r && r.body) || {}
+          show($('msg'), b.message || b.error || ('HTTP ' + (r ? r.status : '?')))
+          return
+        }
+        show($('done'), '任务已提交：' + r.body.jobId)
+        await load()
+      } finally { $('start').disabled = false }
+    }
+    $('start').onclick = start
+    $('refresh').onclick = load
+    window.addEventListener('message', (e) => {
+      const m = e.data
+      if (!m || m.v !== 1) return
+      if (m.type === 'init') {
+        hostOrigin = (m.payload && m.payload.origin) || '*'
+        nonce = m.nonce || ''
+        load()
+      } else if (m.type === 'response') {
+        const done = pending.get(m.id)
+        if (done) { pending.delete(m.id); done(m.payload) }
+      }
+    })
+    window.parent.postMessage({ v: 1, type: 'ready' }, '*')
+  </script>
+</body>
+</html>

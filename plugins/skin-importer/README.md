@@ -13,16 +13,20 @@ texture to one of your characters.
   and appends the source (`name · 来源 host#tid`) to the display name.
 - **Optional application**: select one of your characters to apply the
   imported skin/cape immediately.
+- **Admin batch**: crawl a Blessing site by like order over a page range,
+  import public skins/capes as the admin, record the source, dedupe by
+  content hash, and keep running after the admin closes the tab.
 
 Imports are private copies owned by the current user and can be applied to a
-character; they are not published to the public library by this plugin.
+character; admin batch imports are public library entries owned by the admin.
 
 ## Requirements
 
 - Host `>=0.5.0` with `net.http.v1` (scoped outbound HTTP) and the account
   bridge (`account.v1`).
-- Permissions: `http:routes:session`, `net:http`, `textures:write`,
-  `players:read`, `players:write`, `ui:page`, `ui:assets`.
+- Permissions: `http:routes:session`, `http:routes:admin`, `net:http`,
+  `schedule:jobs`, `store:kv`, `textures:write`, `players:read`,
+  `players:write`, `ui:page`, `ui:assets`.
 
 ## Security
 
@@ -32,4 +36,5 @@ character; they are not published to the public library by this plugin.
 - No source-site login, cookies, or credentials are used.
 - Only public Blessing textures are accepted; private/deleted textures are
   rejected with a clear error.
-- Admin batch import is intentionally not part of this release.
+- Admin batch requires the explicit confirmation checkbox; jobs run in the
+  host queue with progress/cancel/resume and 30-day retention.
