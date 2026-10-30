@@ -1,6 +1,6 @@
 {
   "name": "skin-importer",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "hookApi": 2,
   "entrypoint": "index.js",
   "title": "皮肤导入",
@@ -19,22 +19,77 @@
     "ui:assets"
   ],
   "routes": [
-    { "method": "GET", "path": "/players", "tier": "session", "rateLimit": "60/m" },
-    { "method": "POST", "path": "/import/mojang", "tier": "session", "csrf": true, "rateLimit": "10/m", "timeoutMS": 10000 },
-    { "method": "POST", "path": "/import/blessing", "tier": "session", "csrf": true, "rateLimit": "10/m", "timeoutMS": 10000 },
-    { "method": "POST", "path": "/admin/batch", "tier": "admin", "csrf": true, "rateLimit": "5/m", "timeoutMS": 10000 },
-    { "method": "GET", "path": "/admin/jobs", "tier": "admin", "rateLimit": "120/m" },
-    { "method": "POST", "path": "/admin/jobs/{id}/cancel", "tier": "admin", "csrf": true, "rateLimit": "30/m" },
-    { "method": "POST", "path": "/admin/jobs/{id}/resume", "tier": "admin", "csrf": true, "rateLimit": "30/m" }
+    {
+      "method": "GET",
+      "path": "/players",
+      "tier": "session",
+      "rateLimit": "60/m"
+    },
+    {
+      "method": "POST",
+      "path": "/import/mojang",
+      "tier": "session",
+      "csrf": true,
+      "rateLimit": "10/m",
+      "timeoutMS": 10000
+    },
+    {
+      "method": "POST",
+      "path": "/import/blessing",
+      "tier": "session",
+      "csrf": true,
+      "rateLimit": "10/m",
+      "timeoutMS": 10000
+    },
+    {
+      "method": "POST",
+      "path": "/admin/batch",
+      "tier": "admin",
+      "csrf": true,
+      "rateLimit": "5/m",
+      "timeoutMS": 10000
+    },
+    {
+      "method": "GET",
+      "path": "/admin/jobs",
+      "tier": "admin",
+      "rateLimit": "120/m"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/jobs/{id}/cancel",
+      "tier": "admin",
+      "csrf": true,
+      "rateLimit": "30/m"
+    },
+    {
+      "method": "POST",
+      "path": "/admin/jobs/{id}/resume",
+      "tier": "admin",
+      "csrf": true,
+      "rateLimit": "30/m"
+    }
   ],
   "jobs": [
-    { "name": "blessing-import", "timeoutMS": 30000, "maxAttempts": 3 }
+    {
+      "name": "blessing-import",
+      "timeoutMS": 30000,
+      "maxAttempts": 3
+    }
   ],
   "net": {
     "http": {
-      "hosts": ["api.mojang.com", "sessionserver.mojang.com", "textures.minecraft.net"],
+      "hosts": [
+        "api.mojang.com",
+        "sessionserver.mojang.com",
+        "textures.minecraft.net"
+      ],
       "allowUserHosts": true,
-      "userHostPaths": ["/skinlib/list", "/skinlib/info/", "/textures/"],
+      "userHostPaths": [
+        "/skinlib/list",
+        "/skinlib/info/",
+        "/textures/"
+      ],
       "maxBytes": 2097152,
       "timeoutMS": 4000
     }
@@ -46,24 +101,41 @@
         "id": "import",
         "path": "/ext/skin-importer/import",
         "area": "user",
-        "nav": { "label": "导入皮肤" },
-        "render": { "type": "iframe", "src": "import.html" },
+        "nav": {
+          "label": "导入皮肤"
+        },
+        "render": {
+          "type": "iframe",
+          "src": "import.html"
+        },
         "perm": 0
       },
       {
         "id": "admin",
         "path": "/ext/skin-importer/admin",
         "area": "admin",
-        "nav": { "label": "皮肤导入" },
-        "render": { "type": "iframe", "src": "admin.html" },
+        "nav": {
+          "label": "皮肤导入"
+        },
+        "render": {
+          "type": "iframe",
+          "src": "admin.html"
+        },
         "perm": 1
       }
     ],
     "i18n": {
-      "zh-CN": { "title": "导入皮肤" },
-      "en": { "title": "Import skins" }
+      "zh-CN": {
+        "title": "导入皮肤"
+      },
+      "en": {
+        "title": "Import skins"
+      }
     }
   },
   "minServer": ">=0.5.0",
-  "requires": { "plugins": {}, "server": ">=0.5.0" }
+  "requires": {
+    "plugins": {},
+    "server": ">=0.5.0"
+  }
 }

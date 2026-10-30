@@ -5,23 +5,52 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>导入皮肤</title>
   <style>
-    :root { color-scheme: light dark; }
-    body { font-family: system-ui, sans-serif; margin: 0; padding: 16px; color: #222; }
+    :root {
+      color-scheme: dark;
+      --plugin-bg: #101825;
+      --plugin-panel: #16202e;
+      --plugin-border: rgba(169, 138, 95, .24);
+      --plugin-text: #e9edf1;
+      --plugin-muted: #a8b4c3;
+      --plugin-accent: #b0453a;
+      --plugin-danger: #ff8a80;
+      --plugin-ok: #7dd3a0;
+      --plugin-hover: rgba(233, 237, 241, .06);
+    }
+    * { box-sizing: border-box; }
+    body { font-family: system-ui, sans-serif; margin: 0; padding: 16px; background: var(--plugin-bg); color: var(--plugin-text); }
     h2 { margin: 0 0 6px; font-size: 18px; }
-    .muted { color: #777; font-size: 12px; }
-    .tabs { display: flex; gap: 4px; margin: 14px 0 10px; }
-    .tabs button { border: 1px solid #ccc; background: transparent; padding: 6px 12px; cursor: pointer; }
-    .tabs button.on { border-color: #e05a3a; color: #e05a3a; }
-    label { display: block; margin-top: 10px; font-size: 13px; }
-    input, select { width: 100%; box-sizing: border-box; padding: 8px; margin-top: 4px; }
+    h3 { margin: 20px 0 8px; font-size: 15px; }
+    p { margin: 0; }
+    .muted { color: var(--plugin-muted); font-size: 12px; }
+    label { display: block; margin-top: 10px; font-size: 13px; color: var(--plugin-muted); }
+    input, select, textarea {
+      width: 100%; padding: 8px; margin-top: 4px;
+      background: var(--plugin-panel); color: var(--plugin-text);
+      border: 1px solid var(--plugin-border); border-radius: 6px; font: inherit;
+    }
+    input[type="checkbox"] { width: auto; accent-color: var(--plugin-accent); }
     .row { display: flex; gap: 8px; }
     .row > * { flex: 1; }
-    .primary { margin-top: 14px; background: #e05a3a; color: white; border: 0; padding: 9px 16px; cursor: pointer; }
+    button { font: inherit; border-radius: 6px; cursor: pointer; }
+    .primary { margin-top: 14px; background: var(--plugin-accent); color: #fff; border: 0; padding: 9px 16px; }
     .primary:disabled { opacity: .5; cursor: default; }
-    .error { color: #b00020; white-space: pre-wrap; margin-top: 10px; }
-    .ok { color: #167a3a; white-space: pre-wrap; margin-top: 10px; }
+    .secondary { background: transparent; color: var(--plugin-text); border: 1px solid var(--plugin-border); padding: 6px 12px; }
+    .secondary:hover { background: var(--plugin-hover); }
+    .error { color: var(--plugin-danger); white-space: pre-wrap; margin-top: 10px; }
+    .ok { color: var(--plugin-ok); white-space: pre-wrap; margin-top: 10px; }
     .result { margin-top: 12px; font-size: 13px; }
     .hidden { display: none; }
+    .tabs { display: flex; gap: 4px; margin: 14px 0 10px; }
+    .tabs button { border: 1px solid var(--plugin-border); background: transparent; color: var(--plugin-muted); padding: 6px 12px; }
+    .tabs button.on { border-color: var(--plugin-accent); color: var(--plugin-accent); }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px; }
+    th, td { text-align: left; padding: 6px; border-bottom: 1px solid var(--plugin-border); vertical-align: top; }
+    .bar { height: 6px; background: var(--plugin-panel); margin-top: 4px; }
+    .bar > i { display: block; height: 6px; background: var(--plugin-accent); }
+    button.small { padding: 3px 8px; margin: 2px; }
+    .check { display: flex; gap: 6px; align-items: flex-start; margin-top: 12px; font-size: 13px; color: var(--plugin-text); }
+    .check input { width: auto; margin-top: 2px; }
   </style>
 </head>
 <body>
@@ -50,6 +79,14 @@
   <div id="result" class="result" hidden></div>
 
   <script>
+function applyTheme(t) {
+      if (!t) return
+      const r = document.documentElement
+      const map = { bg: '--plugin-bg', panel: '--plugin-panel', border: '--plugin-border',
+        text: '--plugin-text', muted: '--plugin-muted', accent: '--plugin-accent' }
+      for (const key in map) if (t[key]) r.style.setProperty(map[key], t[key])
+      r.style.colorScheme = t.dark === false ? 'light' : 'dark'
+    }
     let hostOrigin = '*'
     let nonce = ''
     let seq = 0
@@ -138,6 +175,7 @@
       if (m.type === 'init') {
         hostOrigin = (m.payload && m.payload.origin) || '*'
         nonce = m.nonce || ''
+        applyTheme(m.payload && m.payload.theme)
         loadPlayers()
       } else if (m.type === 'response') {
         const done = pending.get(m.id)
