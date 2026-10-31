@@ -1,13 +1,41 @@
 # Key rotation and registry expiry
 
-## Routine expiry (automatic)
+## Routine expiry (automatic, both markets)
 
-- `sign.yml` issues a 90-day registry.
-- `resign.yml` runs every Monday, reads `v1/registry.json`, and dispatches
-  `sign.yml` when fewer than 30 days remain.
-- Manual re-sign: Actions → **Sign and publish market** → Run workflow.
-- If a signing run fails, the Pages registry keeps serving the previous copy
-  until its `expiresAt`; hosts return 503 after expiry.
+Registries are issued with a 90-day `expiresAt`. Nothing about renewal needs a
+human:
+
+| Market | Publish on push | Weekly renewal job | Secrets |
+|---|---|---|---|
+| plugin (`v1/`) | `sign.yml` | `resign.yml` — Mondays 03:17 UTC | `SKIN_PLUGIN_KEY` / `_KEY_ID` / `_TRUST_KEYS` |
+| theme (`themes/v1/`) | `sign-themes.yml` | `resign-themes.yml` — Mondays 03:41 UTC | `SKIN_THEME_KEY` / `_KEY_ID` / `_TRUST_KEYS` |
+
+Each renewal job reads its registry, prints the days left, and only runs the
+signing job when **fewer than 60 days remain**. Two reasons for that number:
+
+- it refreshes a month before the window where a failed run could realistically
+  reach expiry;
+- the refresh is itself a push, and GitHub auto-disables scheduled workflows on
+  public repositories with no activity for 60 days. Refreshing at ~5 weeks keeps
+  this repository "active" so the cron can never silently stop.
+
+Signing is deterministic, so a renewal re-zips every pack, hard-fails if any
+artifact byte differs (immutability), and commits only `registry.json` —
+verified locally before every push: same `sha256` for all artifacts, only
+`generatedAt`/`expiresAt` move.
+
+Manual re-sign is still available: Actions → **Sign and publish market** /
+**Sign and publish theme market** → Run workflow. If a signing run fails, Pages
+keeps serving the previous copy until its `expiresAt`; hosts then reject the
+registry (expired) even from their on-disk last-good cache — installed plugins
+and themes keep working, and local uploads keep working, because only the
+registry carries an expiry date.
+
+A totally unattended repository therefore stays valid: renewals fire weekly from
+the schedule, and each refresh is a push that resets the 60-day inactivity
+clock. (If a schedule does ever get disabled — e.g. the repository is archived —
+re-enable it with `gh workflow enable` or push a commit that touches the `cron`
+line, which also reactivates it.)
 
 ## Rotating the signing key
 

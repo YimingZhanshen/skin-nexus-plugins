@@ -36,7 +36,9 @@ jobs:
 
   resign:
     needs: check
-    if: needs.check.outputs.days < 30
+    # Refreshing early also keeps a push landing in this repo every few weeks,
+    # which is what stops GitHub from auto-disabling scheduled workflows.
+    if: needs.check.outputs.days < 60
     environment: market-signing
     permissions:
       contents: write

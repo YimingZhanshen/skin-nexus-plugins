@@ -61,8 +61,10 @@ Forbidden: `bundle.json`, private keys (`*.pem`/`*.key`), native binaries
 
 `pr.yml` runs without secrets and must pass. A maintainer then reviews against
 [`REVIEW.md`](REVIEW.md). On merge, `sign.yml` (environment `market-signing`)
-signs and publishes. Registry entries expire after 90 days; `resign.yml`
-re-signs weekly when fewer than 30 days remain.
+signs and publishes. Registries expire 90 days after signing; `resign.yml` and
+`resign-themes.yml` check weekly and re-sign when fewer than 60 days remain, so
+an unmaintained repository still keeps both markets serving
+(see [`KEY-ROTATION.md`](KEY-ROTATION.md)).
 
 ## 7. Removal / yank
 
