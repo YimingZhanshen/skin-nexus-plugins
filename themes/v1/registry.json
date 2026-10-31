@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "generatedAt": "2026-10-31T21:38:07Z",
-  "expiresAt": "2027-01-29T21:38:07Z",
+  "generatedAt": "2026-10-31T21:39:45Z",
+  "expiresAt": "2027-01-29T21:39:45Z",
   "keyId": "theme-market-2026-11",
   "packages": [
     {
@@ -56,5 +56,5 @@
       }
     }
   ],
-  "signature": "LumrXvlB3cD7dowfLYO2MamqztnZYcoi+HFV/NZE1c7uQtxfLTURFMKPR5t39I2n2C4ed+TgjLEHYOs7SMRDBw=="
+  "signature": "TlVF5jHt1SmpBmaBAflFsT3RWcYKe67NNXeLfNIfayDK4UOYpndCUg+u6vBK57UxdjG9T0lLc6zLHFEDvMqPAA=="
 }
