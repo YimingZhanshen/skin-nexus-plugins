@@ -38,6 +38,13 @@ v1/keys.json             # optional public key transparency list
 scripts/sign-market.sh   # local/CI signing entry point
 ```
 
+## Localization
+
+Plugins with UI should ship zh-CN and en dictionaries and apply the locale from
+the host bridge's `init` payload (`document.documentElement.lang` + `data-i18n`
+attributes). Manifest `ui.i18n` may also provide `nav.<page-id>` labels for the
+host sidebar; without it the static `pages[].nav.label` is used.
+
 ## Contributing a plugin
 
 1. Fork this repository and add `plugins/<name>/` following
