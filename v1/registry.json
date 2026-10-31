@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "generatedAt": "2026-10-31T09:33:28Z",
-  "expiresAt": "2027-01-29T09:33:28Z",
+  "generatedAt": "2026-10-31T17:45:26Z",
+  "expiresAt": "2027-01-29T17:45:26Z",
   "keyId": "market-2026-10",
   "packages": [
     {
@@ -141,7 +141,7 @@
     },
     {
       "name": "nav-links",
-      "version": "1.0.2",
+      "version": "1.0.3",
       "title": {
         "en": "Nav Links",
         "zh-CN": "导航链接"
@@ -159,16 +159,16 @@
         "ui:assets"
       ],
       "minServer": "\u003e=0.3.0",
-      "changelog": "1.0.2 — localized iframe UI and navigation label.",
+      "changelog": "1.0.3 — theme-aware, auto-resizing UI that matches the host surface.",
       "dist": {
-        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/v1/artifacts/nav-links-1.0.2.zip",
-        "size": 2689,
-        "sha256": "46e71219cc0bbb357d1f87ef219218d4764f5548cfae39c2f66b45ecd178d16e"
+        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/v1/artifacts/nav-links-1.0.3.zip",
+        "size": 3589,
+        "sha256": "a4953e61f82995daa24acfe970f73762a0d8b18d946cfab39c6b6d46661a6a36"
       }
     },
     {
       "name": "player-notes",
-      "version": "1.0.2",
+      "version": "1.0.3",
       "title": {
         "en": "Player Notes",
         "zh-CN": "玩家笔记"
@@ -188,11 +188,11 @@
         "http:routes:session"
       ],
       "minServer": "\u003e=0.3.0",
-      "changelog": "1.0.2 — localized iframe UI and navigation label.",
+      "changelog": "1.0.3 — theme-aware, auto-resizing UI with host-matched controls.",
       "dist": {
-        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/v1/artifacts/player-notes-1.0.2.zip",
-        "size": 3885,
-        "sha256": "020a61254e20652703a878abe112ca62c50005f479ae1b65747c5b1d64c2ce77"
+        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/v1/artifacts/player-notes-1.0.3.zip",
+        "size": 4804,
+        "sha256": "63c0c45045588a47780162869a151b7d33e82b8b9e9b06b4a9e9efa3269ef3a8"
       }
     },
     {
@@ -249,7 +249,7 @@
     },
     {
       "name": "skin-importer",
-      "version": "1.0.5",
+      "version": "1.1.0",
       "title": {
         "en": "Skin Importer",
         "zh-CN": "皮肤导入"
@@ -275,11 +275,11 @@
         "ui:assets"
       ],
       "minServer": "\u003e=0.5.0",
-      "changelog": "1.0.5 — localize the user/admin UI and manifest navigation labels.",
+      "changelog": "1.1.0 — wider, theme-token-aware user/admin UI; auto-resize the iframe; add the SkinNexus attribution notice.",
       "dist": {
-        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/v1/artifacts/skin-importer-1.0.5.zip",
-        "size": 16629,
-        "sha256": "ed881e1dee7d9fa7fbafa947659d747ea4ceba5c60d7a9d2a0d715bc049cf6a4"
+        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/v1/artifacts/skin-importer-1.1.0.zip",
+        "size": 17877,
+        "sha256": "3c51e6166c2150862854f32a55a1d631d56915e7eaa2396481e88fe3fc6e485d"
       }
     },
     {
@@ -306,7 +306,7 @@
     },
     {
       "name": "texture-provenance",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "title": {
         "en": "Texture Provenance",
         "zh-CN": "纹理来源"
@@ -328,13 +328,13 @@
         "events:subscribe"
       ],
       "minServer": "\u003e=0.4.0",
-      "changelog": "1.0.1 — localized provenance slot UI.",
+      "changelog": "1.0.2 — theme-aware, auto-resizing slot UI with host-matched typography.",
       "dist": {
-        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/v1/artifacts/texture-provenance-1.0.1.zip",
-        "size": 3896,
-        "sha256": "dc394f676af632a741816605e7b83df608d043ff9e956dc6b713fb844b53d64c"
+        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/v1/artifacts/texture-provenance-1.0.2.zip",
+        "size": 4723,
+        "sha256": "134c08270790569a4e9043a0ba7473465ce1dd8660fd0e715a749cc0906882b0"
       }
     }
   ],
-  "signature": "UluzYe/k4UX+0MHUkd9yjxq3IdkYyOmTyFHTOO1SC27J4hq0DVVgmprJe3c31CqHaqWFH9jHaAmrwTuaNAeTDA=="
+  "signature": "+BVxx0kNY7WzjG+jFui8xD8ddHfrhs4dtBGzuz8Y5CwesmI+HOAlDz0ACoMDF9qtCq0j6ZXXBznLtcdLQ4raAQ=="
 }
