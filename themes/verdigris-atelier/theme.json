@@ -1,0 +1,24 @@
+{
+  "id": "verdigris-atelier",
+  "name": "铜绿工坊",
+  "version": "1.0.0",
+  "author": "SkinNexus Theme Lab",
+  "description": "以 Minecraft 铜块氧化的铜锈青绿为主色、赤陶铜橙点睛的深板岩工坊风主题；默认暗色，随系统自动切换浅色「白桦纸」模式，全部图形由 CSS 渐变与像素网格绘制，零外部资源。",
+  "inject": {
+    "css": ["style.css"],
+    "js": []
+  },
+  "palette": {
+    "primary": "#46d1a3",
+    "secondary": "#e0915c",
+    "background": "#0d1411",
+    "panel": "#151e1a",
+    "text": "#dfe9e3",
+    "danger": "#ff7b6b",
+    "light_background": "#eef3f0",
+    "light_primary": "#0b6f56"
+  },
+  "requires": {
+    "skin_nexus": ">=0.1"
+  }
+}

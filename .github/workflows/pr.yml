@@ -61,12 +61,12 @@ jobs:
       - name: Reject private keys and binaries
         run: |
           set -euo pipefail
-          if grep -rIl --exclude-dir=.git "BEGIN PRIVATE KEY" plugins; then
-            echo "private key material found under plugins/" >&2
+          if grep -rIl --exclude-dir=.git "BEGIN PRIVATE KEY" plugins themes; then
+            echo "private key material found under plugins/ or themes/" >&2
             exit 1
           fi
-          if find plugins -type f \( -name '*.pem' -o -name '*.key' -o -name '*.exe' -o -name '*.dll' -o -name '*.so' -o -name '*.dylib' \) | grep .; then
-            echo "key/binary files are not allowed under plugins/" >&2
+          if find plugins themes -type f \( -name '*.pem' -o -name '*.key' -o -name '*.exe' -o -name '*.dll' -o -name '*.so' -o -name '*.dylib' \) | grep .; then
+            echo "key/binary files are not allowed under plugins/ or themes/" >&2
             exit 1
           fi
           echo "source hygiene ok"

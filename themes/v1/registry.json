@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "generatedAt": "2026-10-31T21:38:07Z",
+  "expiresAt": "2027-01-29T21:38:07Z",
+  "keyId": "theme-market-2026-11",
+  "packages": [
+    {
+      "name": "azure-glass",
+      "version": "3.2.1",
+      "title": {
+        "zh-CN": "晴空琉璃"
+      },
+      "description": {
+        "zh-CN": "晴空玻璃拟态 v3.2「质感整合」：整站换脸——亮色晴空 × 夜蓝靛双态，全出血晴空首屏 + 悬浮玻璃 dock + 大圆角卡片与渐变发丝线；居中宽幅（1180→1480 随屏宽），形态亮暗一致、仅色系分态；落地页/详情页/认证页整页重着色，移动端同形态。"
+      },
+      "author": "YMZS (YimingZhanshen)",
+      "minServer": "\u003e=0.1",
+      "dist": {
+        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/themes/v1/artifacts/azure-glass-3.2.1.zip",
+        "size": 13243,
+        "sha256": "d9e327e6ca621cbad31a592387fd796ca83846649da22d4c30b044cfadd7b8eb"
+      }
+    },
+    {
+      "name": "ember-forge",
+      "version": "1.0.0",
+      "title": {
+        "zh-CN": "熔火锻造"
+      },
+      "description": {
+        "zh-CN": "暗夜熔炉风：暖炭黑底 + 熔金琥珀主色 + 像素网格微光，大屏宽幅大气、移动端触控友好，纯 CSS 零构建零外链。"
+      },
+      "author": "SkinNexus Theme Lab",
+      "minServer": "\u003e=0.1",
+      "dist": {
+        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/themes/v1/artifacts/ember-forge-1.0.0.zip",
+        "size": 7596,
+        "sha256": "a9126148142e6ade95cf2e4d081fb25f33170b41df0089f96b021237d963f553"
+      }
+    },
+    {
+      "name": "verdigris-atelier",
+      "version": "1.0.0",
+      "title": {
+        "zh-CN": "铜绿工坊"
+      },
+      "description": {
+        "zh-CN": "以 Minecraft 铜块氧化的铜锈青绿为主色、赤陶铜橙点睛的深板岩工坊风主题；默认暗色，随系统自动切换浅色「白桦纸」模式，全部图形由 CSS 渐变与像素网格绘制，零外部资源。"
+      },
+      "author": "SkinNexus Theme Lab",
+      "minServer": "\u003e=0.1",
+      "dist": {
+        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/themes/v1/artifacts/verdigris-atelier-1.0.0.zip",
+        "size": 7425,
+        "sha256": "c00249d673a05a9d7d9cc3b83d1decbc89f6fb8178e0deaf76e8fb927b2bc95f"
+      }
+    }
+  ],
+  "signature": "LumrXvlB3cD7dowfLYO2MamqztnZYcoi+HFV/NZE1c7uQtxfLTURFMKPR5t39I2n2C4ed+TgjLEHYOs7SMRDBw=="
+}

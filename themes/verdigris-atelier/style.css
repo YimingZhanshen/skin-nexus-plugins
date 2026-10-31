@@ -1,0 +1,716 @@
+/* ============================================================
+   铜绿工坊 Verdigris Atelier — SkinNexus 主题包 style.css
+   概念：Minecraft 铜块氧化（石砖 → 斑驳铜绿）的工坊美学。
+   铜锈青绿为主色，赤陶铜橙点睛，深板岩为底；像素网格、
+   棋盘画布、铜片刻痕等几何细节呼应皮肤编辑器。
+   零外部资源：仅系统字体栈 + CSS 渐变；纯 CSS，零构建。
+   特异性约定：应用编译产物 CSS 先、主题 CSS 后（同特异性后
+   定义者胜）；scoped 组件类为 (0,2,0)，本主题用「双类同写」
+   （如 .nav-item.nav-item）拉平到同特异性后凭顺序取胜，
+   不依赖满屏 !important。
+   ============================================================ */
+
+/* ---------- 1. 设计令牌（默认暗色「深板岩」） ---------- */
+:root {
+  color-scheme: dark;
+
+  /* 主契约 7 令牌 */
+  --bg: #0d1411;
+  --panel: #151e1a;
+  --border: #2a3a33;
+  --text: #dfe9e3;
+  --muted: #9baca3;
+  --accent: #46d1a3;
+  --danger: #ff7b6b;
+
+  /* 应用侧局部变量（--fg / --text-dim） */
+  --fg: #dfe9e3;
+  --text-dim: #8fa39a;
+
+  /* 派生令牌 */
+  --panel-2: #1b2723;
+  --border-strong: #3c5248;
+  --accent-soft: rgba(70, 209, 163, .12);
+  --accent-ring: rgba(70, 209, 163, .30);
+  --accent-underline: rgba(70, 209, 163, .45);
+  --on-accent: #06231b;
+  --copper: #e0915c;
+  --copper-soft: rgba(224, 145, 92, .14);
+  --danger-soft: rgba(255, 123, 107, .14);
+  --on-danger: #2a0d08;
+  --success: #66d68f;
+  --success-soft: rgba(102, 214, 143, .14);
+  --like-on: #ff8f70;
+  --code-bg: #101a16;
+  --code-fg: #cfe0d8;
+  --row-hover: rgba(70, 209, 163, .06);
+  --chip-bg: rgba(255, 255, 255, .03);
+  --grid-line: rgba(70, 209, 163, .05);
+  --scroll-thumb: #34473f;
+  --scroll-thumb-hover: #4a6157;
+  --shadow-card: 0 1px 0 rgba(255, 255, 255, .04) inset, 0 12px 32px rgba(0, 0, 0, .35);
+  --shadow-pop: 0 6px 18px rgba(0, 0, 0, .35);
+  --img-shadow: rgba(0, 0, 0, .45);
+  --hero-grad: linear-gradient(105deg, #7fe6c2 0%, var(--accent) 42%, var(--copper) 100%);
+}
+
+/* ---------- 2. 自动浅色「白桦纸」（跟随系统） ---------- */
+@media (prefers-color-scheme: light) {
+  :root {
+    color-scheme: light;
+
+    --bg: #eef3f0;
+    --panel: #ffffff;
+    --border: #cfdcd5;
+    --text: #1a2622;
+    --muted: #55655f;
+    --accent: #0b6f56;
+    --danger: #b3372b;
+
+    --fg: #1a2622;
+    --text-dim: #5f7069;
+
+    --panel-2: #f5f9f6;
+    --border-strong: #a9bdb3;
+    --accent-soft: rgba(11, 111, 86, .10);
+    --accent-ring: rgba(11, 111, 86, .22);
+    --accent-underline: rgba(11, 111, 86, .40);
+    --on-accent: #ffffff;
+    --copper: #96551f;
+    --copper-soft: rgba(150, 85, 31, .12);
+    --danger-soft: rgba(179, 55, 43, .10);
+    --on-danger: #ffffff;
+    --success: #1d7f4e;
+    --success-soft: rgba(29, 127, 78, .12);
+    --like-on: #b3372b;
+    --code-bg: #f2f6f4;
+    --code-fg: #274137;
+    --row-hover: rgba(11, 111, 86, .05);
+    --chip-bg: rgba(20, 40, 32, .03);
+    --grid-line: rgba(11, 111, 86, .05);
+    --scroll-thumb: #b9c9c1;
+    --scroll-thumb-hover: #93a89e;
+    --shadow-card: 0 1px 2px rgba(20, 40, 32, .05), 0 12px 28px rgba(20, 40, 32, .07);
+    --shadow-pop: 0 6px 16px rgba(20, 40, 32, .12);
+    --img-shadow: rgba(20, 40, 32, .25);
+    --hero-grad: linear-gradient(105deg, var(--accent) 0%, var(--copper) 100%);
+  }
+}
+
+/* ---------- 3. 基础层：页面、文字、链接、代码 ---------- */
+html {
+  background-color: var(--bg);
+  scrollbar-width: thin;
+  scrollbar-color: var(--scroll-thumb) transparent;
+}
+body {
+  background-color: var(--bg);
+  /* 像素网格 + 双角柔光：皮肤画布的隐喻，纯渐变零资源 */
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px),
+    radial-gradient(900px 420px at 12% -8%, var(--accent-soft), transparent 65%),
+    radial-gradient(760px 380px at 92% 108%, var(--copper-soft), transparent 62%);
+  background-size: 32px 32px, 32px 32px, auto, auto;
+  color: var(--text);
+  font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+  letter-spacing: .01em;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3 { letter-spacing: .015em; }
+a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-color: var(--accent-underline);
+  text-underline-offset: 2px;
+}
+a:hover { text-decoration-color: var(--accent); }
+code, pre {
+  font-family: ui-monospace, "Cascadia Mono", Consolas, "Courier New", monospace;
+}
+code {
+  background: var(--code-bg);
+  color: var(--code-fg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1px 6px;
+  font-size: .92em;
+}
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  overflow-x: auto;
+}
+pre code { background: none; border: none; padding: 0; }
+blockquote {
+  margin: 8px 0;
+  padding: 6px 14px;
+  border-left: 3px solid var(--copper);
+  background: var(--copper-soft);
+  border-radius: 0 8px 8px 0;
+  color: var(--muted);
+}
+
+/* ---------- 4. 选中色 / 滚动条 / 焦点可见性 ---------- */
+::selection { background: var(--accent); color: var(--on-accent); text-shadow: none; }
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--scroll-thumb);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scroll-thumb-hover);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-corner { background: transparent; }
+
+/* 键盘焦点统一青绿描边；鼠标点击焦点由各控件的光晕承担 */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+/* ---------- 5. 卡片 ---------- */
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow-card);
+}
+
+/* ---------- 6. 按钮（primary / secondary / danger / ghost） ---------- */
+button {
+  background: var(--accent);
+  color: var(--on-accent);
+  border: none;
+  border-radius: 10px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: .02em;
+}
+button:hover { filter: brightness(1.06); }
+button:active { filter: brightness(.96); }
+button:disabled { opacity: .5; cursor: not-allowed; filter: none; }
+button.secondary {
+  background: var(--chip-bg);
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+button.secondary:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-soft);
+  filter: none;
+}
+button.danger {
+  background: var(--danger);
+  color: var(--on-danger);
+}
+button.danger:hover { filter: brightness(.94); }
+
+/* .ghost：SkinlibPage scoped 类 (0,2,0)——双类拉平同特异性后胜 */
+.ghost.ghost {
+  border: none;
+  background: transparent;
+  color: var(--text-dim);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 3px 6px;
+  border-radius: 6px;
+}
+.ghost.ghost:hover { color: var(--accent); background: var(--accent-soft); filter: none; }
+
+/* .danger-outline：scoped 类 (0,2,0)，共 4 处同名（衣柜/角色/管理×2），
+   一条双类规则凭「同特异性后定义」统一覆盖 */
+.danger-outline.danger-outline {
+  border-color: var(--danger);
+  color: var(--danger);
+  background: transparent;
+}
+.danger-outline.danger-outline:hover {
+  background: var(--danger);
+  color: var(--on-danger);
+  border-color: var(--danger);
+  filter: none;
+}
+
+/* ---------- 7. 表单（input / select / textarea / focus / placeholder） ---------- */
+input, select, textarea {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-size: 14px;
+  width: 100%;
+  accent-color: var(--accent);
+}
+input:hover, select:hover, textarea:hover { border-color: var(--border-strong); }
+textarea:focus, input:focus, select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-ring);
+}
+::placeholder { color: var(--muted); opacity: .8; }
+select option { background: var(--panel); color: var(--text); }
+label { color: var(--muted); }
+
+/* ---------- 8. 表格（table / th / td / 行 hover） ---------- */
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th, td { border-bottom: 1px solid var(--border); }
+th {
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: .04em;
+  border-bottom: 1px solid var(--border-strong);
+}
+tbody tr, table tr { transition: background .12s; }
+tbody tr:hover, table tr:hover { background: var(--row-hover); }
+
+/* ---------- 9. 徽章（.badge 及皮肤库型号芯片） ---------- */
+.badge.badge {
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: 999px;
+  font-size: 12px;
+  border: 1px solid var(--border-strong);
+  background: var(--chip-bg);
+  color: var(--muted);
+}
+.badge.badge.steve {
+  background: var(--success-soft);
+  border-color: var(--success);
+  color: var(--success);
+}
+.badge.badge.alex {
+  background: var(--copper-soft);
+  border-color: var(--copper);
+  color: var(--copper);
+}
+
+/* ---------- 10. 状态文字（.error / .success / .muted） ---------- */
+.error { color: var(--danger); font-size: 13px; margin-top: 8px; font-weight: 500; }
+.success { color: var(--success); font-size: 13px; margin-top: 8px; font-weight: 500; }
+.muted { color: var(--muted); }
+
+/* ---------- 11. 选项卡（.tabs / .tab，含皮肤库过滤按钮） ----------
+   两处 scoped：ClosetPage 的 .tab (0,2,0) 与 SkinlibPage 的
+   .tabs button (0,2,1)。统一用 .tabs.tabs button (0,2,1) 拉平后胜，
+   并给 .tab.tab.active / .tabs.tabs button.active 同级状态。 */
+.tabs.tabs button {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  padding: 6px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+}
+.tabs.tabs button:hover {
+  border-color: var(--border-strong);
+  color: var(--text);
+  background: var(--chip-bg);
+  filter: none;
+}
+.tabs.tabs button.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+  font-weight: 600;
+}
+.tab.tab {
+  border-radius: 999px;
+  font-weight: 500;
+}
+.tab.tab.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
+  font-weight: 600;
+}
+
+/* ---------- 12. 导航（nav-group / nav-title / nav-item / user-shell 等，App.vue scoped） ---------- */
+.user-shell.user-shell { gap: 20px; }
+.nav-title.nav-title {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 600;
+  letter-spacing: .08em;
+  margin: 0 0 6px;
+  padding-left: 10px;
+}
+.nav-title.nav-title::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-right: 7px;
+  background: var(--copper);
+  vertical-align: 1px;
+}
+.nav-item.nav-item {
+  font-weight: 500;
+  color: var(--text);
+  border-radius: 10px;
+}
+.nav-item.nav-item:hover {
+  background: var(--chip-bg);
+  border-color: var(--border-strong);
+  color: var(--text);
+}
+.nav-item.nav-item.active {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+}
+.admin-nav-item.admin-nav-item {
+  font-weight: 500;
+  color: var(--fg);
+  border-radius: 10px;
+}
+.admin-nav-item.admin-nav-item:hover {
+  background: var(--chip-bg);
+  border-color: var(--border-strong);
+}
+.admin-nav-item.admin-nav-item.active {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* ---------- 13. 统计卡（.stat-card / .stat-label，DashboardView scoped） ---------- */
+.stat-card.stat-card {
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+  font-weight: 500;
+}
+.stat-card.stat-card:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+.stat-label.stat-label {
+  color: var(--muted);
+  font-size: 12px;
+  letter-spacing: .05em;
+}
+
+/* ---------- 14. 皮肤库（.like-btn / .uploader，SkinlibPage scoped） ---------- */
+.like-btn.like-btn {
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-dim);
+  border-radius: 999px;
+  padding: 3px 10px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+}
+.like-btn.like-btn:hover {
+  border-color: var(--copper);
+  color: var(--copper);
+  background: var(--copper-soft);
+  filter: none;
+}
+.like-btn.like-btn.liked {
+  color: var(--like-on);
+  border-color: var(--like-on);
+  background: var(--danger-soft);
+}
+.uploader.uploader {
+  color: var(--text-dim);
+  font-size: 12px;
+}
+
+/* ---------- 15. 头像画框（.avatar-box / .avatar-empty，ProfilePage scoped） ---------- */
+.avatar-box.avatar-box {
+  width: 64px;
+  height: 64px;
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
+  background-color: var(--panel-2);
+  /* 8px 棋盘格：皮肤编辑器画布的隐喻，纯渐变绘制 */
+  background-image:
+    linear-gradient(45deg, var(--grid-line) 25%, transparent 25%, transparent 75%, var(--grid-line) 75%),
+    linear-gradient(45deg, var(--grid-line) 25%, transparent 25%, transparent 75%, var(--grid-line) 75%);
+  background-size: 16px 16px;
+  background-position: 0 0, 8px 8px;
+  box-shadow: var(--shadow-pop);
+}
+.avatar-empty.avatar-empty { color: var(--muted); font-size: 12px; }
+
+/* ---------- 16. 公告 Markdown（.md，DashboardPage scoped + :deep） ----------
+   :deep(a)/:deep(code) 编译为 .md[data-v] a = (0,2,1)，
+   用 .md.md a 同特异性取胜。 */
+.md.md { line-height: 1.7; }
+.md.md a {
+  color: var(--accent);
+  text-decoration-color: var(--accent-underline);
+}
+.md.md a:hover { text-decoration-color: var(--accent); }
+.md.md code {
+  background: var(--code-bg);
+  color: var(--code-fg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1px 6px;
+  font-size: .92em;
+}
+.md.md blockquote {
+  border-left: 3px solid var(--copper);
+  background: var(--copper-soft);
+  color: var(--muted);
+}
+.md.md h2 {
+  border-left: 3px solid var(--accent);
+  padding-left: 10px;
+}
+.md.md img {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+/* ---------- 17. 启动器令牌（.ali，DashboardPage scoped） ---------- */
+.ali.ali {
+  background: var(--code-bg);
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  color: var(--copper);
+  padding: 7px 10px;
+  font-size: 13px;
+  user-select: all;
+}
+
+/* ---------- 18. 表格内联编辑（.cell-input，UsersView scoped） ---------- */
+.cell-input.cell-input {
+  color: var(--text);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 8px;
+}
+.cell-input.cell-input:hover { border-color: var(--border-strong); }
+.cell-input.cell-input:focus {
+  border-color: var(--accent);
+  background: var(--bg);
+  box-shadow: 0 0 0 3px var(--accent-ring);
+}
+.cell-input.cell-input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.cell-input.cell-input:disabled { opacity: .55; cursor: not-allowed; }
+
+/* ---------- 19. 访客首页（landing.go 服务端模板，整页换肤） ----------
+   模板内联样式先、主题注入后：同特异性逐条覆盖，
+   命中结构与模板一致（.hero .tag / .cta .primary / .stats div …）。 */
+.wrap { max-width: 920px; padding: 24px 20px 56px; }
+.hero { padding: 64px 0 36px; }
+.hero h1 {
+  font-size: 44px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  margin: 0 0 10px;
+  color: var(--accent);
+}
+@supports ((background-clip: text) or (-webkit-background-clip: text)) {
+  .hero h1 {
+    background: var(--hero-grad);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+}
+.hero .tag {
+  color: var(--muted);
+  font-size: 16px;
+  letter-spacing: .06em;
+  margin: 0 0 28px;
+}
+.cta a {
+  padding: 12px 30px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: .03em;
+}
+.cta .primary {
+  background: var(--accent);
+  color: var(--on-accent);
+  box-shadow: 0 8px 22px var(--accent-ring);
+}
+.cta .primary:hover { filter: brightness(1.06); }
+.cta .alt {
+  border: 1px solid var(--border-strong);
+  color: var(--text);
+  background: var(--chip-bg);
+}
+.cta .alt:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-soft);
+}
+.stats { gap: 16px; margin: 32px 0; }
+.stats div {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow-card);
+}
+.stats b {
+  color: var(--accent);
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: .5px;
+}
+.stats span {
+  color: var(--muted);
+  font-size: 13px;
+  letter-spacing: .08em;
+}
+.intro {
+  line-height: 1.9;
+  color: var(--text);
+  font-size: 15.5px;
+  margin: 28px 0;
+}
+.feat h2 {
+  font-size: 21px;
+  margin: 36px 0 16px;
+  border-left: 3px solid var(--accent);
+  padding-left: 12px;
+}
+.grid { gap: 14px; }
+.grid figure {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 10px;
+  box-shadow: var(--shadow-card);
+}
+.grid figure:hover {
+  border-color: var(--accent);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-pop);
+}
+.grid img {
+  filter: drop-shadow(0 5px 8px var(--img-shadow));
+}
+.grid figcaption {
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 8px;
+}
+.grid figure:hover figcaption { color: var(--accent); }
+footer {
+  margin-top: 48px;
+  padding-top: 22px;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  letter-spacing: .04em;
+}
+footer a { color: var(--accent); }
+footer a:hover { text-decoration: underline; }
+
+/* ---------- 20. 动效策略 ----------
+   所有位移/渐变动画仅在 no-preference 下启用；
+   reduce 下由全局刹车消除一切过渡与动画。 */
+@media (prefers-reduced-motion: no-preference) {
+  button, a, .card, .badge.badge, input, select, textarea,
+  .nav-item.nav-item, .admin-nav-item.admin-nav-item,
+  .tab.tab, .tabs.tabs button, .stat-card.stat-card,
+  .like-btn.like-btn, .ghost.ghost, tbody tr, table tr,
+  .grid figure, .cta a {
+    transition: background-color .18s ease, background .18s ease,
+                border-color .18s ease, color .18s ease,
+                box-shadow .18s ease, transform .18s ease,
+                filter .18s ease;
+  }
+  button:hover:not(:disabled), .cta .primary:hover { transform: translateY(-1px); }
+  /* 组件型按钮（导航/选项卡/统计卡/点赞/ghost）只换色不位移 */
+  .nav-item.nav-item:hover, .admin-nav-item.admin-nav-item:hover,
+  .stat-card.stat-card:hover, .tab.tab:hover, .tabs.tabs button:hover,
+  .like-btn.like-btn:hover, .ghost.ghost:hover {
+    transform: none;
+    filter: none;
+  }
+  .user-main.user-main > * { animation: va-rise .28s ease both; }
+  .hero h1 { animation: va-drift 16s ease-in-out infinite alternate; }
+}
+@keyframes va-rise {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes va-drift {
+  from { background-position: 0% 50%; }
+  to { background-position: 100% 50%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---------- 21. 移动端（≤768px / 首页 ≤560px） ---------- */
+@media (max-width: 768px) {
+  .container { padding: 16px; }
+  .card { padding: 16px; }
+  body { background-size: 24px 24px, 24px 24px, auto, auto; }
+  .hero { padding: 44px 0 28px; }
+  .hero h1 { font-size: 32px; }
+  .stats div { padding: 14px 8px; }
+  .stats b { font-size: 24px; }
+  .tabs.tabs button { padding: 6px 11px; font-size: 12px; }
+}
+@media (max-width: 560px) {
+  .hero h1 { font-size: 28px; letter-spacing: 1px; }
+  .cta a { display: block; margin: 8px 12px; }
+  .grid { grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); }
+}
+
+/* ---------- 22. v3 语义键适配（2026-10-26 全站 v3「月下仙山」架构）----------
+   旧 7 契约键为真源，新语义键别名其上：本主题覆盖后朱砂系自动跟随铜绿。 */
+:root {
+  --ink-3: #1b2723;
+  --line-strong: rgba(70, 209, 163, .35);
+  --jade: #46d1a3; --jade-hi: #67e0ba;
+  --gold: #e0915c;
+  --cinnabar-hi: #5ce0b5; --on-cinnabar: #06231b;
+  --danger-hi: #ff9385; --ok: #66d68f;
+  --hover-wash: rgba(70, 209, 163, .06);
+}
+.topbar {
+  background: color-mix(in srgb, var(--bg) 86%, transparent);
+  border-bottom: 1px solid var(--border-strong);
+}
+.auth-scene { background: linear-gradient(160deg, var(--panel-2), var(--panel) 75%); }
+@media (prefers-color-scheme: light) {
+  :root {
+    --ink-3: #f5f9f6;
+    --line-strong: rgba(11, 111, 86, .35);
+    --jade: #0b6f56; --jade-hi: #0e8a69;
+    --gold: #96551f;
+    --cinnabar-hi: #0e8a69; --on-cinnabar: #ffffff;
+    --hover-wash: rgba(11, 111, 86, .05);
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "id": "ember-forge",
+  "name": "熔火锻造",
+  "version": "1.0.0",
+  "author": "SkinNexus Theme Lab",
+  "description": "暗夜熔炉风：暖炭黑底 + 熔金琥珀主色 + 像素网格微光，大屏宽幅大气、移动端触控友好，纯 CSS 零构建零外链。",
+  "inject": {
+    "css": ["style.css"],
+    "js": []
+  },
+  "palette": {
+    "primary": "#ff9142",
+    "bg": "#141210",
+    "panel": "#1e1a15",
+    "border": "#362c20",
+    "text": "#f2ebe0",
+    "muted": "#b3a593",
+    "danger": "#ef6a5c",
+    "success": "#6fd08b"
+  },
+  "requires": {
+    "skin_nexus": ">=0.1"
+  }
+}

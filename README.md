@@ -1,15 +1,31 @@
-# SkinNexus plugin repository
+# SkinNexus extension repository
 
-Source of truth for official SkinNexus plugins and the signed plugin market.
+Source of truth for official SkinNexus plugins and themes, and the signed
+markets for both.
 
-- Registry: `https://yimingzhanshen.github.io/skin-nexus-plugins/v1/registry.json`
-- Artifacts: `https://yimingzhanshen.github.io/skin-nexus-plugins/v1/artifacts/<name>-<version>.zip`
+- Plugin registry: `https://yimingzhanshen.github.io/skin-nexus-plugins/v1/registry.json`
+- Plugin artifacts: `https://yimingzhanshen.github.io/skin-nexus-plugins/v1/artifacts/<name>-<version>.zip`
+- Theme registry: `https://yimingzhanshen.github.io/skin-nexus-plugins/themes/v1/registry.json`
+- Theme artifacts: `https://yimingzhanshen.github.io/skin-nexus-plugins/themes/v1/artifacts/<id>-<version>.zip`
 - Host project: <https://github.com/YimingZhanshen/skin-nexus>
 - Plugin spec (normative): <https://github.com/YimingZhanshen/skin-nexus/blob/main/docs/plugin-spec.md>
+- Theme spec (normative): <https://github.com/YimingZhanshen/skin-nexus/blob/main/docs/theme-spec.md>
 
-Every bundle and the registry are Ed25519-signed. The private key exists only as
-an environment secret in this repository's `market-signing` environment and in
-the maintainer's offline backup. Pull-request workflows never receive it.
+Every bundle and the registry are Ed25519-signed. Plugins and themes use
+**independent key pairs** (`market-2026-10` / `theme-market-2026-11`) so one
+leaked key never compromises both markets. The private keys exist only as
+environment secrets in this repository's `market-signing` environment and in
+the maintainer's offline backup. Pull-request workflows never receive them.
+
+## Themes
+
+`themes/<id>/` holds the source packs (theme.json + CSS/JS/assets, flat).
+Pushes touching `themes/**` run `sign-themes.sh` via `sign-themes.yml`:
+`skin-plugin pack-theme` per directory (deterministic zips, immutable per
+version) plus a signed `themes/v1/registry.json`. Hosts verify against
+`SKIN_THEME_TRUST_KEYS` and install from the admin 外观 panel (hot reload,
+no restart). Current official packs: `azure-glass` 晴空琉璃 · `ember-forge`
+熔火锻造 · `verdigris-atelier` 铜绿工坊.
 
 ## Plugins
 

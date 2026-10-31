@@ -1,0 +1,24 @@
+{
+  "id": "azure-glass",
+  "name": "晴空琉璃",
+  "version": "3.2.1",
+  "author": "YMZS (YimingZhanshen)",
+  "description": "晴空玻璃拟态 v3.2「质感整合」：整站换脸——亮色晴空 × 夜蓝靛双态，全出血晴空首屏 + 悬浮玻璃 dock + 大圆角卡片与渐变发丝线；居中宽幅（1180→1480 随屏宽），形态亮暗一致、仅色系分态；落地页/详情页/认证页整页重着色，移动端同形态。",
+  "inject": {
+    "css": [
+      "style.css"
+    ],
+    "js": [
+      "theme.js"
+    ]
+  },
+  "palette": {
+    "primary": "#2b5fe8",
+    "accent": "#0b7a5c",
+    "bg": "#eff5ff",
+    "dark-bg": "#080f1e"
+  },
+  "requires": {
+    "skin_nexus": ">=0.1"
+  }
+}
