@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "generatedAt": "2026-10-30T22:48:24Z",
-  "expiresAt": "2027-01-28T22:48:24Z",
+  "generatedAt": "2026-10-31T09:33:28Z",
+  "expiresAt": "2027-01-29T09:33:28Z",
   "keyId": "market-2026-10",
   "packages": [
     {
@@ -141,7 +141,7 @@
     },
     {
       "name": "nav-links",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "title": {
         "en": "Nav Links",
         "zh-CN": "导航链接"
@@ -159,16 +159,16 @@
         "ui:assets"
       ],
       "minServer": "\u003e=0.3.0",
-      "changelog": "1.0.1 — repository migration; no functional change.",
+      "changelog": "1.0.2 — localized iframe UI and navigation label.",
       "dist": {
-        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/v1/artifacts/nav-links-1.0.1.zip",
-        "size": 2300,
-        "sha256": "aad9e257fb8e2870a884c0e06abb810fbb590e518cab4326667ef3a4078eb88f"
+        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/v1/artifacts/nav-links-1.0.2.zip",
+        "size": 2689,
+        "sha256": "46e71219cc0bbb357d1f87ef219218d4764f5548cfae39c2f66b45ecd178d16e"
       }
     },
     {
       "name": "player-notes",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "title": {
         "en": "Player Notes",
         "zh-CN": "玩家笔记"
@@ -188,11 +188,11 @@
         "http:routes:session"
       ],
       "minServer": "\u003e=0.3.0",
-      "changelog": "1.0.1 — repository migration; no functional change.",
+      "changelog": "1.0.2 — localized iframe UI and navigation label.",
       "dist": {
-        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/v1/artifacts/player-notes-1.0.1.zip",
-        "size": 3395,
-        "sha256": "39035e852cec8c878f885abd276485292c1d184d1b5f98e7b593eaca3a8f388d"
+        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/v1/artifacts/player-notes-1.0.2.zip",
+        "size": 3885,
+        "sha256": "020a61254e20652703a878abe112ca62c50005f479ae1b65747c5b1d64c2ce77"
       }
     },
     {
@@ -249,7 +249,7 @@
     },
     {
       "name": "skin-importer",
-      "version": "1.0.4",
+      "version": "1.0.5",
       "title": {
         "en": "Skin Importer",
         "zh-CN": "皮肤导入"
@@ -275,11 +275,11 @@
         "ui:assets"
       ],
       "minServer": "\u003e=0.5.0",
-      "changelog": "1.0.4 — record provenance (repost + original publication URL) and Markdown source details on imported textures.",
+      "changelog": "1.0.5 — localize the user/admin UI and manifest navigation labels.",
       "dist": {
-        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/v1/artifacts/skin-importer-1.0.4.zip",
-        "size": 15044,
-        "sha256": "561194d709be497f7dba928380d7d92d52ed6d620c3564163c80d3ea0261395d"
+        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/v1/artifacts/skin-importer-1.0.5.zip",
+        "size": 16629,
+        "sha256": "ed881e1dee7d9fa7fbafa947659d747ea4ceba5c60d7a9d2a0d715bc049cf6a4"
       }
     },
     {
@@ -306,7 +306,7 @@
     },
     {
       "name": "texture-provenance",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "title": {
         "en": "Texture Provenance",
         "zh-CN": "纹理来源"
@@ -328,13 +328,13 @@
         "events:subscribe"
       ],
       "minServer": "\u003e=0.4.0",
-      "changelog": "1.0.0 — first release.",
+      "changelog": "1.0.1 — localized provenance slot UI.",
       "dist": {
-        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/v1/artifacts/texture-provenance-1.0.0.zip",
-        "size": 3486,
-        "sha256": "38a131c94da1f7de01cd3eaaba57ec8634d6586005cb689d3205017c0b0a3aec"
+        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/v1/artifacts/texture-provenance-1.0.1.zip",
+        "size": 3896,
+        "sha256": "dc394f676af632a741816605e7b83df608d043ff9e956dc6b713fb844b53d64c"
       }
     }
   ],
-  "signature": "nItSiw8mAfXbHX8/sGCBr2Vjjl9riixGaFLz0M3+TfMiBCLqeQouJqb7GLQRCDRRHPp+oUFKQDR/Jruc3gyGAQ=="
+  "signature": "UluzYe/k4UX+0MHUkd9yjxq3IdkYyOmTyFHTOO1SC27J4hq0DVVgmprJe3c31CqHaqWFH9jHaAmrwTuaNAeTDA=="
 }
