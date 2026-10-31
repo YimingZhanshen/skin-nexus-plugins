@@ -1,6 +1,6 @@
 {
   "name": "nav-links",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "hookApi": 2,
   "entrypoint": "index.js",
   "title": "Nav Links",
@@ -28,10 +28,12 @@
     ],
     "i18n": {
       "zh-CN": {
-        "title": "链接"
+        "title": "链接",
+        "nav.links": "导航链接"
       },
       "en": {
-        "title": "Links"
+        "title": "Links",
+        "nav.links": "Links"
       }
     }
   },

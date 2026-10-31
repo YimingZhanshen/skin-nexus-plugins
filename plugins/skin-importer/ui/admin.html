@@ -54,27 +54,27 @@
   </style>
 </head>
 <body>
-  <h2>Blessing 批量收录</h2>
-  <p class="muted">按点赞从高到低抓取公开皮肤；上传者为当前管理员，名称会带来源。任务在后台运行，关闭页面不影响。</p>
+  <h2 data-i18n="title">Blessing 批量收录</h2>
+  <p class="muted" data-i18n="intro">按点赞从高到低抓取公开皮肤；上传者为当前管理员，名称会带来源。任务在后台运行，关闭页面不影响。</p>
 
-  <label>Blessing 站点<input id="origin" placeholder="https://skin.example.com" autocomplete="off" /></label>
+  <label><span data-i18n="site">Blessing 站点</span><input id="origin" placeholder="https://skin.example.com" autocomplete="off" /></label>
   <div class="row">
-    <label>类型<select id="type"><option value="skin">皮肤</option><option value="cape">披风</option></select></label>
-    <label>起始页<input id="fromPage" type="number" min="1" value="1" /></label>
-    <label>结束页<input id="toPage" type="number" min="1" value="1" /></label>
+    <label><span data-i18n="type">类型</span><select id="type"><option value="skin" data-i18n="skin">皮肤</option><option value="cape" data-i18n="cape">披风</option></select></label>
+    <label><span data-i18n="fromPage">起始页</span><input id="fromPage" type="number" min="1" value="1" /></label>
+    <label><span data-i18n="toPage">结束页</span><input id="toPage" type="number" min="1" value="1" /></label>
   </div>
-  <label class="check"><input id="confirm" type="checkbox" /> 我确认拥有该站点的抓取授权，并接受版权与来源标注责任</label>
-  <button id="start" class="primary">开始批量导入</button>
+  <label class="check"><input id="confirm" type="checkbox" /> <span data-i18n="confirm">我确认拥有该站点的抓取授权，并接受版权与来源标注责任</span></label>
+  <button id="start" class="primary" data-i18n="start">开始批量导入</button>
   <div id="msg" class="error" hidden></div>
   <div id="done" class="ok" hidden></div>
 
-  <h3>任务</h3>
+  <h3 data-i18n="jobs">任务</h3>
   <div class="row" style="align-items:center;">
-    <button id="refresh" class="secondary" style="flex:0 0 auto;">刷新</button>
+    <button id="refresh" class="secondary" style="flex:0 0 auto;" data-i18n="refresh">刷新</button>
     <span id="counts" class="muted"></span>
   </div>
   <table>
-    <thead><tr><th>任务</th><th>状态</th><th>进度</th><th>统计</th><th>操作</th></tr></thead>
+    <thead><tr><th data-i18n="colJob">任务</th><th data-i18n="colState">状态</th><th data-i18n="colProgress">进度</th><th data-i18n="colCounts">统计</th><th data-i18n="colActions">操作</th></tr></thead>
     <tbody id="jobs"></tbody>
   </table>
 
@@ -86,6 +86,38 @@ function applyTheme(t) {
         text: '--plugin-text', muted: '--plugin-muted', accent: '--plugin-accent' }
       for (const key in map) if (t[key]) r.style.setProperty(map[key], t[key])
       r.style.colorScheme = t.dark === false ? 'light' : 'dark'
+    }
+    const I18N = {
+      'zh-CN': {
+        title: 'Blessing 批量收录', intro: '按点赞从高到低抓取公开皮肤；上传者为当前管理员，名称会带来源。任务在后台运行，关闭页面不影响。',
+        site: 'Blessing 站点', type: '类型', skin: '皮肤', cape: '披风', fromPage: '起始页', toPage: '结束页',
+        confirm: '我确认拥有该站点的抓取授权，并接受版权与来源标注责任', start: '开始批量导入',
+        jobs: '任务', refresh: '刷新', colJob: '任务', colState: '状态', colProgress: '进度', colCounts: '统计', colActions: '操作',
+        cancel: '取消', resume: '恢复', loadFailed: '任务列表加载失败', actionFailed: '操作失败', submitted: '任务已提交：{id}',
+        count: '共 {n} 个任务', imported: '导入', duplicate: '重复', skipped: '跳过', failed: '失败',
+        queued: '排队中', running: '运行中', cancelling: '取消中', cancelled: '已取消', paused: '已暂停', done: '已完成'
+      },
+      en: {
+        title: 'Blessing batch import', intro: 'Crawl public skins by likes; imports are uploaded by the current admin and tagged with their source. Jobs run in the background.',
+        site: 'Blessing site', type: 'Type', skin: 'Skin', cape: 'Cape', fromPage: 'From page', toPage: 'To page',
+        confirm: 'I confirm I am authorized to crawl this site and accept copyright/source attribution responsibility.', start: 'Start import',
+        jobs: 'Jobs', refresh: 'Refresh', colJob: 'Job', colState: 'State', colProgress: 'Progress', colCounts: 'Stats', colActions: 'Actions',
+        cancel: 'Cancel', resume: 'Resume', loadFailed: 'Failed to load jobs', actionFailed: 'Action failed', submitted: 'Job submitted: {id}',
+        count: '{n} jobs', imported: 'imported', duplicate: 'duplicates', skipped: 'skipped', failed: 'failed',
+        queued: 'queued', running: 'running', cancelling: 'cancelling', cancelled: 'cancelled', paused: 'paused', done: 'done'
+      }
+    }
+    let lang = 'zh-CN'
+    function t(key, vars) {
+      let text = (I18N[lang] && I18N[lang][key]) || I18N['zh-CN'][key] || key
+      if (vars) for (const k in vars) text = text.replace('{' + k + '}', vars[k])
+      return text
+    }
+    function applyLocale(locale) {
+      lang = I18N[locale] ? locale : 'zh-CN'
+      document.documentElement.lang = lang
+      document.title = t('title')
+      document.querySelectorAll('[data-i18n]').forEach((el) => { el.textContent = t(el.getAttribute('data-i18n')) })
     }
     let hostOrigin = '*'
     let nonce = ''
@@ -116,21 +148,21 @@ function applyTheme(t) {
         const tr = document.createElement('tr')
         const state = j.state || ''
         const c = (j.result && typeof j.result === 'object') ? j.result : (j.cursor && j.cursor.counts) || {}
-        const counts = '导入 ' + (c.imported || 0) + ' / 重复 ' + ((c.duplicatePublic || 0) + (c.duplicateOwn || 0)) + ' / 跳过 ' + (c.skipped || 0) + (c.failed ? ' / 失败 ' + c.failed : '')
+        const counts = t('imported') + ' ' + (c.imported || 0) + ' / ' + t('duplicate') + ' ' + ((c.duplicatePublic || 0) + (c.duplicateOwn || 0)) + ' / ' + t('skipped') + ' ' + (c.skipped || 0) + (c.failed ? ' / ' + t('failed') + ' ' + c.failed : '')
         const pct = Number(j.progress || 0)
         tr.innerHTML =
           '<td><div>' + jobLabel(j) + '</div><div class="muted">' + (j.id || '') + '</div></td>' +
-          '<td>' + state + (j.lastError ? '<div class="error">' + j.lastError + '</div>' : '') + '</td>' +
+          '<td>' + (I18N[lang][state] || state) + (j.lastError ? '<div class="error">' + j.lastError + '</div>' : '') + '</td>' +
           '<td>' + pct + '%<div class="bar"><i style="width:' + pct + '%"></i></div><div class="muted">' + (j.message || '') + '</div></td>' +
           '<td>' + counts + '</td>' +
           '<td></td>'
         const actions = tr.lastElementChild
         if (state === 'queued' || state === 'running' || state === 'cancelling' || state === 'paused') {
-          const b = document.createElement('button'); b.className = 'small secondary'; b.textContent = '取消'
+          const b = document.createElement('button'); b.className = 'small secondary'; b.textContent = t('cancel')
           b.onclick = () => act(j.id, 'cancel'); actions.appendChild(b)
         }
         if (state === 'cancelled' || state === 'failed' || state === 'paused') {
-          const b = document.createElement('button'); b.className = 'small secondary'; b.textContent = '恢复'
+          const b = document.createElement('button'); b.className = 'small secondary'; b.textContent = t('resume')
           b.onclick = () => act(j.id, 'resume'); actions.appendChild(b)
         }
         body.appendChild(tr)
@@ -138,15 +170,15 @@ function applyTheme(t) {
     }
     async function load() {
       const r = await request('GET', '/admin/jobs')
-      if (!r || r.status !== 200) { show($('msg'), '任务列表加载失败'); return }
+      if (!r || r.status !== 200) { show($('msg'), t('loadFailed')); return }
       const jobs = (r.body && r.body.jobs) || []
-      $('counts').textContent = '共 ' + ((r.body && r.body.total) || jobs.length) + ' 个任务'
+      $('counts').textContent = t('count', { n: (r.body && r.body.total) || jobs.length })
       draw(jobs)
       if (jobs.some((j) => active.has(j.state))) setTimeout(load, 2000)
     }
     async function act(id, action) {
       const r = await request('POST', '/admin/jobs/' + encodeURIComponent(id) + '/' + action)
-      if (!r || r.status !== 200) { show($('msg'), '操作失败'); return }
+      if (!r || r.status !== 200) { show($('msg'), t('actionFailed')); return }
       show($('msg'), ''); load()
     }
     async function start() {
@@ -166,7 +198,7 @@ function applyTheme(t) {
           show($('msg'), b.message || b.error || ('HTTP ' + (r ? r.status : '?')))
           return
         }
-        show($('done'), '任务已提交：' + r.body.jobId)
+        show($('done'), t('submitted', { id: r.body.jobId }))
         await load()
       } finally { $('start').disabled = false }
     }
@@ -178,6 +210,7 @@ function applyTheme(t) {
       if (m.type === 'init') {
         hostOrigin = (m.payload && m.payload.origin) || '*'
         nonce = m.nonce || ''
+        applyLocale((m.payload && m.payload.locale) || 'zh-CN')
         applyTheme(m.payload && m.payload.theme)
         load()
       } else if (m.type === 'response') {

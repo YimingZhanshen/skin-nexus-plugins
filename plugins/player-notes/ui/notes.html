@@ -13,9 +13,9 @@
   </style>
 </head>
 <body>
-  <p class="muted">数据存在插件命名空间里，通过宿主的 session 路由读写。</p>
-  <textarea id="text" placeholder="写一条笔记…"></textarea>
-  <p><button id="add">保存</button> <span id="msg" class="muted"></span></p>
+  <p class="muted" data-i18n="intro">数据存在插件命名空间里，通过宿主的 session 路由读写。</p>
+  <textarea id="text" data-i18n-placeholder="placeholder" placeholder="写一条笔记…"></textarea>
+  <p><button id="add" data-i18n="save">保存</button> <span id="msg" class="muted"></span></p>
   <ul id="list"></ul>
   <script>
     let hostOrigin = '*'
@@ -23,6 +23,23 @@
     let seq = 0
     const pending = new Map()
     const msg = document.getElementById('msg')
+    const I18N = {
+      'zh-CN': { title: '角色笔记', intro: '数据存在插件命名空间里，通过宿主的 session 路由读写。', placeholder: '写一条笔记…', save: '保存', loadingFailed: '加载失败', saved: '已保存', saveFailed: '保存失败（{status}）' },
+      en: { title: 'Player notes', intro: 'Notes live in the plugin namespace and are read through the host session routes.', placeholder: 'Write a note…', save: 'Save', loadingFailed: 'Failed to load', saved: 'Saved', saveFailed: 'Save failed ({status})' }
+    }
+    let lang = 'zh-CN'
+    function t(key, vars) {
+      let text = (I18N[lang] && I18N[lang][key]) || I18N['zh-CN'][key] || key
+      if (vars) for (const k in vars) text = text.replace('{' + k + '}', vars[k])
+      return text
+    }
+    function applyLocale(locale) {
+      lang = I18N[locale] ? locale : 'zh-CN'
+      document.documentElement.lang = lang
+      document.title = t('title')
+      document.querySelectorAll('[data-i18n]').forEach((el) => { el.textContent = t(el.getAttribute('data-i18n')) })
+      document.querySelectorAll('[data-i18n-placeholder]').forEach((el) => { el.placeholder = t(el.getAttribute('data-i18n-placeholder')) })
+    }
 
     function post(type, payload, id) {
       parent.postMessage({ v: 1, nonce, type, payload, id }, hostOrigin)
@@ -38,7 +55,7 @@
       const r = await request('GET', '/notes')
       const list = document.getElementById('list')
       list.innerHTML = ''
-      if (!r || r.status !== 200) { msg.textContent = '加载失败'; return }
+      if (!r || r.status !== 200) { msg.textContent = t('loadingFailed'); return }
       for (const item of (r.body.items || [])) {
         const li = document.createElement('li')
         li.textContent = item.doc.text
@@ -51,10 +68,10 @@
       const r = await request('POST', '/notes', { text })
       if (r && r.status === 200) {
         document.getElementById('text').value = ''
-        msg.textContent = '已保存'
+        msg.textContent = t('saved')
         await load()
       } else {
-        msg.textContent = '保存失败（' + (r ? r.status : '?') + '）'
+        msg.textContent = t('saveFailed', { status: r ? r.status : '?' })
       }
     }
     window.addEventListener('message', (e) => {
@@ -63,6 +80,7 @@
       if (m.type === 'init') {
         hostOrigin = (m.payload && m.payload.origin) || '*'
         nonce = m.nonce || ''
+        applyLocale((m.payload && m.payload.locale) || 'zh-CN')
         load()
       } else if (m.type === 'response') {
         const done = pending.get(m.id)

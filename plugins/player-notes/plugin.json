@@ -1,6 +1,6 @@
 {
   "name": "player-notes",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "hookApi": 2,
   "entrypoint": "index.js",
   "title": "Player Notes",
@@ -52,10 +52,12 @@
     ],
     "i18n": {
       "zh-CN": {
-        "title": "笔记"
+        "title": "笔记",
+        "nav.notes": "角色笔记"
       },
       "en": {
-        "title": "Notes"
+        "title": "Notes",
+        "nav.notes": "Player notes"
       }
     }
   },

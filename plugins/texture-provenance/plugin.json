@@ -1,20 +1,34 @@
 {
   "name": "texture-provenance",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "hookApi": 2,
   "entrypoint": "index.js",
   "title": "Texture Provenance",
   "author": "SkinNexus",
   "description": "Adds source/credit fields to texture uploads and shows them on the texture page.",
-  "permissions": ["ui:forms", "store:docs", "ui:slot", "ui:assets", "http:routes", "events:subscribe"],
+  "permissions": [
+    "ui:forms",
+    "store:docs",
+    "ui:slot",
+    "ui:assets",
+    "http:routes",
+    "events:subscribe"
+  ],
   "store": {
     "schemaVersion": 1,
     "collections": {
-      "provenance": { "maxRows": 10000, "maxBytes": 4096 }
+      "provenance": {
+        "maxRows": 10000,
+        "maxBytes": 4096
+      }
     }
   },
   "routes": [
-    { "method": "GET", "path": "/provenance/{hash}", "tier": "public" }
+    {
+      "method": "GET",
+      "path": "/provenance/{hash}",
+      "tier": "public"
+    }
   ],
   "ui": {
     "assets": "ui/",
@@ -26,7 +40,11 @@
             "source": {
               "type": "string",
               "title": "来源",
-              "enum": ["self", "other", "commission"],
+              "enum": [
+                "self",
+                "other",
+                "commission"
+              ],
               "default": "self"
             },
             "credit": {
@@ -40,13 +58,27 @@
       }
     },
     "slots": [
-      { "id": "skinlib.detail.sidebar", "render": { "type": "iframe", "src": "slot.html" }, "height": 140 }
+      {
+        "id": "skinlib.detail.sidebar",
+        "render": {
+          "type": "iframe",
+          "src": "slot.html"
+        },
+        "height": 140
+      }
     ],
     "i18n": {
-      "zh-CN": { "title": "纹理来源" },
-      "en": { "title": "Texture provenance" }
+      "zh-CN": {
+        "title": "纹理来源"
+      },
+      "en": {
+        "title": "Texture provenance"
+      }
     }
   },
   "minServer": ">=0.4.0",
-  "requires": { "plugins": {}, "server": ">=0.4.0" }
+  "requires": {
+    "plugins": {},
+    "server": ">=0.4.0"
+  }
 }

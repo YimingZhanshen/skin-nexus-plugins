@@ -1,6 +1,6 @@
 {
   "name": "skin-importer",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "hookApi": 2,
   "entrypoint": "index.js",
   "title": "皮肤导入",
@@ -126,10 +126,14 @@
     ],
     "i18n": {
       "zh-CN": {
-        "title": "导入皮肤"
+        "title": "导入皮肤",
+        "nav.import": "导入皮肤",
+        "nav.admin": "批量导入"
       },
       "en": {
-        "title": "Import skins"
+        "title": "Import skins",
+        "nav.import": "Import",
+        "nav.admin": "Batch import"
       }
     }
   },

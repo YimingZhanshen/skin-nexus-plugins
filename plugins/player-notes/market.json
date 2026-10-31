@@ -1,11 +1,25 @@
 {
   "schema": 1,
-  "title": { "zh-CN": "玩家笔记", "en": "Player Notes" },
-  "description": { "zh-CN": "演示 session 路由、命名空间集合与用户页面。", "en": "Demonstrates session routes, namespaced collections and a user page." },
+  "title": {
+    "zh-CN": "玩家笔记",
+    "en": "Player Notes"
+  },
+  "description": {
+    "zh-CN": "演示 session 路由、命名空间集合与用户页面。",
+    "en": "Demonstrates session routes, namespaced collections and a user page."
+  },
   "author": "SkinNexus",
-  "changelog": "1.0.1 — repository migration; no functional change.",
-  "requires": { "plugins": {}, "server": ">=0.3.0" },
+  "changelog": "1.0.2 — localized iframe UI and navigation label.",
+  "requires": {
+    "plugins": {},
+    "server": ">=0.3.0"
+  },
   "conflicts": [],
-  "capabilities": ["store:docs", "ui:page", "ui:assets", "http:routes:session"],
+  "capabilities": [
+    "store:docs",
+    "ui:page",
+    "ui:assets",
+    "http:routes:session"
+  ],
   "minServer": ">=0.3.0"
 }

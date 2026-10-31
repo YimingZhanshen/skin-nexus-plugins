@@ -13,7 +13,7 @@
   </style>
 </head>
 <body>
-  <h4>纹理来源</h4>
+  <h4 id="heading">纹理来源</h4>
   <div id="body" class="muted">加载中…</div>
   <script>
     var hash = new URLSearchParams(location.search).get('hash') || ''
@@ -22,6 +22,24 @@
     var seq = 0
     var pending = new Map()
     var body = document.getElementById('body')
+    var heading = document.getElementById('heading')
+    var I18N = {
+      'zh-CN': { title: '纹理来源', heading: '纹理来源', loading: '加载中…', none: '暂无来源信息', source: '来源：{v}', credit: '署名：{v}', self: '本人制作', other: '转载', commission: '约稿', unset: '未填写' },
+      en: { title: 'Texture provenance', heading: 'Texture provenance', loading: 'Loading…', none: 'No provenance recorded', source: 'Source: {v}', credit: 'Credit: {v}', self: 'Creator', other: 'Repost', commission: 'Commissioned', unset: 'Not set' }
+    }
+    var lang = 'zh-CN'
+    function t(key, vars) {
+      var text = (I18N[lang] && I18N[lang][key]) || I18N['zh-CN'][key] || key
+      if (vars) for (var k in vars) text = text.replace('{' + k + '}', vars[k])
+      return text
+    }
+    function applyLocale(locale) {
+      lang = I18N[locale] ? locale : 'zh-CN'
+      document.documentElement.lang = lang
+      document.title = t('title')
+      heading.textContent = t('heading')
+      if (!body.dataset.loaded) body.textContent = t('loading')
+    }
 
     function request(path) {
       var id = String(++seq)
@@ -32,17 +50,17 @@
     }
 
     function render(r) {
+      body.dataset.loaded = '1'
       if (!r || r.status !== 200) {
-        body.textContent = '暂无来源信息'
+        body.textContent = t('none')
         return
       }
-      var labels = { self: '本人制作', other: '转载', commission: '约稿' }
-      var src = labels[r.body.source] || r.body.source || '未填写'
+      var src = t(r.body.source) !== r.body.source ? t(r.body.source) : (r.body.source || t('unset'))
       body.innerHTML = ''
-      var a = document.createElement('div'); a.className = 'row'; a.textContent = '来源：' + src
+      var a = document.createElement('div'); a.className = 'row'; a.textContent = t('source', { v: src })
       body.appendChild(a)
       if (r.body.credit) {
-        var b = document.createElement('div'); b.className = 'row'; b.textContent = '署名：' + r.body.credit
+        var b = document.createElement('div'); b.className = 'row'; b.textContent = t('credit', { v: r.body.credit })
         body.appendChild(b)
       }
     }
@@ -53,8 +71,9 @@
       if (m.type === 'init') {
         hostOrigin = (m.payload && m.payload.origin) || '*'
         nonce = m.nonce || ''
+        applyLocale((m.payload && m.payload.locale) || 'zh-CN')
         if (hash) request('/provenance/' + encodeURIComponent(hash)).then(render)
-        else body.textContent = '暂无来源信息'
+        else { body.dataset.loaded = '1'; body.textContent = t('none') }
       } else if (m.type === 'response') {
         var done = pending.get(m.id)
         if (done) { pending.delete(m.id); done(m.payload) }

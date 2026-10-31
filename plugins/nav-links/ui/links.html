@@ -11,17 +11,45 @@
   </style>
 </head>
 <body>
-  <p>这个页面由插件静态资源提供，运行在 sandbox iframe 里。</p>
-  <a href="/skinlib" target="_top">皮肤库</a>
-  <a href="/user/closet" target="_top">衣柜</a>
-  <p class="muted">宿主通过 postMessage 注入 locale/user/csrf。</p>
+  <p data-i18n="intro">这个页面由插件静态资源提供，运行在 sandbox iframe 里。</p>
+  <a href="/skinlib" target="_top" data-i18n="skinlib">皮肤库</a>
+  <a href="/user/closet" target="_top" data-i18n="closet">衣柜</a>
+  <p class="muted" data-i18n="bridge">宿主通过 postMessage 注入 locale/user/csrf。</p>
   <script>
+    const I18N = {
+      'zh-CN': {
+        title: '导航链接',
+        intro: '这个页面由插件静态资源提供，运行在 sandbox iframe 里。',
+        skinlib: '皮肤库',
+        closet: '衣柜',
+        bridge: '宿主通过 postMessage 注入 locale/user/csrf。'
+      },
+      en: {
+        title: 'Links',
+        intro: 'This page is a static plugin asset running in a sandboxed iframe.',
+        skinlib: 'Skin library',
+        closet: 'Closet',
+        bridge: 'The host injects locale/user/csrf through postMessage.'
+      }
+    }
+    let lang = 'zh-CN'
+    function applyLocale(locale) {
+      lang = I18N[locale] ? locale : 'zh-CN'
+      document.documentElement.lang = lang
+      document.title = I18N[lang].title
+      document.querySelectorAll('[data-i18n]').forEach((el) => {
+        const key = el.getAttribute('data-i18n')
+        if (I18N[lang][key]) el.textContent = I18N[lang][key]
+      })
+    }
     window.parent.postMessage({ v: 1, type: 'ready' }, '*')
     window.addEventListener('message', (e) => {
       const m = e.data
       if (!m || m.v !== 1 || m.type !== 'init') return
       document.body.dataset.pluginReady = '1'
-      document.body.dataset.locale = (m.payload && m.payload.locale) || 'zh-CN'
+      const locale = (m.payload && m.payload.locale) || 'zh-CN'
+      document.body.dataset.locale = locale
+      applyLocale(locale)
     })
   </script>
 </body>

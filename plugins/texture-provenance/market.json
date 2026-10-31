@@ -1,11 +1,27 @@
 {
   "schema": 1,
-  "title": { "zh-CN": "纹理来源", "en": "Texture Provenance" },
-  "description": { "zh-CN": "为上传增加来源/署名字段，并在皮肤详情页展示。", "en": "Adds source/credit fields to uploads and shows them on the texture page." },
+  "title": {
+    "zh-CN": "纹理来源",
+    "en": "Texture Provenance"
+  },
+  "description": {
+    "zh-CN": "为上传增加来源/署名字段，并在皮肤详情页展示。",
+    "en": "Adds source/credit fields to uploads and shows them on the texture page."
+  },
   "author": "SkinNexus",
-  "changelog": "1.0.0 — first release.",
-  "requires": { "plugins": {}, "server": ">=0.4.0" },
+  "changelog": "1.0.1 — localized provenance slot UI.",
+  "requires": {
+    "plugins": {},
+    "server": ">=0.4.0"
+  },
   "conflicts": [],
-  "capabilities": ["ui:forms", "store:docs", "ui:slot", "ui:assets", "http:routes", "events:subscribe"],
+  "capabilities": [
+    "ui:forms",
+    "store:docs",
+    "ui:slot",
+    "ui:assets",
+    "http:routes",
+    "events:subscribe"
+  ],
   "minServer": ">=0.4.0"
 }
