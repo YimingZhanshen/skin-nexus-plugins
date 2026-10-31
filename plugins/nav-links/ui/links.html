@@ -4,10 +4,30 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Links</title>
+  <!-- SkinNexus · Copyright (C) 2026 SkinNexus contributors · AGPL-3.0 -->
   <style>
-    body { font-family: system-ui, sans-serif; margin: 0; padding: 16px; color: #222; }
-    a { display: block; margin: 8px 0; color: #2f66ff; }
-    .muted { color: #777; font-size: 12px; }
+:root {
+      color-scheme: dark;
+      --plugin-bg: #101825;
+      --plugin-panel: #16202e;
+      --plugin-border: rgba(169, 138, 95, .24);
+      --plugin-text: #e9edf1;
+      --plugin-muted: #a8b4c3;
+      --plugin-accent: #b0453a;
+      --plugin-link: #67b7a0;
+      --plugin-danger: #d9564c;
+      --plugin-ok: #6fbf7d;
+    }
+    * { box-sizing: border-box; }
+    html { background: var(--plugin-panel); }
+    body {
+      margin: 0; padding: 20px; background: var(--plugin-panel); color: var(--plugin-text);
+      font-family: "Segoe UI", "Inter", "PingFang SC", "HarmonyOS Sans SC", "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
+      font-size: 14px; line-height: 1.65;
+    }
+    .muted { color: var(--plugin-muted); font-size: 13px; }
+    a { display: block; margin: 10px 0; color: var(--plugin-link); font-weight: 600; }
+
   </style>
 </head>
 <body>
@@ -16,6 +36,19 @@
   <a href="/user/closet" target="_top" data-i18n="closet">衣柜</a>
   <p class="muted" data-i18n="bridge">宿主通过 postMessage 注入 locale/user/csrf。</p>
   <script>
+    const THEME_MAP = { bg: '--plugin-bg', panel: '--plugin-panel', border: '--plugin-border',
+      text: '--plugin-text', muted: '--plugin-muted', accent: '--plugin-accent',
+      link: '--plugin-link', danger: '--plugin-danger', ok: '--plugin-ok' }
+    function applyTheme(theme) {
+      if (!theme) return
+      const root = document.documentElement
+      for (const key in THEME_MAP) if (theme[key]) root.style.setProperty(THEME_MAP[key], theme[key])
+      root.style.colorScheme = theme.dark === false ? 'light' : 'dark'
+    }
+
+
+    let hostOrigin = '*'
+    let nonce = ''
     const I18N = {
       'zh-CN': {
         title: '导航链接',
@@ -42,14 +75,34 @@
         if (I18N[lang][key]) el.textContent = I18N[lang][key]
       })
     }
+    let resizeObs = null
+    function startResize() {
+      if (resizeObs) return
+      const report = () => {
+        if (!nonce || window.innerWidth < 200) return
+        const kids = [...document.body.children].filter((el) => !/^(SCRIPT|STYLE)$/.test(el.tagName))
+        const bottom = kids.reduce((m, el) => Math.max(m, el.getBoundingClientRect().bottom), 0)
+        const pad = parseFloat(getComputedStyle(document.body).paddingBottom) || 0
+        const h = Math.ceil(bottom + pad)
+        if (h > 0 && Math.abs(h - window.innerHeight) > 1) parent.postMessage({ v: 1, nonce, type: 'resize', payload: { height: h } }, hostOrigin)
+      }
+      resizeObs = new ResizeObserver(report)
+      resizeObs.observe(document.body)
+      report()
+    }
+
     window.parent.postMessage({ v: 1, type: 'ready' }, '*')
     window.addEventListener('message', (e) => {
       const m = e.data
       if (!m || m.v !== 1 || m.type !== 'init') return
+      hostOrigin = (m.payload && m.payload.origin) || '*'
+      nonce = m.nonce || ''
       document.body.dataset.pluginReady = '1'
+      applyTheme(m.payload && m.payload.theme)
       const locale = (m.payload && m.payload.locale) || 'zh-CN'
       document.body.dataset.locale = locale
       applyLocale(locale)
+      startResize()
     })
   </script>
 </body>

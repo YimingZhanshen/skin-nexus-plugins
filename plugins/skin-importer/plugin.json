@@ -1,6 +1,6 @@
 {
   "name": "skin-importer",
-  "version": "1.0.5",
+  "version": "1.1.0",
   "hookApi": 2,
   "entrypoint": "index.js",
   "title": "皮肤导入",

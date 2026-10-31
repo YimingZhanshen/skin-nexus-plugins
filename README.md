@@ -45,6 +45,25 @@ the host bridge's `init` payload (`document.documentElement.lang` + `data-i18n`
 attributes). Manifest `ui.i18n` may also provide `nav.<page-id>` labels for the
 host sidebar; without it the static `pages[].nav.label` is used.
 
+## UI baseline
+
+All official UI plugins follow the same visual baseline so they blend into the
+host card instead of looking like a nested app:
+
+- Page iframes use the host `panel` colour as their background, a max width of
+  760px (admin pages 1080px) and 28px padding; h2 is 22px, body 15px and muted
+  text 13px. Slot iframes use the same tokens with 20px padding.
+- Apply the host `init.theme` payload (`bg/panel/border/text/muted/accent/link/
+  danger/ok/dark`) to CSS variables on every init; never hardcode the light
+  theme.
+- Report `resize` with the measured **content** height (not the iframe viewport)
+  from a `ResizeObserver`, and skip reports while `innerWidth < 200` (hidden
+  frames); the host clamps the result to 80–2000px.
+- Page iframes own their h2; the host no longer renders a duplicate title above
+  the frame.
+- Keep the SkinNexus attribution comment in each HTML entry (`SkinNexus ·
+  Copyright (C) 2026 SkinNexus contributors · AGPL-3.0`).
+
 ## Contributing a plugin
 
 1. Fork this repository and add `plugins/<name>/` following

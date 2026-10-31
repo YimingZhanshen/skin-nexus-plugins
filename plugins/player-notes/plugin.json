@@ -1,6 +1,6 @@
 {
   "name": "player-notes",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "hookApi": 2,
   "entrypoint": "index.js",
   "title": "Player Notes",

@@ -9,7 +9,7 @@
     "en": "Demonstrates session routes, namespaced collections and a user page."
   },
   "author": "SkinNexus",
-  "changelog": "1.0.2 — localized iframe UI and navigation label.",
+  "changelog": "1.0.3 — theme-aware, auto-resizing UI with host-matched controls.",
   "requires": {
     "plugins": {},
     "server": ">=0.3.0"

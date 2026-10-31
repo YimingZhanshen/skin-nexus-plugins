@@ -9,7 +9,7 @@
     "en": "Adds source/credit fields to uploads and shows them on the texture page."
   },
   "author": "SkinNexus",
-  "changelog": "1.0.1 — localized provenance slot UI.",
+  "changelog": "1.0.2 — theme-aware, auto-resizing slot UI with host-matched typography.",
   "requires": {
     "plugins": {},
     "server": ">=0.4.0"

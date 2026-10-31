@@ -9,7 +9,7 @@
     "en": "Demonstrates user navigation, an iframe page and the sandbox bridge."
   },
   "author": "SkinNexus",
-  "changelog": "1.0.2 — localized iframe UI and navigation label.",
+  "changelog": "1.0.3 — theme-aware, auto-resizing UI that matches the host surface.",
   "requires": {
     "plugins": {},
     "server": ">=0.3.0"
