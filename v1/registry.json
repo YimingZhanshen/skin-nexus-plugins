@@ -1,7 +1,7 @@
 {
   "schema": 1,
-  "generatedAt": "2026-10-31T17:45:26Z",
-  "expiresAt": "2027-01-29T17:45:26Z",
+  "generatedAt": "2026-11-02T08:09:44Z",
+  "expiresAt": "2027-01-31T08:09:44Z",
   "keyId": "market-2026-10",
   "packages": [
     {
@@ -249,7 +249,7 @@
     },
     {
       "name": "skin-importer",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "title": {
         "en": "Skin Importer",
         "zh-CN": "皮肤导入"
@@ -275,11 +275,11 @@
         "ui:assets"
       ],
       "minServer": "\u003e=0.5.0",
-      "changelog": "1.1.0 — wider, theme-token-aware user/admin UI; auto-resize the iframe; add the SkinNexus attribution notice.",
+      "changelog": "1.1.1 — rebuild the player picker on every init so a re-announced host handshake cannot list the same character twice.",
       "dist": {
-        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/v1/artifacts/skin-importer-1.1.0.zip",
-        "size": 17877,
-        "sha256": "3c51e6166c2150862854f32a55a1d631d56915e7eaa2396481e88fe3fc6e485d"
+        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/v1/artifacts/skin-importer-1.1.1.zip",
+        "size": 17910,
+        "sha256": "5acba8278878790c5e4eb7a1c57c618469724231717817c018b490fb2b79aeed"
       }
     },
     {
@@ -336,5 +336,5 @@
       }
     }
   ],
-  "signature": "+BVxx0kNY7WzjG+jFui8xD8ddHfrhs4dtBGzuz8Y5CwesmI+HOAlDz0ACoMDF9qtCq0j6ZXXBznLtcdLQ4raAQ=="
+  "signature": "W7skiamIO8AqUHGLjXwwwF8FR0pHmqwdRjSrGoonYGPk4ldCoxL7s+Cz7XH0rJ79AHgb++BiALCMqHg1s4EBBw=="
 }
