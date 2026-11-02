@@ -182,12 +182,15 @@ function applyTheme(t) {
       const r = await request('GET', '/players')
       if (!r || r.status !== 200) return
       const sel = $('player')
+      const placeholder = sel.options[0]
+      sel.replaceChildren(placeholder)
       for (const p of (r.body.players || [])) {
         const opt = document.createElement('option')
         opt.value = String(p.id)
         opt.textContent = p.name + (p.uuid ? ' · ' + p.uuid.slice(0, 8) : '')
         sel.appendChild(opt)
       }
+      sel.value = placeholder.value
     }
 
     async function submit() {
