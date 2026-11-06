@@ -49,4 +49,9 @@ done
 "$SKIN_PLUGIN_CLI" verify-registry --registry v1/registry.json \
   --keys "$SKIN_PLUGIN_TRUST_KEYS" --json
 
+# Render the crawler-visible HTML index from the verified registry. Static
+# output only (v1/index.html); reads JSON, never re-signs or rewrites the
+# registry. Kept after verify so a broken registry is never published as HTML.
+node "$ROOT/scripts/render-index.mjs" v1/registry.json
+
 echo "market signed (artifacts_changed=$changed)"
