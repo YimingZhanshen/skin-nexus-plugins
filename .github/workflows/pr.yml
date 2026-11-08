@@ -58,6 +58,42 @@ jobs:
           done
           exit "$failed"
 
+      - name: Lint changed themes
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          set -euo pipefail
+          names="$(git diff --name-only "$BASE_SHA" HEAD -- themes | awk -F/ 'NF>1 {print $2}' | sort -u)"
+          if [[ -z "$names" ]]; then
+            echo "no theme changes"
+            exit 0
+          fi
+          # There is no `lint-theme`: pack-theme is the only place the host checks a
+          # theme pack (theme.json parses, theme.Validate runs, the id has to match
+          # the directory, the file list is collected). So pack it and keep the
+          # artifact: the key is generated per run and thrown away, and nothing here
+          # touches themes/v1, which is signing output rather than a source pack.
+          mkdir -p "$RUNNER_TEMP/theme-lint"
+          "$RUNNER_TEMP/skin-plugin" keygen --id pr-lint --out "$RUNNER_TEMP/theme-lint/key.pem" >/dev/null
+          failed=0
+          for name in $names; do
+            if [[ "$name" == "v1" ]]; then
+              continue
+            fi
+            if [[ ! -d "themes/$name" ]]; then
+              echo "removed: $name (theme registry will drop it after signing)"
+              continue
+            fi
+            echo "== $name"
+            "$RUNNER_TEMP/skin-plugin" pack-theme \
+              --dir "themes/$name" \
+              --out "$RUNNER_TEMP/theme-lint/$name.zip" \
+              --key "$RUNNER_TEMP/theme-lint/key.pem" \
+              --key-id pr-lint \
+              --force --json || failed=1
+          done
+          exit "$failed"
+
       - name: Reject private keys and binaries
         run: |
           set -euo pipefail
