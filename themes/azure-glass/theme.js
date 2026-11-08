@@ -60,9 +60,22 @@
       btn.type = 'button';
       btn.title = '切换深色/浅色模式';
 
+      /* 图标是 20px、1.5 描边的线稿（原先是 ☀ / ☾ 两个字符：字号、基线、
+         跨平台字形都不受控）。语义由 aria-label 给，SVG 对辅助技术隐藏。
+         两段常量字符串，无外部输入，不存在注入面。 */
+      var SUN = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"'
+        + ' stroke-width="1.5" stroke-linecap="round" aria-hidden="true"'
+        + '><circle cx="12" cy="12" r="4.2"/>'
+        + '<path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M18.7 5.3l-1.6 1.6M6.9 17.1l-1.6 1.6"/>'
+        + '</svg>';
+      var MOON = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"'
+        + ' stroke-width="1.5" stroke-linecap="round" aria-hidden="true"'
+        + '><path d="M20.2 14.6A8.6 8.6 0 1 1 9.4 3.8a6.9 6.9 0 0 0 10.8 10.8Z"/></svg>';
+
       function glyph() {
-        btn.textContent = isDark() ? '☀' : '☾';
-        btn.setAttribute('aria-label', isDark() ? '切换到浅色模式' : '切换到深色模式');
+        var dark = isDark();
+        btn.innerHTML = dark ? SUN : MOON;
+        btn.setAttribute('aria-label', dark ? '切换到浅色模式' : '切换到深色模式');
       }
 
       btn.addEventListener('click', function () {

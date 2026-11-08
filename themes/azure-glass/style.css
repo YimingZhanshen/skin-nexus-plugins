@@ -240,8 +240,8 @@ html { scrollbar-color: var(--line-strong) transparent; }
 .topbar .brand-n { flex: none; }
 .topbar .brand-name {
   font-family: var(--az-font-display);
-  font-size: 19px;
-  font-weight: 800;
+  font-size: var(--fs-l);
+  font-weight: 600;
   letter-spacing: -.01em;
   color: var(--cinnabar-hi);
   white-space: nowrap;
@@ -256,9 +256,9 @@ html { scrollbar-color: var(--line-strong) transparent; }
   background: var(--az-surface-2);
   border: 1px solid var(--border);
   color: var(--text);
-  font-size: 13px;
+  font-size: var(--fs-s);
 }
-.topbar-right button { min-height: 36px; padding: 4px 16px; font-size: 13px; }
+.topbar-right button { min-height: 36px; padding: 4px 16px; font-size: var(--fs-s); }
 
 /* ────────── §4 顶部悬浮导航 dock（v2 立项初心结构）──────────
    .user-side 由「左侧栏」改为「顶部横向 dock」：单行、胶囊项、
@@ -309,9 +309,9 @@ html { scrollbar-color: var(--line-strong) transparent; }
   flex: none;
   margin: 0 2px 0 0;
   padding-left: 6px;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: .14em;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: normal;
   line-height: 1;
   white-space: nowrap;
   color: var(--muted);
@@ -330,7 +330,7 @@ html { scrollbar-color: var(--line-strong) transparent; }
   border: 1px solid transparent;
   background: transparent;
   color: var(--muted);
-  font-size: 13px;
+  font-size: var(--fs-s);
   font-weight: 600;
   box-shadow: none;
   transform: none;
@@ -366,8 +366,8 @@ html { scrollbar-color: var(--line-strong) transparent; }
   border-radius: var(--az-r-s);
   box-shadow: none;
 }
-.user-chip .who { font-size: 12px; color: var(--muted); max-width: 160px; }
-.user-chip.user-chip button { min-height: 28px; padding: 2px 12px; font-size: 12px; }
+.user-chip .who { font-size: var(--fs-xs); color: var(--muted); max-width: 160px; }
+.user-chip.user-chip button { min-height: 28px; padding: 2px 12px; font-size: var(--fs-xs); }
 
 /* ────────── §5 管理面板：同款顶部 dock ────────── */
 .admin-shell.admin-shell {
@@ -404,9 +404,9 @@ html { scrollbar-color: var(--line-strong) transparent; }
 .admin-side.admin-side h2 {
   flex: none;
   margin: 0;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: .14em;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: normal;
   color: var(--muted);
 }
 /* token 兜底行排到最右、保持紧凑，别把 dock 撑成两行 */
@@ -417,12 +417,12 @@ html { scrollbar-color: var(--line-strong) transparent; }
   margin-left: auto;
   gap: 6px;
 }
-.admin-side .admin-token input { min-height: 32px; padding-block: 3px; font-size: 13px; }
+.admin-side .admin-token input { min-height: 32px; padding-block: 3px; font-size: var(--fs-s); }
 .admin-side .admin-token button {
   flex: none;
   min-height: 32px;
   padding: 2px 12px;
-  font-size: 12px;
+  font-size: var(--fs-xs);
   box-shadow: none;
 }
 
@@ -445,7 +445,7 @@ html { scrollbar-color: var(--line-strong) transparent; }
   border: 1px solid transparent;
   background: transparent;
   color: var(--muted);
-  font-size: 13px;
+  font-size: var(--fs-s);
   font-weight: 600;
   white-space: nowrap;
   text-align: left;
@@ -492,8 +492,8 @@ html { scrollbar-color: var(--line-strong) transparent; }
 }
 .card > h2 {
   margin: 0 0 14px;
-  font-size: 19px;
-  font-weight: 800;
+  font-size: var(--fs-l);
+  font-weight: 600;
   letter-spacing: -.01em;
   color: var(--cinnabar-hi);
 }
@@ -503,17 +503,16 @@ html { scrollbar-color: var(--line-strong) transparent; }
 .page-head h1,
 .page-head h2 {
   font-size: clamp(24px, 2.4vw, 30px);
-  font-weight: 800;
+  font-weight: 600;
   letter-spacing: -.02em;
   color: var(--cinnabar-hi);
 }
-.page-head .muted { font-size: 13px; }
+.page-head .muted { font-size: var(--fs-s); }
 
 @media (hover: hover) and (pointer: fine) {
   .user-main .card:hover,
   .admin-main .card:hover {
-    transform: translateY(-2px);
-    border-color: var(--line-strong);
+      border-color: var(--line-strong);
     box-shadow: var(--az-el-2);
   }
 }
@@ -527,7 +526,7 @@ button {
   padding: 8px 20px;
   min-height: 40px;
   font-family: inherit;
-  font-size: 14px;
+  font-size: var(--fs-s);
   font-weight: 600;
   letter-spacing: .01em;
   box-shadow: var(--az-el-1);
@@ -536,7 +535,6 @@ button {
               filter var(--az-t-1) var(--az-ease);
 }
 button:hover {
-  transform: translateY(-1px);
   box-shadow: var(--az-el-2);
 }
 button:active { transform: translateY(0) scale(.98); }
@@ -574,7 +572,7 @@ button.danger {
   border-radius: var(--az-r-s);
   padding: 6px 12px;
   min-height: 32px;
-  font-size: 13px;
+  font-size: var(--fs-s);
   box-shadow: none;
 }
 .ghost.ghost:hover {
@@ -592,7 +590,7 @@ button.danger {
   border-radius: var(--az-r-s);
   padding: 6px 14px;
   min-height: 32px;
-  font-size: 13px;
+  font-size: var(--fs-s);
   box-shadow: none;
 }
 .danger-outline.danger-outline:hover {
@@ -612,7 +610,7 @@ input, select, textarea {
   border-radius: var(--az-r-s);
   padding: 8px 12px;
   font-family: inherit;
-  font-size: 14px;
+  font-size: var(--fs-s);
   transition: border-color var(--az-t-1) var(--az-ease),
               box-shadow var(--az-t-1) var(--az-ease),
               background var(--az-t-1) var(--az-ease);
@@ -627,7 +625,7 @@ input:focus, select:focus, textarea:focus {
   box-shadow: var(--az-ring);
 }
 input::placeholder, textarea::placeholder { color: var(--muted); opacity: .75; }
-label { font-size: 13px; color: var(--muted); font-weight: 500; }
+label { font-size: var(--fs-s); color: var(--muted); font-weight: 500; }
 .cell-input.cell-input { border-radius: var(--az-r-s); padding: 4px 8px; }
 
 .drop-zone.drop-zone {
@@ -674,7 +672,7 @@ th {
   border-bottom: 1px solid var(--border);
   background: var(--az-surface-2);
   color: var(--muted);
-  font-size: 12px;
+  font-size: var(--fs-xs);
   font-weight: 600;
   letter-spacing: .04em;
   white-space: nowrap;
@@ -682,7 +680,7 @@ th {
 td {
   padding: 12px 16px;
   border-bottom: 1px solid var(--border);
-  font-size: 13px;
+  font-size: var(--fs-s);
 }
 tbody tr:last-child td { border-bottom: none; }
 tbody tr:nth-child(even), table tr:nth-child(even) { background: var(--panel-2); }
@@ -699,7 +697,7 @@ tbody tr:hover, table tr:hover { background: var(--accent-wash); }
   border: 1px solid transparent;
   background: var(--accent-wash);
   color: var(--accent);
-  font-size: 12px;
+  font-size: var(--fs-xs);
   font-weight: 600;
   font-variant-numeric: tabular-nums;
 }
@@ -741,7 +739,7 @@ html.azg-dark .badge.badge.alex {
   border: 1px solid transparent;
   background: transparent;
   color: var(--muted);
-  font-size: 13px;
+  font-size: var(--fs-s);
   font-weight: 600;
   box-shadow: none;
   transform: none;
@@ -769,13 +767,13 @@ html.azg-dark .badge.badge.alex {
 .md.md p, .md.md li { max-width: 34em; }
 .md.md h1 {
   font-family: var(--az-font-display);
-  font-size: 22px;
-  font-weight: 800;
+  font-size: var(--fs-l);
+  font-weight: 600;
   letter-spacing: -.01em;
   border-bottom: 1px solid var(--border);
   padding-bottom: 8px;
 }
-.md.md h2 { font-size: 18px; font-weight: 700; }
+.md.md h2 { font-size: var(--fs-l); font-weight: 600; }
 .md.md a {
   color: var(--accent);
   text-decoration: underline;
@@ -789,7 +787,7 @@ html.azg-dark .badge.badge.alex {
   border-radius: 6px;
   padding: 2px 8px;
   font-family: var(--mono);
-  font-size: 12px;
+  font-size: var(--fs-xs);
 }
 .md.md pre {
   background: var(--az-surface-2);
@@ -833,11 +831,11 @@ html.azg-dark .badge.badge.alex {
   background-size: 16px 16px;
 }
 .skin-card-body { gap: 8px; }
-.skin-card-name { font-size: 14px; }
+.skin-card-name { font-size: var(--fs-s); }
 .lock.lock {
   border-radius: var(--az-r-s);
   padding: 0 6px;
-  font-size: 11px;
+  font-size: var(--fs-xs);
   font-weight: 600;
 }
 .like-btn.like-btn {
@@ -850,7 +848,7 @@ html.azg-dark .badge.badge.alex {
   border-radius: var(--az-r-s);
   background: var(--az-surface-2);
   color: var(--muted);
-  font-size: 12px;
+  font-size: var(--fs-xs);
   font-weight: 600;
   box-shadow: none;
   transform: none;
@@ -873,8 +871,7 @@ html.azg-dark .badge.badge.alex {
 }
 @media (hover: hover) and (pointer: fine) {
   .skin-card.skin-card:hover {
-    transform: translateY(-4px);
-    border-color: var(--line-strong);
+      border-color: var(--line-strong);
     box-shadow: var(--az-el-2);
   }
 }
@@ -905,14 +902,14 @@ html.azg-dark .badge.badge.alex {
 }
 .stat-card .stat-num,
 .stat-card b {
-  font-size: 26px;
-  font-weight: 800;
+  font-size: var(--fs-xl);
+  font-weight: 600;
   letter-spacing: -.02em;
   line-height: 1.15;
   font-variant-numeric: tabular-nums;
   color: var(--cinnabar);
 }
-.stat-card .stat-label { font-size: 12px; color: var(--muted); }
+.stat-card .stat-label { font-size: var(--fs-xs); color: var(--muted); }
 
 .uploader.uploader { color: var(--muted); }
 .avatar-box.avatar-box {
@@ -934,7 +931,7 @@ html.azg-dark .badge.badge.alex {
 .auth-scene .scene-copy h1 {
   font-family: var(--az-font-display);
   font-size: clamp(28px, 3vw, 38px);
-  font-weight: 800;
+  font-weight: 600;
   letter-spacing: -.02em;
   color: var(--cinnabar-hi);
 }
@@ -980,7 +977,7 @@ html.azg-dark .scene-fog { background: radial-gradient(50% 100% at 50% 100%, var
   margin: 0 0 16px;
   font-family: var(--az-font-display);
   font-size: clamp(38px, 6.4vw, 84px);
-  font-weight: 800;
+  font-weight: 600;
   letter-spacing: -.025em;
   line-height: 1.06;
   color: var(--cinnabar-hi);
@@ -1002,7 +999,7 @@ html.azg-dark .scene-fog { background: radial-gradient(50% 100% at 50% 100%, var
   margin: 0;
   padding: 0 34px;
   border-radius: var(--az-r-s);
-  font-size: 15px;
+  font-size: var(--fs-m);
   font-weight: 600;
   text-decoration: none;
   transition: transform var(--az-t-2) var(--az-ease), box-shadow var(--az-t-2) var(--az-ease),
@@ -1015,7 +1012,6 @@ html.azg-dark .scene-fog { background: radial-gradient(50% 100% at 50% 100%, var
 }
 .cta .primary:hover {
   color: var(--on-cinnabar);
-  transform: translateY(-2px);
   box-shadow: var(--az-el-3);
   text-decoration: none;
 }
@@ -1027,7 +1023,6 @@ html.azg-dark .scene-fog { background: radial-gradient(50% 100% at 50% 100%, var
 .cta .alt:hover {
   color: var(--accent);
   border-color: var(--accent);
-  transform: translateY(-2px);
   text-decoration: none;
 }
 
@@ -1054,7 +1049,7 @@ html.azg-dark .scene-fog { background: radial-gradient(50% 100% at 50% 100%, var
 .stats b {
   display: block;
   font-size: clamp(26px, 3vw, 42px);
-  font-weight: 800;
+  font-weight: 600;
   letter-spacing: -.02em;
   line-height: 1.1;
   font-variant-numeric: tabular-nums;
@@ -1063,7 +1058,7 @@ html.azg-dark .scene-fog { background: radial-gradient(50% 100% at 50% 100%, var
 .stats span {
   display: block;
   margin-top: 6px;
-  font-size: 13px;
+  font-size: var(--fs-s);
   color: var(--muted);
 }
 
@@ -1102,7 +1097,7 @@ html.azg-dark .scene-fog { background: radial-gradient(50% 100% at 50% 100%, var
   max-width: 34em;
   margin: 0;
   padding: clamp(20px, 2.4vw, 30px) clamp(24px, 3vw, 40px) clamp(20px, 2.4vw, 30px) clamp(34px, 4vw, 54px);
-  font-size: 15.5px;
+  font-size: var(--fs-m);
   line-height: 2;
   color: var(--text);
 }
@@ -1114,7 +1109,7 @@ html.azg-dark .scene-fog { background: radial-gradient(50% 100% at 50% 100%, var
   padding-bottom: 14px;
   font-family: var(--az-font-display);
   font-size: clamp(22px, 2.6vw, 30px);
-  font-weight: 800;
+  font-weight: 600;
   letter-spacing: -.01em;
   text-align: center;
   color: var(--text);
@@ -1151,13 +1146,12 @@ html.azg-dark .scene-fog { background: radial-gradient(50% 100% at 50% 100%, var
 }
 @media (hover: hover) and (pointer: fine) {
   .grid figure:hover {
-    transform: translateY(-5px);
-    border-color: var(--line-strong);
+      border-color: var(--line-strong);
     box-shadow: var(--az-el-2);
   }
 }
 .grid img { max-width: 128px; max-height: 128px; border-radius: 10px; }
-.grid figcaption { margin-top: 2px; font-size: 13px; color: var(--muted); }
+.grid figcaption { margin-top: 2px; font-size: var(--fs-s); color: var(--muted); }
 /* 精选 8 件固定 4×2，避免 6+2 的断行 */
 @media (min-width: 1024px) {
   .grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
@@ -1176,7 +1170,7 @@ html.azg-dark .scene-fog { background: radial-gradient(50% 100% at 50% 100%, var
   border: 1px solid var(--border);
   background: var(--az-surface);
   color: var(--text);
-  font-size: 14px;
+  font-size: var(--fs-s);
   font-weight: 600;
   text-decoration: none;
   transition: border-color var(--az-t-1) var(--az-ease), color var(--az-t-1) var(--az-ease),
@@ -1197,7 +1191,7 @@ footer {
   margin: clamp(36px, 5vw, 64px) 0 0;
   padding: 28px var(--az-gutter);
   text-align: center;
-  font-size: 13px;
+  font-size: var(--fs-s);
   color: #c9d6ee;
   background: var(--az-footer);
   border-top: 1px solid transparent;
@@ -1216,7 +1210,7 @@ footer a { color: #9dc2ff; text-decoration: none; }
 footer a:hover { color: #d3e6ff; text-decoration: underline; text-underline-offset: 3px; }
 
 /* ────────── §15 详情页 ────────── */
-.crumb { margin: 4px 0 16px; font-size: 13px; color: var(--muted); }
+.crumb { margin: 4px 0 16px; font-size: var(--fs-s); color: var(--muted); }
 .crumb a { color: var(--muted); }
 .crumb a:hover { color: var(--accent); }
 .wrap > .card { padding: clamp(20px, 2.6vw, 30px); border-radius: var(--az-r-xl); }
@@ -1224,13 +1218,13 @@ footer a:hover { color: #d3e6ff; text-decoration: underline; text-underline-offs
   margin: 0 0 6px;
   font-family: var(--az-font-display);
   font-size: clamp(24px, 3vw, 32px);
-  font-weight: 800;
+  font-weight: 600;
   letter-spacing: -.02em;
   line-height: 1.2;
   color: var(--text);
   word-break: break-all;
 }
-.sub { margin: 0 0 24px; font-size: 13.5px; color: var(--muted); }
+.sub { margin: 0 0 24px; font-size: var(--fs-s); color: var(--muted); }
 
 .viewer {
   min-height: 320px;
@@ -1254,10 +1248,10 @@ footer a:hover { color: #d3e6ff; text-decoration: underline; text-underline-offs
 }
 .meta div::before,
 .meta div::after { content: none; }
-.meta dt { margin: 0 0 2px; font-size: 12px; color: var(--muted); }
+.meta dt { margin: 0 0 2px; font-size: var(--fs-xs); color: var(--muted); }
 .meta dd {
   margin: 0;
-  font-size: 14px;
+  font-size: var(--fs-s);
   font-weight: 600;
   color: var(--text);
   font-variant-numeric: tabular-nums;
@@ -1276,7 +1270,7 @@ footer a:hover { color: #d3e6ff; text-decoration: underline; text-underline-offs
   border-radius: var(--az-r-s);
   border: 1px solid transparent;
   font-family: inherit;
-  font-size: 14px;
+  font-size: var(--fs-s);
   font-weight: 600;
   text-decoration: none;
   cursor: pointer;
@@ -1292,7 +1286,6 @@ footer a:hover { color: #d3e6ff; text-decoration: underline; text-underline-offs
 }
 .actions .primary:hover {
   color: var(--on-cinnabar);
-  transform: translateY(-1px);
   box-shadow: var(--az-el-2);
   text-decoration: none;
 }
@@ -1306,7 +1299,6 @@ footer a:hover { color: #d3e6ff; text-decoration: underline; text-underline-offs
   border-color: var(--accent);
   color: var(--accent);
   background: var(--az-surface-2);
-  transform: translateY(-1px);
   box-shadow: var(--az-el-1);
   text-decoration: none;
 }
@@ -1319,8 +1311,8 @@ footer a:hover { color: #d3e6ff; text-decoration: underline; text-underline-offs
 /* ────────── §16 浮动明暗切换 ────────── */
 #azg-toggle {
   position: fixed;
-  right: 22px;
-  bottom: calc(22px + env(safe-area-inset-bottom, 0px));
+  right: 24px;
+  bottom: calc(24px + env(safe-area-inset-bottom, 0px));
   width: 48px;
   height: 48px;
   padding: 0;
@@ -1328,17 +1320,16 @@ footer a:hover { color: #d3e6ff; text-decoration: underline; text-underline-offs
   border: 1px solid var(--line-strong);
   background: var(--cinnabar);
   color: var(--on-cinnabar);
-  font-size: 19px;
   line-height: 1;
   cursor: pointer;
-  z-index: 9999;
+  z-index: var(--z-modal);
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: var(--az-el-2);
   transition: transform var(--az-t-2) var(--az-ease), box-shadow var(--az-t-2) var(--az-ease);
 }
-#azg-toggle:hover { transform: translateY(-2px) scale(1.04); box-shadow: var(--az-el-3); }
+#azg-toggle:hover { box-shadow: var(--az-el-3); }
 #azg-toggle:active { transform: scale(.96); }
 
 /* ────────── §17 动效（JS 打标 html.azg-anim 后生效）────────── */
@@ -1367,15 +1358,6 @@ html.azg-anim .grid figure:nth-child(6) { animation-delay: .20s; }
 html.azg-anim .grid figure:nth-child(7) { animation-delay: .24s; }
 html.azg-anim .grid figure:nth-child(8) { animation-delay: .28s; }
 
-/* 背景光斑漂移：仅桌面精细指针（触屏不跑长动画） */
-@keyframes azg-drift {
-  from { background-position: 0 0, 0 0, 0 0; }
-  to { background-position: -28px 18px, 22px -14px, 16px 12px; }
-}
-@media (hover: hover) and (pointer: fine) and (min-width: 900px) {
-  html.azg-anim body { animation: azg-drift 90s ease-in-out infinite alternate; }
-}
-
 /* ────────── §18 移动端 ────────── */
 @media (max-width: 860px) {
   .container { padding: 20px 20px 40px; }
@@ -1387,11 +1369,11 @@ html.azg-anim .grid figure:nth-child(8) { animation-delay: .28s; }
 @media (max-width: 720px) {
   .container { padding: 18px 16px 36px; }
   .topbar { padding: 0 14px; }
-  .topbar .brand-name { font-size: 17px; }
+  .topbar .brand-name { font-size: var(--fs-m); }
   .card { border-radius: var(--az-r-m); padding: 18px; }
   .card::before { inset: 0 18px auto; }
   .up-grid.up-grid { grid-template-columns: 1fr; }
-  input, select, textarea { font-size: 16px; } /* iOS 聚焦不缩放 */
+  input, select, textarea { font-size: var(--fs-m); } /* iOS 聚焦不缩放 */
   button { min-height: 42px; }
 
   .user-side.user-side { top: calc(var(--topbar-h, 56px) + 8px); padding: 6px 10px; gap: 6px; }
@@ -1433,7 +1415,7 @@ html.azg-anim .grid figure:nth-child(8) { animation-delay: .28s; }
   /* 衣柜/材质表：窄屏改成卡内横滑，否则列宽被压成一字一行、操作按钮够不到 */
   .card:has(> table) { overflow-x: auto; }
   .card > table { min-width: 600px; }
-  .topbar .brand-name { font-size: 16px; }
+  .topbar .brand-name { font-size: var(--fs-m); }
 
   .hero h1 { font-size: clamp(34px, 10vw, 46px); }
   .cta { flex-direction: column; align-items: stretch; }
@@ -1441,7 +1423,7 @@ html.azg-anim .grid figure:nth-child(8) { animation-delay: .28s; }
 
   .stats { gap: 8px; }
   .stats div { padding: 14px 6px; }
-  .stats span { font-size: 11px; }
+  .stats span { font-size: var(--fs-xs); }
 
   .grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; }
   .grid figure { min-height: 168px; padding: 14px 10px; }
