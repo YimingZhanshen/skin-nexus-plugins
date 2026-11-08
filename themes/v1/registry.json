@@ -1,24 +1,24 @@
 {
   "schema": 1,
-  "generatedAt": "2026-10-31T21:39:45Z",
-  "expiresAt": "2027-01-29T21:39:45Z",
+  "generatedAt": "2026-11-08T21:40:57Z",
+  "expiresAt": "2027-02-06T21:40:57Z",
   "keyId": "theme-market-2026-11",
   "packages": [
     {
       "name": "azure-glass",
-      "version": "3.2.1",
+      "version": "3.3.0",
       "title": {
         "zh-CN": "晴空琉璃"
       },
       "description": {
-        "zh-CN": "晴空玻璃拟态 v3.2「质感整合」：整站换脸——亮色晴空 × 夜蓝靛双态，全出血晴空首屏 + 悬浮玻璃 dock + 大圆角卡片与渐变发丝线；居中宽幅（1180→1480 随屏宽），形态亮暗一致、仅色系分态；落地页/详情页/认证页整页重着色，移动端同形态。"
+        "zh-CN": "晴空琉璃 v3.3「保琉璃之名，收玻璃之实」：整站换脸——亮色晴空 × 夜蓝靛双态；玻璃只留悬浮 dock 与左右两条侧栏，卡片、表格、按钮回到实面与发丝线；颜色一条中性阶加一个蓝主色，渐变字与彩光投影撤下；字号、字重、半径、间距全部走宿主令牌刻度，居中宽幅（1180→1480 随屏宽），形态亮暗一致、仅色系分态。"
       },
       "author": "YMZS (YimingZhanshen)",
       "minServer": "\u003e=0.1",
       "dist": {
-        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/themes/v1/artifacts/azure-glass-3.2.1.zip",
-        "size": 13243,
-        "sha256": "d9e327e6ca621cbad31a592387fd796ca83846649da22d4c30b044cfadd7b8eb"
+        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/themes/v1/artifacts/azure-glass-3.3.0.zip",
+        "size": 13627,
+        "sha256": "34135fc9a6768e4d0e7dc24edef30840bbba32bbbf48276db8c0df6a59c1f92f"
       }
     },
     {
@@ -56,5 +56,5 @@
       }
     }
   ],
-  "signature": "TlVF5jHt1SmpBmaBAflFsT3RWcYKe67NNXeLfNIfayDK4UOYpndCUg+u6vBK57UxdjG9T0lLc6zLHFEDvMqPAA=="
+  "signature": "UEv9c86d11CPxIWaWqS6rpUxN5wDc03U8egUKzBZIwDJQOtD19NnRpV6Sz7drdkDxsw1hVX5HaW99GJCS1sJAg=="
 }
