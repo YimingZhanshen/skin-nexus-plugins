@@ -1,24 +1,24 @@
 {
   "schema": 1,
-  "generatedAt": "2026-11-08T21:40:57Z",
-  "expiresAt": "2027-02-06T21:40:57Z",
+  "generatedAt": "2026-11-14T18:45:58Z",
+  "expiresAt": "2027-02-12T18:45:58Z",
   "keyId": "theme-market-2026-11",
   "packages": [
     {
       "name": "azure-glass",
-      "version": "3.3.0",
+      "version": "4.0.0",
       "title": {
         "zh-CN": "晴空琉璃"
       },
       "description": {
-        "zh-CN": "晴空琉璃 v3.3「保琉璃之名，收玻璃之实」：整站换脸——亮色晴空 × 夜蓝靛双态；玻璃只留悬浮 dock 与左右两条侧栏，卡片、表格、按钮回到实面与发丝线；颜色一条中性阶加一个蓝主色，渐变字与彩光投影撤下；字号、字重、半径、间距全部走宿主令牌刻度，居中宽幅（1180→1480 随屏宽），形态亮暗一致、仅色系分态。"
+        "zh-CN": "晴空琉璃 v4.0「薄光」：在 v3.3 的通透底子上加一层会呼吸的光——首屏天光扫过、祥云双层慢漂、山峦随滚动错落，统计数字缓起，明暗切换如昼夜交替。动效只走 transform/opacity 与单曲线族，高频界面零循环，减少动效偏好下全静。同批修掉统计卡压按钮、圆角归令牌刻度、中宽导航换行不截断。"
       },
       "author": "YMZS (YimingZhanshen)",
       "minServer": "\u003e=0.1",
       "dist": {
-        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/themes/v1/artifacts/azure-glass-3.3.0.zip",
-        "size": 13627,
-        "sha256": "34135fc9a6768e4d0e7dc24edef30840bbba32bbbf48276db8c0df6a59c1f92f"
+        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/themes/v1/artifacts/azure-glass-4.0.0.zip",
+        "size": 15495,
+        "sha256": "1eb46883b348c352c84f2bc6ab1758511c8460ce1b0887668c4354a2cf46cf2d"
       }
     },
     {
@@ -56,5 +56,5 @@
       }
     }
   ],
-  "signature": "UEv9c86d11CPxIWaWqS6rpUxN5wDc03U8egUKzBZIwDJQOtD19NnRpV6Sz7drdkDxsw1hVX5HaW99GJCS1sJAg=="
+  "signature": "azvN2Xeb2gbbSNNi7nOBmyMON/zn6n91HdckECfrKhekWGiJFpIvDWISjWFywVixWFrx3gYtPnYgxusPgIE3BA=="
 }
