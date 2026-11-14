@@ -521,9 +521,9 @@ html { scrollbar-color: var(--line-strong) transparent; }
 button {
   background: var(--cinnabar);
   color: var(--on-cinnabar);
-  border: none;
+  border: 1px solid transparent;
   border-radius: var(--az-r-s);
-  padding: 8px 20px;
+  padding: 7px 19px;
   min-height: 40px;
   font-family: inherit;
   font-size: var(--fs-s);
@@ -588,8 +588,7 @@ button.danger {
   border: 1px solid var(--danger);
   color: var(--danger);
   border-radius: var(--az-r-s);
-  padding: 6px 14px;
-  min-height: 32px;
+  padding: 7px 19px;
   font-size: var(--fs-s);
   box-shadow: none;
 }
