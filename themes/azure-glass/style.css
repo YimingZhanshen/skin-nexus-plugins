@@ -953,13 +953,19 @@ html.azg-dark .badge.badge.alex {
 .scene-mountains path:nth-of-type(2) { fill: #b6ccf2; }
 .scene-mountains path:nth-of-type(3) { fill: #a4bfee; }
 .scene-mountains rect { display: none; }
-.scene-fog { background: radial-gradient(50% 100% at 50% 100%, var(--fog), transparent 70%); }
+/* 雾层底缘 40% 渐隐：径向中心压在盒底边（宿主结构如此），最亮处被盒缘裁断会切出
+   一条直缝——遮罩化开切口，渐变本体与观感不变 */
+.scene-fog {
+  background: radial-gradient(50% 100% at 50% 100%, var(--fog), transparent 70%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 60%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 60%, transparent 100%);
+}
 #scene-mist stop { stop-color: #080f1e; }
 html.azg-dark .scene-mountains path:nth-of-type(1) { fill: #1d304f; }
 html.azg-dark .scene-mountains path:nth-of-type(2) { fill: #16263f; }
 html.azg-dark .scene-mountains path:nth-of-type(3) { fill: #101d33; }
 html.azg-dark .scene-mountains rect { display: block; }
-html.azg-dark .scene-fog { background: radial-gradient(50% 100% at 50% 100%, var(--fog), transparent 70%); }
+html.azg-dark .scene-fog { background: radial-gradient(50% 100% at 50% 100%, var(--fog), transparent 70%); } /* mask inherited from base rule */
 
 .hero {
   position: relative;
@@ -969,7 +975,7 @@ html.azg-dark .scene-fog { background: radial-gradient(50% 100% at 50% 100%, var
   padding: clamp(60px, 9vw, 116px) var(--az-gutter) clamp(70px, 8vw, 100px);
   text-align: center;
   background:
-    radial-gradient(900px 420px at 74% 6%, var(--az-tint-a), transparent 62%);
+    radial-gradient(41% 45% at 74% 28%, var(--az-tint-a), transparent 62%);
 }
 .hero > * { position: relative; }
 .hero .brandmark { margin: 0 auto 24px; }
@@ -1462,7 +1468,7 @@ html.azg-anim .grid figure:nth-child(8) { animation-delay: .28s; }
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: radial-gradient(560px 300px at 22% 16%, rgba(255, 255, 255, .18), transparent 70%);
+  background: radial-gradient(31% 22% at 22% 16%, rgba(255, 255, 255, .18), transparent 70%);
   opacity: 0;
 }
 html.azg-anim .hero::before { animation: azg-skyglow 14s var(--az-ease-soft) infinite; }
@@ -1479,6 +1485,13 @@ html.azg-anim .scene-fog.fog-b { animation: azg-fog 64s linear infinite alternat
 @keyframes azg-fog {
   from { transform: translateX(-2%); }
   to { transform: translateX(2%); }
+}
+
+/* 大气透视：远山峰区渐融进天空（遮罩到 46% 高——只触及最远层峰区，
+   中/近层峰顶在 75%/87% 不受影响），色阶带不再从一条直脊突然起边 */
+.scene-mountains {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 46%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 46%);
 }
 
 /* 山峦视差：theme.js 滚动钩子写 --az-shift（0..1），远山走得快、近山不动。
