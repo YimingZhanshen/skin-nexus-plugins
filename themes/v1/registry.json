@@ -1,24 +1,24 @@
 {
   "schema": 1,
-  "generatedAt": "2026-11-14T18:45:58Z",
-  "expiresAt": "2027-02-12T18:45:58Z",
+  "generatedAt": "2026-11-14T19:28:45Z",
+  "expiresAt": "2027-02-12T19:28:45Z",
   "keyId": "theme-market-2026-11",
   "packages": [
     {
       "name": "azure-glass",
-      "version": "4.0.0",
+      "version": "4.0.1",
       "title": {
         "zh-CN": "晴空琉璃"
       },
       "description": {
-        "zh-CN": "晴空琉璃 v4.0「薄光」：在 v3.3 的通透底子上加一层会呼吸的光——首屏天光扫过、祥云双层慢漂、山峦随滚动错落，统计数字缓起，明暗切换如昼夜交替。动效只走 transform/opacity 与单曲线族，高频界面零循环，减少动效偏好下全静。同批修掉统计卡压按钮、圆角归令牌刻度、中宽导航换行不截断。"
+        "zh-CN": "晴空琉璃 v4.0.1：修掉三处色带分割——hero 辉光/雾层/远山的裁切边全部渐融化（大气透视），全页色调连续。v4.0「薄光」：在 v3.3 的通透底子上加一层会呼吸的光——首屏天光扫过、祥云双层慢漂、山峦随滚动错落，统计数字缓起，明暗切换如昼夜交替。动效只走 transform/opacity 与单曲线族，高频界面零循环，减少动效偏好下全静。同批修掉统计卡压按钮、圆角归令牌刻度、中宽导航换行不截断。"
       },
       "author": "YMZS (YimingZhanshen)",
       "minServer": "\u003e=0.1",
       "dist": {
-        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/themes/v1/artifacts/azure-glass-4.0.0.zip",
-        "size": 15495,
-        "sha256": "1eb46883b348c352c84f2bc6ab1758511c8460ce1b0887668c4354a2cf46cf2d"
+        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/themes/v1/artifacts/azure-glass-4.0.1.zip",
+        "size": 15960,
+        "sha256": "12728d5624aab7363343c2af11085ae4b5a905c4d5d9b71bc1b8e2d3d2919fe0"
       }
     },
     {
@@ -56,5 +56,5 @@
       }
     }
   ],
-  "signature": "azvN2Xeb2gbbSNNi7nOBmyMON/zn6n91HdckECfrKhekWGiJFpIvDWISjWFywVixWFrx3gYtPnYgxusPgIE3BA=="
+  "signature": "hJ53H3UcjgHnQ8cLUhA5x/kbbrclMlT9JNp4alRzZEqkocfxRDdbIynNDWd6rnIy2kVe1s5nNw1s2XULR9iqBg=="
 }
