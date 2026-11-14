@@ -261,8 +261,8 @@ html { scrollbar-color: var(--line-strong) transparent; }
 .topbar-right button { min-height: 36px; padding: 4px 16px; font-size: var(--fs-s); }
 
 /* ────────── §4 顶部悬浮导航 dock（v2 立项初心结构）──────────
-   .user-side 由「左侧栏」改为「顶部横向 dock」：单行、胶囊项、
-   选中渐变浸染、移动端横向滚动。明暗双态形态一致。 */
+   .user-side 由「左侧栏」改为「顶部横向 dock」：胶囊项、
+   选中渐变浸染；中宽换行不截断，窄屏单行横滑（右缘渐隐）。明暗双态形态一致。 */
 .user-shell.user-shell {
   flex-direction: column;
   align-items: stretch;
@@ -277,7 +277,7 @@ html { scrollbar-color: var(--line-strong) transparent; }
   display: flex;
   flex-direction: row;
   align-items: center;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   gap: 8px;
   width: 100%;
   min-width: 0;
@@ -295,7 +295,7 @@ html { scrollbar-color: var(--line-strong) transparent; }
 .user-side.user-side::-webkit-scrollbar { display: none; }
 .user-side.user-side::before { content: none; } /* 关掉卡片顶部发丝线 */
 
-.nav-group.nav-group { display: flex; align-items: center; flex-wrap: nowrap; gap: 6px; }
+.nav-group.nav-group { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
 .nav-group.nav-group + .nav-group.nav-group {
   margin-top: 0;
   margin-left: 4px;
@@ -386,7 +386,7 @@ html { scrollbar-color: var(--line-strong) transparent; }
   display: flex;
   align-items: center;
   gap: 12px;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   overflow-x: auto;
   overflow-y: hidden;
   scrollbar-width: none;
@@ -685,7 +685,7 @@ td {
 tbody tr:last-child td { border-bottom: none; }
 tbody tr:nth-child(even), table tr:nth-child(even) { background: var(--panel-2); }
 tbody tr:hover, table tr:hover { background: var(--accent-wash); }
-.thumb.thumb { border-radius: 8px; background: var(--az-surface-2); }
+.thumb.thumb { border-radius: var(--az-r-s); background: var(--az-surface-2); }
 
 /* ────────── §10 徽章 / 标签页 ────────── */
 .badge {
@@ -784,7 +784,7 @@ html.azg-dark .badge.badge.alex {
 .md.md code {
   background: var(--az-surface-2);
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: var(--az-r-s);
   padding: 2px 8px;
   font-family: var(--mono);
   font-size: var(--fs-xs);
@@ -1033,7 +1033,7 @@ html.azg-dark .scene-fog { background: radial-gradient(50% 100% at 50% 100%, var
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: clamp(12px, 1.6vw, 18px);
-  margin: -44px 0 clamp(28px, 3.4vw, 40px);
+  margin: 0 0 clamp(28px, 3.4vw, 40px);
 }
 .stats div {
   position: relative;
@@ -1113,6 +1113,7 @@ html.azg-dark .scene-fog { background: radial-gradient(50% 100% at 50% 100%, var
   letter-spacing: -.01em;
   text-align: center;
   color: var(--text);
+  text-wrap: balance;
 }
 .feat h2::after {
   content: "";
@@ -1150,7 +1151,7 @@ html.azg-dark .scene-fog { background: radial-gradient(50% 100% at 50% 100%, var
     box-shadow: var(--az-el-2);
   }
 }
-.grid img { max-width: 128px; max-height: 128px; border-radius: 10px; }
+.grid img { max-width: 128px; max-height: 128px; border-radius: var(--az-r-m); }
 .grid figcaption { margin-top: 2px; font-size: var(--fs-s); color: var(--muted); }
 /* 精选 8 件固定 4×2，避免 6+2 的断行 */
 @media (min-width: 1024px) {
@@ -1385,7 +1386,6 @@ html.azg-anim .grid figure:nth-child(8) { animation-delay: .28s; }
   .admin-side .admin-token { flex-basis: 140px; }
 
   .hero { padding-top: 52px; padding-bottom: 64px; }
-  .stats { margin-top: -32px; }
   .stats div { padding: 16px 8px; }
   .stats b { font-size: clamp(22px, 7vw, 30px); }
 
@@ -1400,13 +1400,16 @@ html.azg-anim .grid figure:nth-child(8) { animation-delay: .28s; }
   body { background-attachment: scroll; } /* 移动端避免 fixed 背景重绘 */
 }
 
-/* 窄屏 dock 可横滑：右缘渐隐提示还有后续项 */
+/* 窄屏 dock 可横滑：右缘渐隐提示还有后续项。
+   手机保留单行横滑手势；中宽用换行保全量入口可见（不滚动截断）。 */
 @media (max-width: 640px) {
   .user-side.user-side,
   .admin-side.admin-side {
+    flex-wrap: nowrap;
     -webkit-mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 26px), transparent 100%);
     mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 26px), transparent 100%);
   }
+  .nav-group.nav-group { flex-wrap: nowrap; }
 }
 
 @media (max-width: 560px) {
@@ -1438,6 +1441,79 @@ html.azg-anim .grid figure:nth-child(8) { animation-delay: .28s; }
     right: 14px;
     bottom: calc(14px + env(safe-area-inset-bottom, 0px));
   }
+}
+
+
+/* ────────── §18.5 动效薄光（v4.0 橱窗层）
+   薄光克制：只动 transform/opacity，单曲线族（--az-ease / --az-ease-soft），
+   高频面（顶栏/侧栏/仪表盘）零循环动画；记忆点全放在落地页首屏。
+   prefers-reduced-motion 由 §19 总兜底打成静止态。 ────────── */
+
+/* 明暗切换：色彩三属性统一过渡，切模式像昼夜交替而非跳变 */
+*, *::before, *::after {
+  transition: background-color .28s var(--az-ease-soft),
+              border-color .28s var(--az-ease-soft),
+              color .28s var(--az-ease-soft);
+}
+
+/* 首屏天光：一层极慢的高光呼吸（14s，仅落地页首屏，低频记忆点） */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(560px 300px at 22% 16%, rgba(255, 255, 255, .18), transparent 70%);
+  opacity: 0;
+}
+html.azg-anim .hero::before { animation: azg-skyglow 14s var(--az-ease-soft) infinite; }
+@keyframes azg-skyglow {
+  0%, 100% { opacity: 0; transform: translateX(0); }
+  35% { opacity: 1; }
+  50% { transform: translateX(26%); }
+  70% { opacity: 0; }
+}
+
+/* 祥云漂移：两层雾带反向慢移（90s / 64s 线性，常速循环用 linear） */
+html.azg-anim .scene-fog.fog-a { animation: azg-fog 90s linear infinite alternate; }
+html.azg-anim .scene-fog.fog-b { animation: azg-fog 64s linear infinite alternate-reverse; }
+@keyframes azg-fog {
+  from { transform: translateX(-2%); }
+  to { transform: translateX(2%); }
+}
+
+/* 山峦视差：theme.js 滚动钩子写 --az-shift（0..1），远山走得快、近山不动。
+   默认值在此声明（JS 运行时覆写），静态扫描可见契约。 */
+.scene-mountains { --az-shift: 0; }
+.scene-mountains path:nth-of-type(1) { transform: translateY(calc(var(--az-shift, 0) * -14px)); }
+.scene-mountains path:nth-of-type(2) { transform: translateY(calc(var(--az-shift, 0) * -7px)); }
+
+/* 首屏进场编排：品牌 → 标题 → 标语 → 按钮，60ms 阶梯 */
+html.azg-anim .hero .brandmark { animation: azg-rise .55s var(--az-ease) both; }
+html.azg-anim .hero h1 { animation: azg-rise .55s var(--az-ease) .06s both; }
+html.azg-anim .hero .tag { animation: azg-rise .55s var(--az-ease) .12s both; }
+html.azg-anim .hero .cta { animation: azg-rise .55s var(--az-ease) .18s both; }
+@keyframes azg-rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* 精选卡进场：40ms 阶梯，8 张封顶 */
+html.azg-anim .feat .grid figure { animation: azg-rise .5s var(--az-ease) both; }
+html.azg-anim .feat .grid figure:nth-child(2) { animation-delay: .04s; }
+html.azg-anim .feat .grid figure:nth-child(3) { animation-delay: .08s; }
+html.azg-anim .feat .grid figure:nth-child(4) { animation-delay: .12s; }
+html.azg-anim .feat .grid figure:nth-child(5) { animation-delay: .16s; }
+html.azg-anim .feat .grid figure:nth-child(6) { animation-delay: .2s; }
+html.azg-anim .feat .grid figure:nth-child(7) { animation-delay: .24s; }
+html.azg-anim .feat .grid figure:nth-child(8) { animation-delay: .28s; }
+
+/* 按钮按压反馈：主 CTA 与「更多」按钮轻微下压 */
+.cta a:active, .more a:active { transform: scale(.97); }
+
+/* 明暗切换按钮：键盘焦点环 */
+#azg-toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
 }
 
 /* ────────── §19 减少动效 ────────── */
