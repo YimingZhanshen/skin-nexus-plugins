@@ -91,6 +91,42 @@
 
     if (!window.matchMedia || !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       root.classList.add('azg-anim');
+
+      /* 统计数字缓起：进视口跑一次 0 → 目标（800ms ease-out 近似，rAF 步进）。
+         不支持 IO 或解析失败就保持服务端终值，渐进增强。 */
+      var nums = document.querySelectorAll('.stats b');
+      if (window.IntersectionObserver && nums.length) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (en) {
+            if (!en.isIntersecting) return;
+            io.unobserve(en.target);
+            var el = en.target, target = parseInt(String(el.textContent).replace(/[^\d]/g, ''), 10);
+            if (!isFinite(target) || target <= 0) return;
+            var t0 = performance.now();
+            (function step(now) {
+              var k = Math.min(1, (now - t0) / 800);
+              el.textContent = String(Math.round(target * (1 - Math.pow(1 - k, 3))));
+              if (k < 1) requestAnimationFrame(step);
+            })(t0);
+          });
+        }, { threshold: 0.4 });
+        Array.prototype.forEach.call(nums, function (n) { io.observe(n); });
+      }
+
+      /* 山峦视差：滚动进度写在 SVG 自己身上（--az-shift 0..1），
+         只让山体两层重算，不碰全局。rAF 节流，passive 监听。 */
+      var scene = document.querySelector('.scene-mountains');
+      if (scene) {
+        var ticking = false;
+        window.addEventListener('scroll', function () {
+          if (ticking) return;
+          ticking = true;
+          requestAnimationFrame(function () {
+            scene.style.setProperty('--az-shift', String(Math.min(1, window.scrollY / 640)));
+            ticking = false;
+          });
+        }, { passive: true });
+      }
     }
   });
 })();
