@@ -972,7 +972,7 @@ html.azg-dark .scene-fog { background: radial-gradient(50% 100% at 50% 100%, var
   z-index: 0;
   width: auto;
   margin: 0 calc(-1 * var(--az-gutter));
-  padding: clamp(60px, 9vw, 116px) var(--az-gutter) clamp(70px, 8vw, 100px);
+  padding: clamp(60px, 9vw, 116px) var(--az-gutter) clamp(48px, 6vw, 72px);
   text-align: center;
   background:
     radial-gradient(41% 45% at 74% 28%, var(--az-tint-a), transparent 62%);
@@ -1158,7 +1158,7 @@ html.azg-dark .scene-fog { background: radial-gradient(50% 100% at 50% 100%, var
   }
 }
 .grid img { max-width: 128px; max-height: 128px; border-radius: var(--az-r-m); }
-.grid figcaption { margin-top: 2px; font-size: var(--fs-s); color: var(--muted); }
+.grid figcaption { margin-top: 2px; font-size: var(--fs-s); color: var(--muted); text-align: center; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 /* 精选 8 件固定 4×2，避免 6+2 的断行 */
 @media (min-width: 1024px) {
   .grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
@@ -1167,6 +1167,8 @@ html.azg-dark .scene-fog { background: radial-gradient(50% 100% at 50% 100%, var
 }
 
 .more { margin-top: 24px; }
+/* 「进入皮肤库」与下方统计带的呼吸：贴太近像同一个块 */
+.feat .more { margin-bottom: 40px; }
 .more a {
   display: inline-flex;
   align-items: center;
