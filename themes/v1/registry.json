@@ -1,24 +1,24 @@
 {
   "schema": 1,
-  "generatedAt": "2026-11-14T19:37:27Z",
-  "expiresAt": "2027-02-12T19:37:27Z",
+  "generatedAt": "2026-11-14T20:00:50Z",
+  "expiresAt": "2027-02-12T20:00:50Z",
   "keyId": "theme-market-2026-11",
   "packages": [
     {
       "name": "azure-glass",
-      "version": "4.0.2",
+      "version": "4.0.3",
       "title": {
         "zh-CN": "晴空琉璃"
       },
       "description": {
-        "zh-CN": "晴空琉璃 v4.0.2：窄屏导航重做——中屏整理换行（分组小节标签、条目成组），手机菜单抽屉（一次点击见全列表、44px 命中区）。v4.0.1：修掉三处色带分割——hero 辉光/雾层/远山的裁切边全部渐融化（大气透视），全页色调连续。v4.0「薄光」：在 v3.3 的通透底子上加一层会呼吸的光——首屏天光扫过、祥云双层慢漂、山峦随滚动错落，统计数字缓起，明暗切换如昼夜交替。动效只走 transform/opacity 与单曲线族，高频界面零循环，减少动效偏好下全静。同批修掉统计卡压按钮、圆角归令牌刻度、中宽导航换行不截断。"
+        "zh-CN": "晴空琉璃 v4.0.3：细节精修——进入皮肤库按钮与统计带拉开呼吸、精选标题双行截断少锯齿、首屏纵深收紧。v4.0.2：窄屏导航重做——中屏整理换行（分组小节标签、条目成组），手机菜单抽屉（一次点击见全列表、44px 命中区）。v4.0.1：修掉三处色带分割——hero 辉光/雾层/远山的裁切边全部渐融化（大气透视），全页色调连续。v4.0「薄光」：在 v3.3 的通透底子上加一层会呼吸的光——首屏天光扫过、祥云双层慢漂、山峦随滚动错落，统计数字缓起，明暗切换如昼夜交替。动效只走 transform/opacity 与单曲线族，高频界面零循环，减少动效偏好下全静。同批修掉统计卡压按钮、圆角归令牌刻度、中宽导航换行不截断。"
       },
       "author": "YMZS (YimingZhanshen)",
       "minServer": "\u003e=0.1",
       "dist": {
-        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/themes/v1/artifacts/azure-glass-4.0.2.zip",
-        "size": 16311,
-        "sha256": "fda58ea09ad20b38a4aa34b7c5b44fc1c73cd910a736e9d47c2684fb768b90c2"
+        "url": "https://yimingzhanshen.github.io/skin-nexus-plugins/themes/v1/artifacts/azure-glass-4.0.3.zip",
+        "size": 16501,
+        "sha256": "aa2ae25eeb9fbeb29f00bd7b34f898108f9f883ce0bd8105856247072c8581f4"
       }
     },
     {
@@ -56,5 +56,5 @@
       }
     }
   ],
-  "signature": "hQFH0JIDkPzHzsQ7xC+aFid0ljXMWW0j6D39i1EcCbB53ScMlw1WUKfkI0dtrNuGkCSk+0BeDtC+Ri0d3rnkDQ=="
+  "signature": "CLq0imtPQfiKg3njhYdakNfMNtLO3SOmO0XM8frFzZyezMciWE0sG1EnaXtkkQ6ftYtjboQayF5N7Ib/RHwFAQ=="
 }
