@@ -1406,16 +1406,43 @@ html.azg-anim .grid figure:nth-child(8) { animation-delay: .28s; }
   body { background-attachment: scroll; } /* 移动端避免 fixed 背景重绘 */
 }
 
-/* 窄屏 dock 可横滑：右缘渐隐提示还有后续项。
-   手机保留单行横滑手势；中宽用换行保全量入口可见（不滚动截断）。 */
-@media (max-width: 640px) {
-  .user-side.user-side,
-  .admin-side.admin-side {
-    flex-wrap: nowrap;
-    -webkit-mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 26px), transparent 100%);
-    mask-image: linear-gradient(90deg, #000 0, #000 calc(100% - 26px), transparent 100%);
+/* ≤1100 整理换行：分组标题降为独占一行的小节标签，条目成行成组，
+   用户卡收进行尾——每行都成组，不再有孤行与错位 */
+@media (max-width: 1100px) {
+  .nav-title.nav-title {
+    flex-basis: 100%;
+    margin: 6px 0 2px;
+    font-size: var(--fs-xs);
+    letter-spacing: .04em;
+    opacity: .75;
   }
-  .nav-group.nav-group { flex-wrap: nowrap; }
+  .user-side.user-side .user-chip { margin-left: auto; }
+}
+
+/* ≤720 菜单抽屉（宿主出机制，这里出皮）：汉堡钮玻璃胶囊，
+   展开列表纵向全宽条目、44px 命中区 */
+@media (max-width: 720px) {
+  .side-toggle {
+    min-height: 36px;
+    padding: 6px 12px;
+    border: 1px solid var(--az-rim);
+    border-radius: 999px;
+    background: var(--az-glass);
+    -webkit-backdrop-filter: var(--az-blur);
+    backdrop-filter: var(--az-blur);
+    color: var(--text);
+    font-weight: 600;
+    font-size: var(--fs-s);
+    max-width: 60%;
+  }
+  .side-toggle span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .side-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .user-side.user-side .nav-item, .admin-side.admin-side .nav-item {
+    min-height: 44px;
+    border-radius: var(--az-r-s);
+    justify-content: flex-start;
+  }
+  .nav-title.nav-title { margin: 10px 0 4px; }
 }
 
 @media (max-width: 560px) {
